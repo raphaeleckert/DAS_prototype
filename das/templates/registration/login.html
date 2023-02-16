@@ -1,11 +1,15 @@
-{% extends "base.html" %}
+{{define "title"}}Login{{end}}
 
-<h1>Login</h1>
+{{define "sidebar"}}{{""}}{{end}}
+
+{{define "body"}}
 
 <form action="">
     <label for="username">Username:</label><br>
-    <input type="text" id="username" name="username"><br>
+    <input type="text" id="username" name="username" class="w3-input w3-border"><br>
     <label for="password">Password:</label><br>
     <input type="password" id="password" name="password"><br><br>
-    <input type="submit" value="Login">
-  </form> 
+    <input type="submit" value="Login" class="w3-button">
+  </form>
+
+{{end}}
