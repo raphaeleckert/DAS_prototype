@@ -10,7 +10,7 @@
     </head>
     <body>
         <header>
-            <h1>  {{template "title" .}}</h1>
+            <h1>{{block "title" .}}{{end}}</h1>
         </header>
         {{block "sidebar" .}}
         <nav>
@@ -18,7 +18,7 @@
         </nav>
         {{end}}
         <main>
-            {{template "body" .}}
+            {{block "body" .}}{{end}}
         </main>
     </body>
 </html>

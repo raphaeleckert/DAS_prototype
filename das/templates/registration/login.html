@@ -1,15 +1,22 @@
-{{define "title"}}Login{{end}}
+{{define "title"}}{{""}}{{end}}
 
 {{define "sidebar"}}{{""}}{{end}}
 
 {{define "body"}}
 
-<form action="">
-    <label for="username">Username:</label><br>
-    <input type="text" id="username" name="username" class="w3-input w3-border"><br>
-    <label for="password">Password:</label><br>
-    <input type="password" id="password" name="password"><br><br>
-    <input type="submit" value="Login" class="w3-button">
-  </form>
+<div class="w3-display-container" style="overflow:hidden">
+  <img src="../static/images/people.jpg" class="w3-image">
+  <h1 class="w3-display-topleft w3-text-white w3-padding-36">Login</h1>
+  <div class="w3-padding-24 w3-indigo w3-display-middle">
+    <form action="" class="w3-container">
+      <label for="username">Username:</label><br>
+      <input type="text" id="username" name="username" class="w3-input w3-border"><br>
+      <label for="password">Password:</label><br>
+      <input type="password" id="password" name="password" class="w3-input w3-border"><br><br>
+      <input type="submit" value="Login" class="w3-button w3-blue">
+    </form>
+  </div>
+</div>
+
 
 {{end}}
