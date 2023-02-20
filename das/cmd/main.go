@@ -19,15 +19,22 @@ func login(writer http.ResponseWriter, request *http.Request) {
 	t.ExecuteTemplate(writer, "base", nil)
 }
 
-func handleRequests() {
+func router() {
+
+	server := http.Server{
+		Addr:    ":8080",
+		Handler: nil, // set to nil to use the default ServeMux
+	}
+
 	http.HandleFunc("/", homePage)
 	http.HandleFunc("/login/", login)
 
-	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("../static"))))
 
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Fatal(server.ListenAndServe())
 }
 
 func main() {
-	handleRequests()
+
+	router()
 }
