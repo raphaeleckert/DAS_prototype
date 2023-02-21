@@ -8,8 +8,9 @@ import (
 func Tryout(writer http.ResponseWriter, request *http.Request) {
 	if request.Method == http.MethodGet {
 		t, _ := template.ParseFiles(
-			"C:/Users/rapha/Desktop/Bachelorarbeit/DAS_prototype/das/templates/base.html",
-			"C:/Users/rapha/Desktop/Bachelorarbeit/DAS_prototype/das/templates/tryout.html")
+			"../static/templates/base.html",
+			"../static/templates/sidebar.html",
+			"../static/templates/tryout.html")
 		t.ExecuteTemplate(writer, "base", nil)
 	}
 }
