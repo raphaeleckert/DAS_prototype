@@ -8,18 +8,17 @@
         <link rel="stylesheet" type="text/css" href="../static/css/w3.css">
         <script src="../static/scripts/htmx.min.js"></script>
     </head>
-    <body>
-        <header>
-            <h1>{{block "title" .}}{{end}}</h1>
-        </header>
+    <body class="w3-row">
         {{block "sidebar" .}}
-        <nav>
-            <a href='/' class="w3-red">Home</a>
-        </nav>
         {{end}}
-        <main>
-            {{block "body" .}}{{end}}
-        </main>
+        <div class="w3-rest">
+            <header>
+                <h1>{{block "title" .}}{{end}}</h1>
+            </header>
+            <main>
+                {{block "body" .}}{{end}}
+            </main>
+        </div>
     </body>
 </html>
 {{end}}
