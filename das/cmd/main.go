@@ -24,7 +24,7 @@ func router() {
 	http.HandleFunc("/login/", handlers.Login)
 	http.HandleFunc("/tryout/", handlers.Tryout)
 
-	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("../static"))))
+	http.Handle("/resources/", http.StripPrefix("/resources/", http.FileServer(http.Dir("../resources"))))
 
 	log.Fatal(server.ListenAndServe())
 }
