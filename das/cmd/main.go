@@ -24,6 +24,15 @@ func router() {
 	http.HandleFunc("/login/", handlers.Login)
 	http.HandleFunc("/tryout/", handlers.Tryout)
 
+	//team
+	http.HandleFunc("/team", handlers.TeamOverviewHandler)
+	http.HandleFunc("/team/open", handlers.TeamOpenHandler)
+	http.HandleFunc("/team/work", handlers.TeamWorkHandler)
+	http.HandleFunc("/team/ready", handlers.TeamReadyHandler)
+	http.HandleFunc("/team/done", handlers.TeamDoneHandler)
+	http.HandleFunc("/team/review", handlers.TeamReviewHandler)
+
+	//resources
 	http.Handle("/resources/", http.StripPrefix("/resources/", http.FileServer(http.Dir("../resources"))))
 
 	log.Fatal(server.ListenAndServe())

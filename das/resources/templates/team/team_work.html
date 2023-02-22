@@ -1,0 +1,11 @@
+{{define "htmx-response"}}
+<!-- Tab Implementation according to htmx examples (https://htmx.org/examples/tabs-hateoas/)-->
+<div class="w3-bar w3-blue">
+	<button hx-get="/team/open" class="w3-bar-item w3-button">Open</button>
+	<button hx-get="/team/work" class="w3-indigo w3-bar-item w3-button">Work</button>
+	<button hx-get="/team/ready" class="w3-bar-item w3-button">Ready</button>
+	<button hx-get="/team/done" class="w3-bar-item w3-button">Done</button>
+	<button hx-get="/team/review" class="w3-bar-item w3-button">Review</button>
+</div>
+
+{{end}}
