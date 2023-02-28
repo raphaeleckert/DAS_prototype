@@ -8,16 +8,42 @@
         <link rel="stylesheet" type="text/css" href="../resources/css/w3.css">
         <script src="../resources/scripts/htmx.min.js"></script>
     </head>
-    <body class="w3-row">
-        {{block "sidebar" .}}{{end}}
-        <div class="w3-rest">
-            <header>
-                <h1>{{block "title" .}}{{end}}</h1>
-            </header>
-            <main>
-                {{block "body" .}}{{end}}
-            </main>
+    <body>
+
+        <nav class="w3-top">
+            <div class="w3-bar w3-indigo">
+                <button class="w3-button w3-bar-item" hx-get="/home" hx-target="body" hx-push-url="true">
+                    Home
+                </button>
+                <button class="w3-button w3-bar-item" hx-get="/tag" hx-target="body" hx-push-url="true">
+                    Tags
+                </button>
+                <button class="w3-button w3-bar-item" hx-get="/info" hx-target="body" hx-push-url="true">
+                    Info
+                </button>
+                <button class="w3-button w3-bar-item" hx-get="/manual" hx-target="body" hx-push-url="true">
+                    Manual
+                </button>
+                <button class="w3-button w3-bar-item" hx-get="/logout" hx-target="body" hx-push-url="true">
+                    Logout
+                </button>
+            </div>
+        </nav>
+        <br><br>
+
+        <div class="w3-row">
+            <div class="w3-col w3-container s1 m2 l2"></div>
+            <div id="page-content" class="w3-col s10 m8 l8">
+                <header>
+                    <h1>{{block "title" .}}{{end}}</h1>
+                </header>
+                <main>
+                    {{block "body" .}}{{end}}
+                </main>
+            </div>
+            <div class="w3-col w3-container s1 m2 l2"></div>
         </div>
+
     </body>
 </html>
 {{end}}
