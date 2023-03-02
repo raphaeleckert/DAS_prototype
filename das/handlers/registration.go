@@ -18,7 +18,7 @@ func Start(writer http.ResponseWriter, request *http.Request) {
 }
 
 func Login(writer http.ResponseWriter, request *http.Request) {
-	if request.Method == http.MethodGet {
+	if request.Method == http.MethodPost {
 		session, err := utils.Store.Get(request, "cookie-name")
 		if err != nil {
 			http.Error(writer, err.Error(), http.StatusInternalServerError)
@@ -27,20 +27,22 @@ func Login(writer http.ResponseWriter, request *http.Request) {
 		user := utils.GetUser(session)
 		if user.Authenticated {
 			writer.Header().Set("HX-Redirect", "/team")
-			writer.WriteHeader(http.StatusOK)
-			return
 		} else {
 			utils.ShowErrorMsg("Wrong username or password!", writer)
 		}
-	} else if request.Method == http.MethodPost {
+
+	} else if request.Method == http.MethodGet {
+		fmt.Println("post")
 
 		request.ParseForm()
 		username := request.FormValue("username")
 		password := request.FormValue("password")
 
 		// autentication based only on input
-		authenticated := username != "" && password != "" && password != "wrong"
+		// authenticated := username != "" && password != "" && password != "wrong"
+		authenticated := true
 		fmt.Println(username)
+		fmt.Println(password)
 		fmt.Println(authenticated)
 
 		isTeacher := username == "teacher"
@@ -64,6 +66,5 @@ func Login(writer http.ResponseWriter, request *http.Request) {
 			http.Error(writer, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		http.Redirect(writer, request, "/team", http.StatusFound)
 	}
 }

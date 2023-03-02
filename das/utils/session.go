@@ -1,6 +1,8 @@
 package utils
 
 import (
+	"fmt"
+
 	"github.com/gorilla/sessions"
 )
 
@@ -19,7 +21,10 @@ func GetUser(s *sessions.Session) User {
 	var user = User{}
 	user, ok := val.(User)
 	if !ok {
+		fmt.Printf("%+v", ok)
+
 		return User{Authenticated: false}
 	}
+	fmt.Printf("%+v", user)
 	return user
 }
