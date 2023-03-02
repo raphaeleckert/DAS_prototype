@@ -35,7 +35,6 @@ func init() {
 
 func homePage(writer http.ResponseWriter, request *http.Request) {
 	fmt.Fprintf(writer, "Welcome to the HomePage!")
-	fmt.Println("Endpoint Hit: homePage")
 }
 
 func router() {
@@ -51,7 +50,7 @@ func router() {
 	http.HandleFunc("/tryout/", handlers.Tryout)
 
 	//team
-	http.HandleFunc("/team", handlers.TeamOverviewHandler)
+	http.HandleFunc("/team", utils.LoginRequired(handlers.TeamOverviewHandler))
 	http.HandleFunc("/team/open", handlers.TeamOpenHandler)
 	http.HandleFunc("/team/work", handlers.TeamWorkHandler)
 	http.HandleFunc("/team/ready", handlers.TeamReadyHandler)

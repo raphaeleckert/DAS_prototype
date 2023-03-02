@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"fmt"
 	"html/template"
 	"net/http"
 
@@ -18,53 +17,33 @@ func Start(writer http.ResponseWriter, request *http.Request) {
 }
 
 func Login(writer http.ResponseWriter, request *http.Request) {
-	if request.Method == http.MethodPost {
-		session, err := utils.Store.Get(request, "cookie-name")
-		if err != nil {
-			http.Error(writer, err.Error(), http.StatusInternalServerError)
-			return
-		}
-		user := utils.GetUser(session)
-		if user.Authenticated {
-			writer.Header().Set("HX-Redirect", "/team")
-		} else {
-			utils.ShowErrorMsg("Wrong username or password!", writer)
-		}
+	session, err := utils.Store.Get(request, "das-session")
 
-	} else if request.Method == http.MethodGet {
-		fmt.Println("post")
+	request.ParseForm()
+	// username := request.FormValue("username")
+	// password := request.FormValue("password")
+	username := "exampleUser"
+	password := "valid"
+	// autentication based only on input
+	authenticated := username != "" && password != "" && password != "wrong"
+	isTeacher := username == "teacher"
 
-		request.ParseForm()
-		username := request.FormValue("username")
-		password := request.FormValue("password")
+	user := utils.User{
+		Username:      username,
+		Authenticated: authenticated,
+		IsTeacher:     isTeacher,
+	}
+	session.Values["user"] = user
+	err = session.Save(request, writer)
+	if err != nil {
+		http.Error(writer, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	user = utils.GetUser(session)
 
-		// autentication based only on input
-		// authenticated := username != "" && password != "" && password != "wrong"
-		authenticated := true
-		fmt.Println(username)
-		fmt.Println(password)
-		fmt.Println(authenticated)
-
-		isTeacher := username == "teacher"
-
-		user := &utils.User{
-			Username:      username,
-			Authenticated: authenticated,
-			IsTeacher:     isTeacher,
-		}
-
-		session, err := utils.Store.Get(request, "cookie-name")
-		if err != nil {
-			http.Error(writer, err.Error(), http.StatusInternalServerError)
-			return
-		}
-
-		session.Values["user"] = user
-
-		err = session.Save(request, writer)
-		if err != nil {
-			http.Error(writer, err.Error(), http.StatusInternalServerError)
-			return
-		}
+	if user.Authenticated {
+		writer.Header().Set("HX-Redirect", "/team")
+	} else {
+		utils.ShowErrorMsg("Wrong username or password!", writer)
 	}
 }
