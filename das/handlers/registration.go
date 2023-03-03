@@ -17,13 +17,12 @@ func Start(writer http.ResponseWriter, request *http.Request) {
 }
 
 func Login(writer http.ResponseWriter, request *http.Request) {
+
 	session, err := utils.Store.Get(request, "das-session")
 
 	request.ParseForm()
-	// username := request.FormValue("username")
-	// password := request.FormValue("password")
-	username := "exampleUser"
-	password := "valid"
+	username := request.FormValue("username")
+	password := request.FormValue("password")
 	// autentication based only on input
 	authenticated := username != "" && password != "" && password != "wrong"
 	isTeacher := username == "teacher"

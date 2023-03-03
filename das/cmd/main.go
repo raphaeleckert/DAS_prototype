@@ -45,9 +45,9 @@ func router() {
 	}
 
 	http.HandleFunc("/", homePage)
-	http.HandleFunc("/start/", handlers.Start)
-	http.HandleFunc("/login/", handlers.Login)
-	http.HandleFunc("/tryout/", handlers.Tryout)
+	http.HandleFunc("/start", handlers.Start)
+	http.HandleFunc("/login", handlers.Login)
+	http.HandleFunc("/tryout", handlers.Tryout)
 
 	//team
 	http.HandleFunc("/team", utils.LoginRequired(handlers.TeamOverviewHandler))
