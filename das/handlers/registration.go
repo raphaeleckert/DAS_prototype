@@ -23,7 +23,7 @@ func Login(writer http.ResponseWriter, request *http.Request) {
 	request.ParseForm()
 	username := request.FormValue("username")
 	password := request.FormValue("password")
-	// autentication based only on input
+	// TODO: implement real user checking
 	authenticated := username != "" && password != "" && password != "wrong"
 	isTeacher := username == "teacher"
 

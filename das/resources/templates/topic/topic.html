@@ -1,0 +1,5 @@
+{{define "title"}}Topic{{ .Reference }}{{end}}
+
+{{define "body"}}
+<div id="tabs" hx-get="/team/open" hx-trigger="load delay:100ms" hx-target="#tabs" hx-swap="innerHTML"></div>
+{{end}}
