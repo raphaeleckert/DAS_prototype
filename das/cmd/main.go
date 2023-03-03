@@ -33,8 +33,8 @@ func init() {
 
 }
 
-func homePage(writer http.ResponseWriter, request *http.Request) {
-	fmt.Fprintf(writer, "Welcome to the HomePage!")
+func homePage(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Welcome to the HomePage!")
 }
 
 func router() {
@@ -48,6 +48,9 @@ func router() {
 	http.HandleFunc("/start", handlers.Start)
 	http.HandleFunc("/login", handlers.Login)
 	http.HandleFunc("/tryout", handlers.Tryout)
+
+	//topic
+	http.HandleFunc("/topic", utils.LoginRequired(handlers.TopicHandler))
 
 	//team
 	http.HandleFunc("/team", utils.LoginRequired(handlers.TeamOverviewHandler))

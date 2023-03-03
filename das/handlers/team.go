@@ -10,14 +10,14 @@ type InTableLink struct {
 	Reference string
 }
 
-func TeamOverviewHandler(writer http.ResponseWriter, request *http.Request) {
-	if request.Method == http.MethodGet {
+func TeamOverviewHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodGet {
 		p := struct{ TeamName string }{TeamName: "Example Team Name"}
 
 		t, _ := template.ParseFiles(
 			"../resources/templates/base.html",
 			"../resources/templates/team/team.html")
-		t.ExecuteTemplate(writer, "base", p)
+		t.ExecuteTemplate(w, "base", p)
 	}
 
 }
@@ -27,8 +27,8 @@ type TeamOpenTableRow struct {
 	Reference string
 }
 
-func TeamOpenHandler(writer http.ResponseWriter, request *http.Request) {
-	if request.Method == http.MethodGet {
+func TeamOpenHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodGet {
 		topics := []TeamOpenTableRow{
 			{Text: "Topic1", Reference: "Topic1Ref"},
 			{Text: "Topic2", Reference: "Topic2Ref"},
@@ -39,47 +39,47 @@ func TeamOpenHandler(writer http.ResponseWriter, request *http.Request) {
 		t, _ := template.ParseFiles(
 			"../resources/templates/htmx_wrapper.html",
 			"../resources/templates/team/team_open.html")
-		t.ExecuteTemplate(writer, "htmx_wrapper", p)
+		t.ExecuteTemplate(w, "htmx_wrapper", p)
 	}
 
 }
 
-func TeamWorkHandler(writer http.ResponseWriter, request *http.Request) {
-	if request.Method == http.MethodGet {
+func TeamWorkHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodGet {
 		t, _ := template.ParseFiles(
 			"../resources/templates/htmx_wrapper.html",
 			"../resources/templates/team/team_work.html")
-		t.ExecuteTemplate(writer, "htmx_wrapper", nil)
+		t.ExecuteTemplate(w, "htmx_wrapper", nil)
 	}
 
 }
 
-func TeamReadyHandler(writer http.ResponseWriter, request *http.Request) {
-	if request.Method == http.MethodGet {
+func TeamReadyHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodGet {
 		t, _ := template.ParseFiles(
 			"../resources/templates/htmx_wrapper.html",
 			"../resources/templates/team/team_ready.html")
-		t.ExecuteTemplate(writer, "htmx_wrapper", nil)
+		t.ExecuteTemplate(w, "htmx_wrapper", nil)
 	}
 
 }
 
-func TeamDoneHandler(writer http.ResponseWriter, request *http.Request) {
-	if request.Method == http.MethodGet {
+func TeamDoneHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodGet {
 		t, _ := template.ParseFiles(
 			"../resources/templates/htmx_wrapper.html",
 			"../resources/templates/team/team_done.html")
-		t.ExecuteTemplate(writer, "htmx_wrapper", nil)
+		t.ExecuteTemplate(w, "htmx_wrapper", nil)
 	}
 
 }
 
-func TeamReviewHandler(writer http.ResponseWriter, request *http.Request) {
-	if request.Method == http.MethodGet {
+func TeamReviewHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodGet {
 		t, _ := template.ParseFiles(
 			"../resources/templates/htmx_wrapper.html",
 			"../resources/templates/team/team_review.html")
-		t.ExecuteTemplate(writer, "htmx_wrapper", nil)
+		t.ExecuteTemplate(w, "htmx_wrapper", nil)
 	}
 
 }

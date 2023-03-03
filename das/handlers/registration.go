@@ -7,42 +7,43 @@ import (
 	"dasagilestudieren/utils"
 )
 
-func Start(writer http.ResponseWriter, request *http.Request) {
+func Start(w http.ResponseWriter, r *http.Request) {
 	//GET
-	if request.Method == http.MethodGet {
+	if r.Method == http.MethodGet {
 		t, _ := template.ParseFiles(
 			"../resources/templates/registration/login.html")
-		t.ExecuteTemplate(writer, "login.html", nil)
+		t.ExecuteTemplate(w, "login.html", nil)
 	}
 }
 
-func Login(writer http.ResponseWriter, request *http.Request) {
+func Login(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodPost {
+		session, err := utils.Store.Get(r, "das-session")
 
-	session, err := utils.Store.Get(request, "das-session")
+		r.ParseForm()
+		username := r.FormValue("username")
+		password := r.FormValue("password")
+		// TODO: implement real user checking
+		authenticated := username != "" && password != "" && password != "wrong"
+		isTeacher := username == "teacher"
 
-	request.ParseForm()
-	username := request.FormValue("username")
-	password := request.FormValue("password")
-	// TODO: implement real user checking
-	authenticated := username != "" && password != "" && password != "wrong"
-	isTeacher := username == "teacher"
+		user := utils.User{
+			Username:      username,
+			Authenticated: authenticated,
+			IsTeacher:     isTeacher,
+		}
+		session.Values["user"] = user
+		err = session.Save(r, w)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		user = utils.GetUser(session)
 
-	user := utils.User{
-		Username:      username,
-		Authenticated: authenticated,
-		IsTeacher:     isTeacher,
-	}
-	session.Values["user"] = user
-	err = session.Save(request, writer)
-	if err != nil {
-		http.Error(writer, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	user = utils.GetUser(session)
-
-	if user.Authenticated {
-		writer.Header().Set("HX-Redirect", "/team")
-	} else {
-		utils.ShowErrorMsg("Wrong username or password!", writer)
+		if user.Authenticated {
+			w.Header().Set("HX-Redirect", "/team")
+		} else {
+			utils.ShowErrorMsg("Wrong username or password!", w)
+		}
 	}
 }

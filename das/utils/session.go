@@ -16,7 +16,7 @@ type User struct {
 	IsTeacher     bool
 }
 
-// getUser returns a user from session s
+// GetUser returns a user from session s
 // on error returns an empty user
 func GetUser(s *sessions.Session) User {
 	val := s.Values["user"]
@@ -42,7 +42,7 @@ func LoginRequired(h http.HandlerFunc) http.HandlerFunc {
 		if user.Authenticated == false {
 			http.Redirect(w, r, "/start", http.StatusSeeOther)
 		}
-		r = r.WithContext(context.WithValue(r.Context(), "session", session))
+		r = r.WithContext(context.WithValue(r.Context(), "user", user))
 		h(w, r)
 	}
 }
@@ -60,7 +60,7 @@ func TeacherRequired(h http.HandlerFunc) http.HandlerFunc {
 		if user.IsTeacher == false {
 			http.Redirect(w, r, "/start", http.StatusForbidden)
 		}
-		r = r.WithContext(context.WithValue(r.Context(), "session", session))
+		r = r.WithContext(context.WithValue(r.Context(), "user", user))
 		h(w, r)
 	}
 }

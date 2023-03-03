@@ -1,5 +1,6 @@
-{{define "title"}}Topic{{ .Reference }}{{end}}
+{{define "title"}}Topic {{ .TopicData.Reference }}{{end}}
 
 {{define "body"}}
-<div id="tabs" hx-get="/team/open" hx-trigger="load delay:100ms" hx-target="#tabs" hx-swap="innerHTML"></div>
+<h2>{{ .TopicData.Title }}</h2>
+<p>{{ .TopicData.Detail }}</p>
 {{end}}

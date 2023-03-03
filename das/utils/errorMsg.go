@@ -9,12 +9,12 @@ type errorMsg struct {
 	ErrorText string
 }
 
-func ShowErrorMsg(message string, writer http.ResponseWriter) {
+func ShowErrorMsg(message string, w http.ResponseWriter) {
 	p := errorMsg{ErrorText: message}
 
 	t, _ := template.ParseFiles(
 		"../resources/templates/htmx_wrapper.html",
 		"../resources/templates/error_msg.html",
 	)
-	t.ExecuteTemplate(writer, "htmx_wrapper", p)
+	t.ExecuteTemplate(w, "htmx_wrapper", p)
 }
