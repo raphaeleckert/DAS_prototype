@@ -22,7 +22,7 @@ func TopicHandler(w http.ResponseWriter, r *http.Request) {
 
 		t, _ := template.ParseFiles(
 			"../resources/templates/base.html",
-			"../resources/templates/topic/topic.html")
+			"../resources/templates/topic/topic_student.html")
 		t.ExecuteTemplate(w, "base", p)
 	}
 
