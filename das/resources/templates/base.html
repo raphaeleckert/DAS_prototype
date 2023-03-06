@@ -35,9 +35,18 @@
             <div class="w3-col w3-container s1 m2 l2"></div>
             <div id="page-content" class="w3-col s10 m8 l8">
                 <header>
-                    <h1>{{block "title" .}}{{end}}</h1>
                 </header>
                 <main>
+                    <div class="w3-cell-row">
+                        <div class="w3-cell-middle">
+                            <h1>{{block "title" .}}{{end}}</h1>
+                        </div>
+                        <div class="w3-cell-middle w3-right-align">
+                            <div class="w3-card w3-light-grey">
+                                {{block "infoblock" .}}{{end}}
+                            </div>
+                        </div>
+                    </div>
                     {{block "body" .}}{{end}}
                 </main>
             </div>

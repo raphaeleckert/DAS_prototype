@@ -13,49 +13,52 @@ const (
 	IMP_VOLUNTARY = "Voluntary topic"
 )
 
+// Topic Required Supporters
+const ()
+
 type Subject struct {
-	ID        any
-	ShortName any
-	Name      any
-	Owner     any
-	Note      any
-	Remark    any
+	ID        string
+	ShortName string
+	Name      string
+	Owner     string
+	Note      string
+	Remark    string
 }
 
 type Course struct {
-	ID        any
-	Subject   any
-	Term      any
-	Owner     any
+	ID        string
+	Subject   Subject
+	Term      Term
+	Owner     string
 	BeginDate time.Time
 	FinalDate time.Time
 	CloseDate time.Time
-	Remark    any
-	Note      any
-	Topics    []any
+	Remark    string
+	Note      string
+	Topics    []string
 }
 
 type Topic struct {
-	ID                any
-	Title             any
-	Subject           any
-	Number            any
-	Detail            any
-	Reference         any
-	SolutionIdea      any
-	Remark            any
-	Tags              []any
-	Importance        any
-	RequredSupporters any
+	ID                 string
+	Title              string
+	Subject            Subject
+	Number             string
+	Detail             string
+	Reference          string
+	SolutionIdea       string
+	Remark             string
+	Tags               []string
+	Importance         string
+	RequiredSupporters string
 }
 
 type Term struct {
-	ID        any
-	Name      any
+	ID        string
+	Name      string
 	StartDate time.Time
 	EndDate   time.Time
-	Note      any
-	Remark    any
+	Note      string
+	Remark    string
 }
 
 func GetSubject(id string) Subject {
@@ -63,7 +66,7 @@ func GetSubject(id string) Subject {
 		ID:        id,
 		ShortName: "EXSB",
 		Name:      "Example Subject",
-		Owner:     GetTeacher("teacherid"),
+		Owner:     "teacherid",
 		Note:      "Subejct Note",
 		Remark:    "Subejct Remark",
 	}
@@ -74,28 +77,28 @@ func GetCourse(id string) Course {
 		ID:        id,
 		Subject:   GetSubject("subjectid"),
 		Term:      GetTerm("termid"),
-		Owner:     GetTeacher("teacherid"),
+		Owner:     "teacherid",
 		BeginDate: time.Date(2022, time.January, 01, 00, 00, 00, 0, time.UTC),
 		FinalDate: time.Date(2024, time.January, 01, 00, 00, 00, 0, time.UTC),
 		CloseDate: time.Date(2025, time.January, 01, 00, 00, 00, 0, time.UTC),
 		Remark:    "Course Remark",
 		Note:      "Course Note",
-		Topics:    []any{"topicid"},
+		Topics:    []string{"topicid"},
 	}
 }
 
 func GetTopic(id string) Topic {
 	return Topic{
-		ID:                id,
-		Subject:           "subjectid",
-		Title:             "Topic Title",
-		Detail:            "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
-		Reference:         "Topic Ref",
-		SolutionIdea:      "Topic Solution Idea",
-		Remark:            "Topic Remark",
-		Tags:              []any{"TopicTag1", "TopicTag2"},
-		Importance:        IMP_ESSENTIAL,
-		RequredSupporters: "More than Half",
+		ID:                 id,
+		Subject:            GetSubject("subjectid"),
+		Title:              "Ich sage das Alphabet rückwärts auf",
+		Detail:             "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
+		Reference:          "BT-1",
+		SolutionIdea:       "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea",
+		Remark:             "Topic Remark",
+		Tags:               []string{"buchstaben", "reihenfolge"},
+		Importance:         IMP_ESSENTIAL,
+		RequiredSupporters: "More than Half",
 	}
 }
 

@@ -1,0 +1,50 @@
+{{define "title"}}Topic Information{{end}}
+
+{{define "body"}}
+<div hx-target="this" hx-swap="outerHTML">
+  <div class="w3-cell-row">
+    <div class="w3-cell">
+      <label><b>Title</b></label>
+      <p>{{ .TopicTitle }}</p>
+      <br>
+      <label><b>Reference</b></label>
+      <p>{{ .TopicRef }}</p>
+      <br>
+      <label><b>Tags</b></label>
+      <p>{{ .TopicTags }}</p>
+      <br>
+    </div>
+    <div class="w3-cell">
+      <label><b>Required Supporters</b></label>
+      <p>{{ .TopicSupporters }}</p>
+      <br>
+      <label><b>Remark</b></label>
+      <p>{{ .TopicRemark }}</p>
+      <br>
+      <label><b>Importance</b></label>
+      <p>{{ .TopicImportance }}</p>
+      <br>
+    </div>
+    <div class="w3-cell">
+      <label><b>Subject</b></label>
+      <p>{{ .TopicSubject }}</p>
+      <br>
+      <label><b>Courses</b></label>
+      {{range $index, $val := .TopicCourses}}
+      <p>
+        <div class="w3-button" hx-get="/course?={{$val.CourseId}}" hx-target="body" hx-push-url="true">{{ $val.CourseName }}</div>
+      </p>
+      {{end}}
+      <br>
+    </div>
+  </div>
+  <label><b>Detail</b></label>
+  <p>{{ .TopicDetail }}</p>
+  <br>
+  <label><b>Solution Idea</b></label>
+  <p>{{ .TopicSolutionIdea }}</p>
+  <br>
+  <button hx-get="/topic/edit?topicid={{ .TopicId }}" class="w3-button w3-indigo">Edit</button>
+</div>
+{{end}}
+
