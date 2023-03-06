@@ -63,7 +63,7 @@ func GetSubject(id string) Subject {
 		ID:        id,
 		ShortName: "EXSB",
 		Name:      "Example Subject",
-		Owner:     "teacherid",
+		Owner:     GetTeacher("teacherid"),
 		Note:      "Subejct Note",
 		Remark:    "Subejct Remark",
 	}
@@ -72,9 +72,9 @@ func GetSubject(id string) Subject {
 func GetCourse(id string) Course {
 	return Course{
 		ID:        id,
-		Subject:   "subjectid",
-		Term:      "termid",
-		Owner:     "teacher",
+		Subject:   GetSubject("subjectid"),
+		Term:      GetTerm("termid"),
+		Owner:     GetTeacher("teacherid"),
 		BeginDate: time.Date(2022, time.January, 01, 00, 00, 00, 0, time.UTC),
 		FinalDate: time.Date(2024, time.January, 01, 00, 00, 00, 0, time.UTC),
 		CloseDate: time.Date(2025, time.January, 01, 00, 00, 00, 0, time.UTC),

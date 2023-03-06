@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"dasagilestudieren/handlers"
+	"dasagilestudieren/models"
 	"dasagilestudieren/utils"
 
 	"github.com/gorilla/securecookie"
@@ -28,7 +29,7 @@ func init() {
 		HttpOnly: true,
 	}
 
-	gob.Register(utils.User{})
+	gob.Register(models.User{})
 	fmt.Println("Start")
 
 }

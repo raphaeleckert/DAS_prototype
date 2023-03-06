@@ -6,11 +6,10 @@ import (
 	"net/http"
 
 	"dasagilestudieren/models"
-	"dasagilestudieren/utils"
 )
 
 type TopicPage struct {
-	User      utils.User
+	User      models.User
 	TopicData models.Topic
 }
 

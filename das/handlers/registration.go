@@ -4,6 +4,7 @@ import (
 	"html/template"
 	"net/http"
 
+	"dasagilestudieren/models"
 	"dasagilestudieren/utils"
 )
 
@@ -27,7 +28,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		authenticated := username != "" && password != "" && password != "wrong"
 		isTeacher := username == "teacher"
 
-		user := utils.User{
+		user := models.User{
 			Username:      username,
 			Authenticated: authenticated,
 			IsTeacher:     isTeacher,

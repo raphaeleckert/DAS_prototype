@@ -6,25 +6,21 @@ import (
 	"net/http"
 
 	"github.com/gorilla/sessions"
+
+	"dasagilestudieren/models"
 )
 
 var Store *sessions.CookieStore
 
-type User struct {
-	Username      string
-	Authenticated bool
-	IsTeacher     bool
-}
-
 // GetUser returns a user from session s
 // on error returns an empty user
-func GetUser(s *sessions.Session) User {
+func GetUser(s *sessions.Session) models.User {
 	val := s.Values["user"]
-	var user = User{}
-	user, ok := val.(User)
+	var user = models.User{}
+	user, ok := val.(models.User)
 	if !ok {
 
-		return User{Authenticated: false}
+		return models.User{Authenticated: false}
 	}
 	return user
 }

@@ -29,10 +29,17 @@ type Solution struct {
 	Remark any
 }
 
+type Proposal struct {
+	ID         any
+	Solution   Solution
+	ModifiedBy User
+	Detail     any
+}
+
 func GetTeam(id string) Team {
 	return Team{
 		ID:       id,
-		Course:   "courseid",
+		Course:   GetCourse("courseid"),
 		Number:   1,
 		Member:   []any{"student1", "student2"},
 		ReadOnly: false,
@@ -44,9 +51,18 @@ func GetTeam(id string) Team {
 func GetSolution(id string) Solution {
 	return Solution{
 		ID:     id,
-		Team:   "teamid",
-		Topic:  "topicidea",
+		Team:   GetTeam("teamid"),
+		Topic:  GetTopic("topicid"),
 		State:  STATE_INWORK,
 		Remark: "Solution Remark",
+	}
+}
+
+func GetProposal(id string) Proposal {
+	return Proposal{
+		ID:         id,
+		Solution:   GetSolution("solutionid"),
+		ModifiedBy: GetUser("userid"),
+		Detail:     "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
 	}
 }
