@@ -48,6 +48,7 @@ func router() {
 	http.HandleFunc("/", handlers.Start)
 	http.HandleFunc("/login", handlers.Login)
 	http.HandleFunc("/tryout", handlers.Tryout)
+	http.HandleFunc("/landing", utils.LoginRequired(handlers.LandingHandler))
 
 	//topic
 	http.HandleFunc("/topic", utils.TeacherRequired(handlers.TopicHandler))

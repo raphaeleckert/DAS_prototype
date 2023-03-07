@@ -13,10 +13,10 @@ type Clickable struct {
 }
 
 type LandingPage struct {
-	Courses   Clickable
-	Subjects  Clickable
-	Teams     Clickable
-	IsTeacher bool
+	Courses   []models.Course
+	Subjects  []models.Subject
+	Teams     []models.Team
+	isTeacher bool
 }
 
 func LandingHandler(w http.ResponseWriter, r *http.Request) {
@@ -26,17 +26,34 @@ func LandingHandler(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "Unauthorized", http.StatusUnauthorized)
 			return
 		}
+
+		//TODO: Get real list of courses
+		teams := []models.Team{models.GetTeam("team1"), models.GetTeam("team2")}
+		p := LandingPage{}
 		if user.IsTeacher {
-			// Handle the case where the user is a teacher.
+			courses := []models.Course{models.GetCourse("course1"), models.GetCourse("course2")}
+			subjects := []models.Subject{models.GetSubject("sub1"), models.GetSubject("sub2")}
+			p = LandingPage{
+				Courses:  courses,
+				Subjects: subjects,
+				Teams:    teams,
+			}
+		} else {
+			p = LandingPage{
+				Courses:  []models.Course{},
+				Subjects: []models.Subject{},
+				Teams:    teams,
+			}
 		}
 
 		t, err := template.ParseFiles(
-			"../resources/templates/registration/login.html")
+			"../resources/templates/base.html",
+			"../resources/templates/landing.html")
 		if err != nil {
 			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 			return
 		}
-		err = t.ExecuteTemplate(w, "login.html", nil)
+		err = t.ExecuteTemplate(w, "base", p)
 		if err != nil {
 			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
 			return
