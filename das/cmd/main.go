@@ -45,8 +45,7 @@ func router() {
 		Handler: nil, // set to nil to use the default ServeMux
 	}
 
-	http.HandleFunc("/", homePage)
-	http.HandleFunc("/start", handlers.Start)
+	http.HandleFunc("/", handlers.Start)
 	http.HandleFunc("/login", handlers.Login)
 	http.HandleFunc("/tryout", handlers.Tryout)
 
@@ -57,11 +56,11 @@ func router() {
 
 	//team
 	http.HandleFunc("/team", utils.LoginRequired(handlers.TeamOverviewHandler))
-	http.HandleFunc("/team/open", handlers.TeamOpenHandler)
-	http.HandleFunc("/team/work", handlers.TeamWorkHandler)
-	http.HandleFunc("/team/ready", handlers.TeamReadyHandler)
-	http.HandleFunc("/team/done", handlers.TeamDoneHandler)
-	http.HandleFunc("/team/review", handlers.TeamReviewHandler)
+	http.HandleFunc("/team/open", utils.LoginRequired(handlers.TeamOpenHandler))
+	http.HandleFunc("/team/work", utils.LoginRequired(handlers.TeamWorkHandler))
+	http.HandleFunc("/team/ready", utils.LoginRequired(handlers.TeamReadyHandler))
+	http.HandleFunc("/team/done", utils.LoginRequired(handlers.TeamDoneHandler))
+	http.HandleFunc("/team/review", utils.LoginRequired(handlers.TeamReviewHandler))
 
 	//resources
 	http.Handle("/resources/", http.StripPrefix("/resources/", http.FileServer(http.Dir("../resources"))))

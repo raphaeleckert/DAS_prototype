@@ -11,9 +11,17 @@ import (
 func Start(w http.ResponseWriter, r *http.Request) {
 	//GET
 	if r.Method == http.MethodGet {
-		t, _ := template.ParseFiles(
+		t, err := template.ParseFiles(
 			"../resources/templates/registration/login.html")
-		t.ExecuteTemplate(w, "login.html", nil)
+		if err != nil {
+			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			return
+		}
+		err = t.ExecuteTemplate(w, "login.html", nil)
+		if err != nil {
+			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			return
+		}
 	}
 }
 

@@ -8,11 +8,11 @@ import (
 	"dasagilestudieren/models"
 )
 
-type TopicPage struct {
-	User      models.User
-	TopicData models.Topic
-}
-
+//type TopicPage struct {
+//	User      models.User
+//	TopicData models.Topic
+//}
+//
 //func TopicHandler(w http.ResponseWriter, r *http.Request) {
 //	if r.Method == http.MethodGet {
 //		user := r.Context().Value("user")
@@ -44,12 +44,27 @@ type TopicInfoPage struct {
 	}
 }
 
+type TopicBasePage struct {
+	TopicId string
+}
+
 func TopicHandler(w http.ResponseWriter, r *http.Request) {
+	topicId := r.URL.Query().Get("topicid")
+
+	p := TopicBasePage{TopicId: topicId}
 	if r.Method == http.MethodGet {
-		t, _ := template.ParseFiles(
+		t, err := template.ParseFiles(
 			"../resources/templates/base.html",
 			"../resources/templates/topic/topic.html")
-		t.ExecuteTemplate(w, "base", nil)
+		if err != nil {
+			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			return
+		}
+		err = t.ExecuteTemplate(w, "base", p)
+		if err != nil {
+			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			return
+		}
 	}
 }
 
@@ -66,6 +81,7 @@ type FormData struct {
 
 func TopicInfoHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodPut {
+		topicId := r.URL.Query().Get("topicid")
 		r.ParseForm()
 		title := r.Form.Get("title")
 		ref := r.Form.Get("ref")
@@ -89,9 +105,11 @@ func TopicInfoHandler(w http.ResponseWriter, r *http.Request) {
 
 		// TODO: update data in db
 		fmt.Printf("%+v", topicUpdate)
+		fmt.Printf("%+v", topicId)
 	}
 	if r.Method == http.MethodGet || r.Method == http.MethodPut {
-		topic := models.GetTopic("topicid")
+		topicId := r.URL.Query().Get("topicid")
+		topic := models.GetTopic(r.URL.Query().Get(topicId))
 		coursesWithSubject := []models.Course{models.GetCourse("courseid")}
 		p := TopicInfoPage{
 			TopicId:           topic.ID,
@@ -114,10 +132,18 @@ func TopicInfoHandler(w http.ResponseWriter, r *http.Request) {
 				},
 			},
 		}
-		t, _ := template.ParseFiles(
+		t, err := template.ParseFiles(
 			"../resources/templates/htmx_wrapper.html",
 			"../resources/templates/topic/topic_info.html")
-		t.ExecuteTemplate(w, "htmx_wrapper", p)
+		if err != nil {
+			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			return
+		}
+		err = t.ExecuteTemplate(w, "htmx_wrapper", p)
+		if err != nil {
+			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			return
+		}
 	}
 }
 
@@ -172,9 +198,17 @@ func TopicEditHandler(w http.ResponseWriter, r *http.Request) {
 			TagOptions:        tags,
 			ImportanceOptions: importanceOptions,
 		}
-		t, _ := template.ParseFiles(
+		t, err := template.ParseFiles(
 			"../resources/templates/htmx_wrapper.html",
 			"../resources/templates/topic/topic_edit.html")
-		t.ExecuteTemplate(w, "htmx_wrapper", p)
+		if err != nil {
+			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			return
+		}
+		err = t.ExecuteTemplate(w, "htmx_wrapper", p)
+		if err != nil {
+			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			return
+		}
 	}
 }
