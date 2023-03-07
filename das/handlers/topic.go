@@ -57,12 +57,12 @@ func TopicHandler(w http.ResponseWriter, r *http.Request) {
 			"../resources/templates/base.html",
 			"../resources/templates/topic/topic.html")
 		if err != nil {
-			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 		err = t.ExecuteTemplate(w, "base", p)
 		if err != nil {
-			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 	}
@@ -136,12 +136,12 @@ func TopicInfoHandler(w http.ResponseWriter, r *http.Request) {
 			"../resources/templates/htmx_wrapper.html",
 			"../resources/templates/topic/topic_info.html")
 		if err != nil {
-			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 		err = t.ExecuteTemplate(w, "htmx_wrapper", p)
 		if err != nil {
-			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 	}
@@ -202,12 +202,12 @@ func TopicEditHandler(w http.ResponseWriter, r *http.Request) {
 			"../resources/templates/htmx_wrapper.html",
 			"../resources/templates/topic/topic_edit.html")
 		if err != nil {
-			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 		err = t.ExecuteTemplate(w, "htmx_wrapper", p)
 		if err != nil {
-			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 	}

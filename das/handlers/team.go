@@ -18,12 +18,12 @@ func TeamOverviewHandler(w http.ResponseWriter, r *http.Request) {
 			"../resources/templates/base.html",
 			"../resources/templates/team/team.html")
 		if err != nil {
-			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 		err = t.ExecuteTemplate(w, "base", p)
 		if err != nil {
-			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 	}
@@ -48,12 +48,12 @@ func TeamOpenHandler(w http.ResponseWriter, r *http.Request) {
 			"../resources/templates/htmx_wrapper.html",
 			"../resources/templates/team/team_open.html")
 		if err != nil {
-			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 		err = t.ExecuteTemplate(w, "htmx_wrapper", p)
 		if err != nil {
-			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 	}
@@ -66,12 +66,12 @@ func TeamWorkHandler(w http.ResponseWriter, r *http.Request) {
 			"../resources/templates/htmx_wrapper.html",
 			"../resources/templates/team/team_work.html")
 		if err != nil {
-			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 		err = t.ExecuteTemplate(w, "htmx_wrapper", nil)
 		if err != nil {
-			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 	}
@@ -83,12 +83,12 @@ func TeamReadyHandler(w http.ResponseWriter, r *http.Request) {
 			"../resources/templates/htmx_wrapper.html",
 			"../resources/templates/team/team_ready.html")
 		if err != nil {
-			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 		err = t.ExecuteTemplate(w, "htmx_wrapper", nil)
 		if err != nil {
-			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 	}
@@ -101,12 +101,12 @@ func TeamDoneHandler(w http.ResponseWriter, r *http.Request) {
 			"../resources/templates/htmx_wrapper.html",
 			"../resources/templates/team/team_done.html")
 		if err != nil {
-			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 		err = t.ExecuteTemplate(w, "htmx_wrapper", nil)
 		if err != nil {
-			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 	}
@@ -119,12 +119,12 @@ func TeamReviewHandler(w http.ResponseWriter, r *http.Request) {
 			"../resources/templates/htmx_wrapper.html",
 			"../resources/templates/team/team_review.html")
 		if err != nil {
-			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 		err = t.ExecuteTemplate(w, "htmx_wrapper", nil)
 		if err != nil {
-			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 	}

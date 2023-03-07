@@ -50,12 +50,12 @@ func LandingHandler(w http.ResponseWriter, r *http.Request) {
 			"../resources/templates/base.html",
 			"../resources/templates/landing.html")
 		if err != nil {
-			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 		err = t.ExecuteTemplate(w, "base", p)
 		if err != nil {
-			http.Error(w, "Internal Server Error", http.StatusInternalServerError)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 	}
