@@ -16,7 +16,7 @@ type LandingPage struct {
 	Courses   []models.Course
 	Subjects  []models.Subject
 	Teams     []models.Team
-	isTeacher bool
+	IsTeacher bool
 }
 
 func LandingHandler(w http.ResponseWriter, r *http.Request) {
@@ -34,15 +34,17 @@ func LandingHandler(w http.ResponseWriter, r *http.Request) {
 			courses := []models.Course{models.GetCourse("course1"), models.GetCourse("course2")}
 			subjects := []models.Subject{models.GetSubject("sub1"), models.GetSubject("sub2")}
 			p = LandingPage{
-				Courses:  courses,
-				Subjects: subjects,
-				Teams:    teams,
+				Courses:   courses,
+				Subjects:  subjects,
+				Teams:     teams,
+				IsTeacher: true,
 			}
 		} else {
 			p = LandingPage{
-				Courses:  []models.Course{},
-				Subjects: []models.Subject{},
-				Teams:    teams,
+				Courses:   []models.Course{},
+				Subjects:  []models.Subject{},
+				Teams:     teams,
+				IsTeacher: false,
 			}
 		}
 

@@ -1,10 +1,13 @@
 {{define "title"}}Start{{end}}
 
 {{define "body"}}
-{{if .Courses.length > 0}}
-  <h2>Courses</h2>
-  <h2>Subjects</h2>
-{{end}}
-<h2>Teams</h2>
-
+  {{if gt (len .Courses) 0}}
+    <h2>Courses</h2>
+  {{end}}
+  {{if gt (len .Subjects) 0}}
+    <h2>Subjects</h2>
+  {{end}}
+  {{if gt (len .Teams) 0}}
+    <h2>Teams</h2>
+  {{end}}
 {{end}}
