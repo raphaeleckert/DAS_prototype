@@ -14,7 +14,14 @@ const (
 )
 
 // Topic Required Supporters
-const ()
+const (
+	SUP_NONE = "No Supporters"
+	SUP_ONE  = "One Supporter"
+	SUP_TWO  = "Two Supporters"
+	SUP_HALF = "Half of the Team"
+	SUP_BUT  = "All but One"
+	SUP_ALL  = "All Team Members"
+)
 
 type Subject struct {
 	ID        string
@@ -98,7 +105,7 @@ func GetTopic(id string) Topic {
 		Remark:             "Topic Remark",
 		Tags:               []string{"buchstaben", "reihenfolge"},
 		Importance:         IMP_ESSENTIAL,
-		RequiredSupporters: "More than Half",
+		RequiredSupporters: SUP_HALF,
 	}
 }
 

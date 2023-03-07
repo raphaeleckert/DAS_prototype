@@ -1,48 +1,72 @@
 {{define "htmx-response"}}
-<form hx-put="/topic/edit?topicid={{ .TopicId }}" hx-target="this" hx-swap="outerHTML"></div>
+<form id=edit hx-put="/topic/info?topicid={{ .TopicId }}" hx-target="this" hx-swap="outerHTML">
   <div class="w3-cell-row">
-    <div class="w3-cell">
+    <div class="w3-cell w3-padding">
       <label><b>Title</b></label>
-      <p>{{ .TopicTitle }}</p>
+      <input type="text" name="title" class="w3-input w3-border" value="{{ .TopicTitle }}">
       <br>
       <label><b>Reference</b></label>
-      <p>{{ .TopicRef }}</p>
+      <input type="text" name="ref" class="w3-input w3-border" value="{{ .TopicRef }}">
       <br>
       <label><b>Tags</b></label>
-      <p>{{ .TopicTags }}</p>
+      <select name="tags" multiple class="w3-input w3-border">
+        {{range $index, $val := .TagOptions}}
+        <option value="{{$val}}">{{$val}}</option>
+        {{end}}
+      </select>
       <br>
     </div>
-    <div class="w3-cell">
+    <div class="w3-cell w3-padding">
       <label><b>Required Supporters</b></label>
-      <p>{{ .TopicSupporters }}</p>
+      <select name="supporters" class="w3-input w3-border">
+        {{range $index, $val := .SupporterOptions}}
+          {{if eq $val $.TopicSupporters}}
+            <option value="{{$val}}" selected>{{$val}}</option>
+          {{else}}
+            <option value="{{$val}}">{{$val}}</option>
+          {{end}}
+        {{end}}
+      </select>
       <br>
       <label><b>Remark</b></label>
-      <p>{{ .TopicRemark }}</p>
+      <input type="text" name="remark" class="w3-input w3-border" value="{{ .TopicRemark }}">
       <br>
       <label><b>Importance</b></label>
-      <p>{{ .TopicImportance }}</p>
+      <select name="importance" class="w3-input w3-border">
+        {{range $index, $val := .ImportanceOptions}}
+          {{if eq $val $.TopicImportance}}
+            <option value="{{$val}}" selected>{{$val}}</option>
+          {{else}}
+            <option value="{{$val}}">{{$val}}</option>
+          {{end}}
+        {{end}}
+      </select>
       <br>
     </div>
-    <div class="w3-cell">
+    <div class="w3-cell w3-padding">
       <label><b>Subject</b></label>
       <p>{{ .TopicSubject }}</p>
       <br>
       <label><b>Courses</b></label>
       {{range $index, $val := .TopicCourses}}
-      <p>
-        <div class="w3-button" hx-get="/course?={{$val.CourseId}}" hx-target="body" hx-push-url="true">{{ $val.CourseName }}</div>
-      </p>
+        <p>
+          <div class="w3-button" hx-get="/course?={{$val.CourseId}}" hx-target="body" hx-push-url="true">{{ $val.CourseName }}</div>
+        </p>
       {{end}}
       <br>
     </div>
   </div>
   <label><b>Detail</b></label>
-  <p>{{ .TopicDetail }}</p>
+  <textarea class="w3-input w3-border" name="detail" rows="8">
+    {{ .TopicDetail }}
+  </textarea>
   <br>
   <label><b>Solution Idea</b></label>
-  <p>{{ .TopicSolutionIdea }}</p>
+  <textarea class="w3-input w3-border" name="solutionIdea" rows="8">
+    {{ .TopicSolutionIdea }}
+  </textarea>
   <br>
-  <button class="w3-button w3-indigo">Submit</button>
-  <button hx-get="/topic?topicid={{ .TopicId }}" target="body" class="w3-button w3-light-grey">Cancel</button>
-</div>
+  <button class="w3-button w3-indigo">Save</button>
+  <button hx-get="/topic/info?topicid={{ .TopicId }}" target="#edit" class="w3-button w3-light-grey">Cancel</button>
+</form>
 {{end}}

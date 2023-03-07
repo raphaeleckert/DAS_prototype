@@ -36,7 +36,7 @@ func LoginRequired(h http.HandlerFunc) http.HandlerFunc {
 			return
 		}
 		if user.Authenticated == false {
-			http.Redirect(w, r, "/start", http.StatusSeeOther)
+			http.Redirect(w, r, "/start", http.StatusForbidden)
 		}
 		r = r.WithContext(context.WithValue(r.Context(), "user", user))
 		h(w, r)
@@ -54,7 +54,7 @@ func TeacherRequired(h http.HandlerFunc) http.HandlerFunc {
 			return
 		}
 		if user.IsTeacher == false {
-			http.Redirect(w, r, "/start", http.StatusSeeOther)
+			http.Redirect(w, r, "/start", http.StatusForbidden)
 		}
 		r = r.WithContext(context.WithValue(r.Context(), "user", user))
 		h(w, r)

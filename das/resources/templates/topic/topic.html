@@ -1,0 +1,5 @@
+{{define "title"}}Topic Information{{end}}
+
+{{define "body"}}
+<div hx-get="/topic/info" hx-trigger="load delay:100ms" hx-swap="outerHTML"></div>
+{{end}}
