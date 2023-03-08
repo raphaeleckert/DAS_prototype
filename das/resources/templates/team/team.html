@@ -1,5 +1,34 @@
-{{define "title"}}{{ .Team.Name }}{{end}}
+{{define "title"}}{{ .Name }}{{end}}
 
 {{define "body"}}
-<div id="tabs" hx-get="/team/open?teamid={{.Team.ID}}" hx-trigger="load delay:100ms" hx-target="#tabs" hx-swap="innerHTML"></div>
+<div class="w3-container w3-light-grey w3-cell-row">
+    <div class="w3-cell">
+        <b>Subject</b>
+        <p>{{ .Subject }}</p>
+    </div>
+    <div class="w3-cell">
+        <b>Term</b>
+        <p>{{ .Term }}</p>
+    </div>
+    <div class="w3-cell">
+        <b>Member</b>
+        <p>
+            {{range $index, $val := .Member}}
+                {{$val}}
+            {{end}}
+        </p>
+    </div>
+    {{if .IsTeacher}}
+        <div class="w3-cell">
+            <button class="w3-button w3-blue w3-bar" hx-get="/team/add?teamid={{.ID}}">Add User</button><br><br>
+            <button class="w3-button w3-blue w3-bar" hx-get="/team/remove?teamid={{.ID}}">Remove User</button><br><br>
+            {{/* if gte 0 (len .Member) */}}
+            <button class="w3-button w3-blue w3-bar" hx-delete="/team?teamid={{.ID}}">Delete Team</button><br>
+            {{/* end */}}
+        </div>
+    {{end}}
+</div>
+
+<br>
+<div id="tabs" hx-get="/team/open?teamid={{.ID}}" hx-trigger="load delay:100ms" hx-target="#tabs" hx-swap="innerHTML"></div>
 {{end}}

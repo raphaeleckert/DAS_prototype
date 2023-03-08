@@ -2,19 +2,36 @@ package handlers
 
 import (
 	"dasagilestudieren/models"
+	"fmt"
 	"html/template"
 	"net/http"
 )
 
-type TeamPage struct {
+type TeamTabPage struct {
 	Team      struct{ Name, ID string }
 	TableData []models.Clickable
 }
 
+type TeamBasePage struct {
+	Name, ID, Subject, Term string
+	Member                  []string
+	IsTeacher               bool
+}
+
 func TeamOverviewHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
+		user := r.Context().Value("user").(models.User)
 		teamid := r.URL.Query().Get("teamid")
-		p := TeamPage{TableData: []models.Clickable{}, Team: models.GetTeamBasic(teamid)}
+		team := models.GetTeam(teamid)
+
+		p := TeamBasePage{
+			Name:      fmt.Sprintf("Team #%d", team.Number),
+			ID:        team.ID,
+			Subject:   team.Course.Subject.Name,
+			Term:      team.Course.Term.Name,
+			Member:    team.Member,
+			IsTeacher: user.IsTeacher,
+		}
 
 		t, err := template.ParseFiles(
 			"../resources/templates/base.html",
@@ -45,7 +62,7 @@ func TeamOpenHandler(w http.ResponseWriter, r *http.Request) {
 			models.GetTopicBasic("topic2"),
 			models.GetTopicBasic("topic3"),
 		}
-		p := TeamPage{TableData: topics, Team: models.GetTeamBasic(teamid)}
+		p := TeamTabPage{TableData: topics, Team: models.GetTeamBasic(teamid)}
 
 		t, err := template.ParseFiles(
 			"../resources/templates/htmx_wrapper.html",

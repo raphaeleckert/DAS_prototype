@@ -64,7 +64,7 @@ func router() {
 	http.HandleFunc("/team/review", utils.LoginRequired(handlers.TeamReviewHandler))
 
 	//solve
-	http.HandleFunc("/team", utils.LoginRequired(handlers.SolveHandler))
+	//http.HandleFunc("/team", utils.LoginRequired(handlers.SolveHandler))
 
 	//resources
 	http.Handle("/resources/", http.StripPrefix("/resources/", http.FileServer(http.Dir("../resources"))))

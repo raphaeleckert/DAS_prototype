@@ -12,13 +12,13 @@ const (
 )
 
 type Team struct {
-	ID       any
-	Course   any
-	Number   any
-	Member   []any
+	ID       string
+	Course   Course
+	Number   int
+	Member   []string
 	ReadOnly bool
-	Note     any
-	Remark   any
+	Note     string
+	Remark   string
 }
 
 type Solution struct {
@@ -41,7 +41,7 @@ func GetTeam(id string) Team {
 		ID:       id,
 		Course:   GetCourse("courseid"),
 		Number:   1,
-		Member:   []any{"student1", "student2"},
+		Member:   []string{"student1", "student2"},
 		ReadOnly: false,
 		Note:     "Team Note",
 		Remark:   "Team Remark",
