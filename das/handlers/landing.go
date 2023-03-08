@@ -8,14 +8,14 @@ import (
 )
 
 type Clickable struct {
-	Text      string
-	Reference string
+	Name string
+	ID   string
 }
 
 type LandingPage struct {
-	Courses   []models.Course
-	Subjects  []models.Subject
-	Teams     []models.Team
+	Courses   []models.Clickable
+	Subjects  []models.Clickable
+	Teams     []models.Clickable
 	IsTeacher bool
 }
 
@@ -28,11 +28,11 @@ func LandingHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		//TODO: Get real list of courses
-		teams := []models.Team{models.GetTeam("team1"), models.GetTeam("team2")}
+		teams := []models.Clickable{models.GetTeamBasic("team1"), models.GetTeamBasic("team2")}
 		p := LandingPage{}
 		if user.IsTeacher {
-			courses := []models.Course{models.GetCourse("course1"), models.GetCourse("course2")}
-			subjects := []models.Subject{models.GetSubject("sub1"), models.GetSubject("sub2")}
+			courses := []models.Clickable{models.GetCourseBasic("course1"), models.GetCourseBasic("course2")}
+			subjects := []models.Clickable{models.GetSubjectBasic("sub1"), models.GetSubjectBasic("sub2")}
 			p = LandingPage{
 				Courses:   courses,
 				Subjects:  subjects,
@@ -41,8 +41,8 @@ func LandingHandler(w http.ResponseWriter, r *http.Request) {
 			}
 		} else {
 			p = LandingPage{
-				Courses:   []models.Course{},
-				Subjects:  []models.Subject{},
+				Courses:   []models.Clickable{},
+				Subjects:  []models.Clickable{},
 				Teams:     teams,
 				IsTeacher: false,
 			}

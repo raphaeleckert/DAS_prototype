@@ -119,3 +119,24 @@ func GetTerm(id string) Term {
 		Remark:    "Term Remark",
 	}
 }
+
+func GetCourseBasic(id string) Clickable {
+	return Clickable{
+		ID:   id,
+		Name: "Bachelorthesis Wintersemester 2023",
+	}
+}
+
+func GetSubjectBasic(id string) Clickable {
+	return Clickable{
+		ID:   id,
+		Name: "Bachelorthesis",
+	}
+}
+
+func GetTopicBasic(id string) Clickable {
+	return Clickable{
+		ID:   id,
+		Name: "Example Topic",
+	}
+}

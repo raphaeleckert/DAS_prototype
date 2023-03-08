@@ -1,5 +1,5 @@
-{{define "title"}}{{ .TeamName }}{{end}}
+{{define "title"}}{{ .Team.Name }}{{end}}
 
 {{define "body"}}
-<div id="tabs" hx-get="/team/open" hx-trigger="load delay:100ms" hx-target="#tabs" hx-swap="innerHTML"></div>
+<div id="tabs" hx-get="/team/open?teamid={{.Team.ID}}" hx-trigger="load delay:100ms" hx-target="#tabs" hx-swap="innerHTML"></div>
 {{end}}

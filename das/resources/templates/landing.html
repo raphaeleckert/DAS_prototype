@@ -3,11 +3,26 @@
 {{define "body"}}
   {{if gt (len .Courses) 0}}
     <h2>Courses</h2>
+    {{range $index, $val := .Courses}}
+      <div class="w3-button" hx-get="/course?courseid={{$val.ID}}" hx-target="body" hx-push-url="true">
+        {{$val.Name}}
+      </div><br>
+    {{end}}
   {{end}}
   {{if gt (len .Subjects) 0}}
     <h2>Subjects</h2>
+    {{range $index, $val := .Subjects}}
+    <div class="w3-button" hx-get="/subject?subjectid={{$val.ID}}" hx-target="body" hx-push-url="true">
+      {{$val.Name}}
+    </div><br>
+    {{end}}
   {{end}}
   {{if gt (len .Teams) 0}}
     <h2>Teams</h2>
+    {{range $index, $val := .Teams}}
+    <div class="w3-button" hx-get="/team?teamid={{$val.ID}}" hx-target="body" hx-push-url="true">
+      {{$val.Name}}
+    </div><br>
+    {{end}}
   {{end}}
 {{end}}

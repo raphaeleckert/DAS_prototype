@@ -1,18 +1,20 @@
 package handlers
 
 import (
+	"dasagilestudieren/models"
 	"html/template"
 	"net/http"
 )
 
-type InTableLink struct {
-	Text      string
-	Reference string
+type TeamPage struct {
+	Team      struct{ Name, ID string }
+	TableData []models.Clickable
 }
 
 func TeamOverviewHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
-		p := struct{ TeamName string }{TeamName: "Example Team Name"}
+		teamid := r.URL.Query().Get("teamid")
+		p := TeamPage{TableData: []models.Clickable{}, Team: models.GetTeamBasic(teamid)}
 
 		t, err := template.ParseFiles(
 			"../resources/templates/base.html",
@@ -30,19 +32,20 @@ func TeamOverviewHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
-type TeamOpenTableRow struct {
-	Text      string
-	Reference string
-}
+//type TeamOpenTableRow struct {
+//	Text      string
+//	Reference string
+//}
 
 func TeamOpenHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
-		topics := []TeamOpenTableRow{
-			{Text: "Topic1", Reference: "Topic1Ref"},
-			{Text: "Topic2", Reference: "Topic2Ref"},
-			{Text: "Topic3", Reference: "Topic3Ref"},
+		teamid := r.URL.Query().Get("teamid")
+		topics := []models.Clickable{
+			models.GetTopicBasic("topic1"),
+			models.GetTopicBasic("topic2"),
+			models.GetTopicBasic("topic3"),
 		}
-		p := struct{ TableData []TeamOpenTableRow }{TableData: topics}
+		p := TeamPage{TableData: topics, Team: models.GetTeamBasic(teamid)}
 
 		t, err := template.ParseFiles(
 			"../resources/templates/htmx_wrapper.html",

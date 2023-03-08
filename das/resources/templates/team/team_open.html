@@ -16,8 +16,8 @@
     {{range $index, $val := .TableData}}
       <tr>
         <td>{{$index}}</td>
-        <td class="w3-button" hx-get="/topic/{{$val.Reference}}" hx-target="body" hx-push-url="true">
-          {{$val.Text}}
+        <td class="w3-button" hx-get="/solve?topicid={{$val.ID}}&teamid={{$.Team.ID}}" hx-target="body" hx-push-url="true">
+          {{$val.Name}}
         </td>
       </tr>
     {{end}}

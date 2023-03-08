@@ -50,7 +50,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		user = utils.GetUser(session)
 
 		if user.Authenticated {
-			w.Header().Set("HX-Redirect", "/team")
+			w.Header().Set("HX-Redirect", "/landing")
 		} else {
 			utils.ShowErrorMsg("Wrong username or password!", w)
 		}
