@@ -19,9 +19,9 @@
         </p>
     </div>
     {{if .IsTeacher}}
-        <div class="w3-cell">
-            <button class="w3-button w3-blue w3-bar" hx-get="/team/add?teamid={{.ID}}">Add User</button><br><br>
-            <button class="w3-button w3-blue w3-bar" hx-get="/team/remove?teamid={{.ID}}">Remove User</button><br><br>
+        <div class="w3-cell" id="editTeam">
+            <button class="w3-button w3-blue w3-bar" hx-get="/team/add?teamid={{.ID}}" hx-target="#editTeam">Add User</button><br><br>
+            <button class="w3-button w3-blue w3-bar" hx-get="/team/remove?teamid={{.ID}}" hx-target="#editTeam">Remove User</button><br><br>
             {{/* if gte 0 (len .Member) */}}
             <button 
                 class="w3-button w3-blue w3-bar" 

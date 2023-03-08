@@ -1,0 +1,14 @@
+{{define "htmx-response"}}
+<form>
+  <label for="user">Username</label>
+  <div class="w3-cell-row">
+    <div class="w3-cell">
+      <input type="text" id="user" name="user" class="w3-input w3-border w3-cell-middle">
+    </div>
+    <div class="w3-cell w3-cell">
+      <button hx-patch="/team?action=add" hx-target="body" class="w3-button w3-indigo">Add</button>  
+      <button hx-get="/team?teamid={{.TeamId}}" hx-target="body" class="w3-button w3-indigo">Cancel</button>
+    </div>
+  </div>
+</form>
+{{end}}

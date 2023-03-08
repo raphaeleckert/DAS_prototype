@@ -62,6 +62,9 @@ func router() {
 	http.HandleFunc("/team/ready", utils.LoginRequired(handlers.TeamReadyHandler))
 	http.HandleFunc("/team/done", utils.LoginRequired(handlers.TeamDoneHandler))
 	http.HandleFunc("/team/review", utils.LoginRequired(handlers.TeamReviewHandler))
+	http.HandleFunc("/team/remove", utils.TeacherRequired(handlers.RemoveUserFormHandler))
+	http.HandleFunc("/team/add", utils.TeacherRequired(handlers.AddUserFormHandler))
+
 
 	//solve
 	//http.HandleFunc("/team", utils.LoginRequired(handlers.SolveHandler))

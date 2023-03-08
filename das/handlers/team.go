@@ -19,7 +19,22 @@ type TeamBasePage struct {
 }
 
 func TeamHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method == http.MethodGet {
+	if r.Method == http.MethodPatch {
+		teamid := r.URL.Query().Get("teamid")
+		action := r.URL.Query().Get("action")
+		team := models.GetTeam(teamid)
+		r.ParseForm()
+		user := r.FormValue("user")
+		if action == "add" {
+			//TODO Add User
+			fmt.Printf("%s added to Team %d", user, team.Number)
+		}
+		if action == "remove" {
+			//TODO Remove User
+			fmt.Printf("%s removed from Team %d", user, team.Number)
+		}
+	}
+	if r.Method == http.MethodGet || r.Method == http.MethodPatch {
 		user := r.Context().Value("user").(models.User)
 		teamid := r.URL.Query().Get("teamid")
 		team := models.GetTeam(teamid)
@@ -159,8 +174,18 @@ func TeamReviewHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func AddUser(w http.ResponseWriter, r *http.Request) {
+type AddUserForm struct {
+	TeamId string
+}
+
+func AddUserFormHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
+		teamid := r.URL.Query().Get("teamid")
+
+		p := RemoveUserForm{
+			TeamId: teamid,
+		}
+
 		t, err := template.ParseFiles(
 			"../resources/templates/htmx_wrapper.html",
 			"../resources/templates/team/add_user.html")
@@ -168,7 +193,7 @@ func AddUser(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		err = t.ExecuteTemplate(w, "htmx_wrapper", nil)
+		err = t.ExecuteTemplate(w, "htmx_wrapper", p)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
@@ -176,8 +201,21 @@ func AddUser(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func RemoveUser(w http.ResponseWriter, r *http.Request) {
+type RemoveUserForm struct {
+	TeamId string
+	Member []string
+}
+
+func RemoveUserFormHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
+		teamid := r.URL.Query().Get("teamid")
+		team := models.GetTeam(teamid)
+
+		p := RemoveUserForm{
+			TeamId: teamid,
+			Member: team.Member,
+		}
+
 		t, err := template.ParseFiles(
 			"../resources/templates/htmx_wrapper.html",
 			"../resources/templates/team/remove_user.html")
@@ -185,14 +223,10 @@ func RemoveUser(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		err = t.ExecuteTemplate(w, "htmx_wrapper", nil)
+		err = t.ExecuteTemplate(w, "htmx_wrapper", p)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 	}
-}
-
-func DeleteTeam(w http.ResponseWriter, r *http.Request) {
-
 }
