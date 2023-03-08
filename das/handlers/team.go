@@ -18,7 +18,7 @@ type TeamBasePage struct {
 	IsTeacher               bool
 }
 
-func TeamOverviewHandler(w http.ResponseWriter, r *http.Request) {
+func TeamHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
 		user := r.Context().Value("user").(models.User)
 		teamid := r.URL.Query().Get("teamid")
@@ -45,6 +45,13 @@ func TeamOverviewHandler(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
+	} else if r.Method == http.MethodDelete {
+		teamid := r.URL.Query().Get("teamid")
+		//TODO Delete Team
+		fmt.Printf("%s Deleted", teamid)
+
+		w.Header().Set("HX-Redirect", "/landing")
+		return
 	}
 
 }
@@ -76,6 +83,7 @@ func TeamOpenHandler(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
+
 	}
 
 }
@@ -148,5 +156,43 @@ func TeamReviewHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
+
+}
+
+func AddUser(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodGet {
+		t, err := template.ParseFiles(
+			"../resources/templates/htmx_wrapper.html",
+			"../resources/templates/team/add_user.html")
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		err = t.ExecuteTemplate(w, "htmx_wrapper", nil)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}
+}
+
+func RemoveUser(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodGet {
+		t, err := template.ParseFiles(
+			"../resources/templates/htmx_wrapper.html",
+			"../resources/templates/team/remove_user.html")
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		err = t.ExecuteTemplate(w, "htmx_wrapper", nil)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}
+}
+
+func DeleteTeam(w http.ResponseWriter, r *http.Request) {
 
 }

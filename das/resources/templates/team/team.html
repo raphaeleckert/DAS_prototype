@@ -23,7 +23,12 @@
             <button class="w3-button w3-blue w3-bar" hx-get="/team/add?teamid={{.ID}}">Add User</button><br><br>
             <button class="w3-button w3-blue w3-bar" hx-get="/team/remove?teamid={{.ID}}">Remove User</button><br><br>
             {{/* if gte 0 (len .Member) */}}
-            <button class="w3-button w3-blue w3-bar" hx-delete="/team?teamid={{.ID}}">Delete Team</button><br>
+            <button 
+                class="w3-button w3-blue w3-bar" 
+                hx-delete="/team?teamid={{.ID}}" 
+                hx-confirm="Are you sure you want to delete {{.Name}}?" 
+                hx-redirect="/landing"
+            >Delete Team</button><br>
             {{/* end */}}
         </div>
     {{end}}
