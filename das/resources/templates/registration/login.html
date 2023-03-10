@@ -8,26 +8,22 @@
         <script src="../resources/scripts/htmx.min.js"></script>
     </head>
     <body>
-            <header>
-                <h1></h1>
-            </header>
-            <main>
-              <div class="w3-display-container">
-                <img src="../resources/images/people.jpg" class="w3-image">
-                <h1 class="w3-display-topleft w3-text-white w3-padding-36">Login</h1>
-                <div class="w3-padding-24 w3-indigo w3-display-middle">
-                  <form hx-post="/login" hx-target="#error" class="w3-container">
-                    <label for="username">Username:</label><br>
-                    <input type="text" id="username" name="username" class="w3-input w3-border"><br>
-                    <label for="password">Password:</label><br>
-                    <input type="password" id="password" name="password" class="w3-input w3-border"><br><br>
-                    <input type="submit" value="Login" class="w3-button w3-blue">
-                    <div id="error"></div>
-                  </form>
-                </div>
-              </div>
-            </main>
+      <main>
+        <div class="w3-display-container">
+          <img src="../resources/images/people.jpg" class="w3-image">
+          <h1 class="w3-display-topleft w3-text-white w3-padding-36">Login</h1>
+          <div class="w3-padding-24 w3-indigo w3-display-middle">
+            <form hx-post="/login" hx-target="#error" class="w3-container">
+              <label for="username">Username:</label><br>
+              <input type="text" id="username" name="username" class="w3-input w3-border"><br>
+              <label for="password">Password:</label><br>
+              <input type="password" id="password" name="password" class="w3-input w3-border"><br><br>
+              <input type="submit" value="Login" class="w3-button w3-blue">
+              <div id="error"></div>
+            </form>
+          </div>
         </div>
+      </main>
     </body>
 </html>
 

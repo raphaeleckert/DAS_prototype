@@ -1,6 +1,48 @@
 {{define "title"}}Study Topic{{end}}
 
 {{define "body"}}
+<div class="w3-container w3-light-grey w3-cell-row">
+  <div class="w3-cell">
+    <b>Importance</b>
+    <p>{{ .TopicData.Importance }}</p>
+  </div>
+  <div class="w3-cell">
+
+    <b>RequiredSupporters</b>
+    <p>{{ .TopicData.RequiredSupporters }}</p>
+  </div>
+  <div class="w3-cell">
+      <b>Tags</b>
+      <p>
+          {{range $index, $val := .TopicData.Tags}}
+              {{$val}}
+          {{end}}
+      </p>
+  </div>
+</div>
 <h2>{{ .TopicData.Title }}</h2>
 <p>{{ .TopicData.Detail }}</p>
+<br><br>
+<div id="proposalArea">
+    {{if not (eq .Proposal nil)}}
+      <h3>Proposal by {{.Proposal.ModifiedBy}}</h3>
+      <p>{{.Proposal.Detail}}</p>
+      {{if .CanEdit}}
+        <button hx-get="/solve/edit?teamid={{ .TeamId }}&topicid={{ .TopicId }}" hx-target="#proposalArea" class="w3-button w3-indigo">Edit Proposal</button>
+      {{end}}
+      {{if .CanAccept}}
+        <button class="w3-button w3-indigo">Support Proposal</button>
+      {{else}}
+        <button class="w3-button w3-indigo">Withdraw Support</button>
+      {{end}}
+    {{else}}
+      <button hx-get="/solve/create?teamid={{ .TeamId }}&topicid={{ .TopicId }}" hx-target="#proposalArea" class="w3-button w3-indigo">Propose a Solution</button>
+    {{end}}
+</div>
+
+  {{if not (eq .Rating nil)}}
+    <h3>Feedback</h3>
+    <p>Rating: {{index .RatingOptions .Rating.Rating}}</p>
+    <p>{{.Rating.Remark}}</p>
+  {{end}}
 {{end}}

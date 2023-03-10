@@ -34,10 +34,6 @@ func init() {
 
 }
 
-func homePage(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Welcome to the HomePage!")
-}
-
 func router() {
 
 	server := http.Server{
@@ -65,9 +61,10 @@ func router() {
 	http.HandleFunc("/team/remove", utils.TeacherRequired(handlers.RemoveUserFormHandler))
 	http.HandleFunc("/team/add", utils.TeacherRequired(handlers.AddUserFormHandler))
 
-
 	//solve
-	//http.HandleFunc("/team", utils.LoginRequired(handlers.SolveHandler))
+	http.HandleFunc("/solve", utils.LoginRequired(handlers.SolveHandler))
+	http.HandleFunc("/solve/edit", utils.LoginRequired(handlers.EditProposalHandler))
+	http.HandleFunc("/solve/create", utils.LoginRequired(handlers.CreateProposalHandler))
 
 	//resources
 	http.Handle("/resources/", http.StripPrefix("/resources/", http.FileServer(http.Dir("../resources"))))

@@ -1,0 +1,10 @@
+{{define "htmx-response"}}
+<form hx-patch="/solve?teamid={{ .TeamId }}&topicId={{ .TopicId }}" hx-target="body">
+  <label><b>Detail</b></label>
+  <textarea class="w3-input w3-border" name="detail" rows="8">
+    {{ .CurrentProposal.Detail }}
+  </textarea><br>
+  <button class="w3-button w3-indigo">Save</button>
+  <button hx-get="/solve?teamid={{ .TeamId }}&topicId={{ .TopicId }}" hx-target="body" class="w3-button w3-light-grey">Cancel</button>
+</form>
+{{end}}
