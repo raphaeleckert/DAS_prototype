@@ -1,28 +1,39 @@
 {{define "title"}}Start{{end}}
 
 {{define "body"}}
-  {{if gt (len .Courses) 0}}
+  {{if .IsTeacher}}
     <h2>Courses</h2>
-    {{range $index, $val := .Courses}}
-      <div class="w3-button" hx-get="/course?courseid={{$val.ID}}" hx-target="body" hx-push-url="true">
+    {{if gt (len .Courses) 0}}
+      {{range $index, $val := .Courses}}
+        <div class="w3-button" hx-get="/course?courseid={{$val.ID}}" hx-target="body" hx-push-url="true">
+          {{$val.Name}}
+        </div><br>
+      {{end}}
+    {{end}}
+    <button class="w3-button w3-indigo" hx-get="/course/create" hx-target="body" hx-push-url="true">+</button>
+    <br>
+
+    <h2>Subjects</h2>
+    {{if gt (len .Subjects) 0}}
+      {{range $index, $val := .Subjects}}
+      <div class="w3-button" hx-get="/subject?subjectid={{$val.ID}}" hx-target="body" hx-push-url="true">
         {{$val.Name}}
       </div><br>
+      {{end}}
     {{end}}
+  <button class="w3-button w3-indigo" hx-get="/subject/create" hx-target="body" hx-push-url="true">+</button>
   {{end}}
-  {{if gt (len .Subjects) 0}}
-    <h2>Subjects</h2>
-    {{range $index, $val := .Subjects}}
-    <div class="w3-button" hx-get="/subject?subjectid={{$val.ID}}" hx-target="body" hx-push-url="true">
-      {{$val.Name}}
-    </div><br>
-    {{end}}
-  {{end}}
+  <br>
+
+  <h2>Teams</h2>
   {{if gt (len .Teams) 0}}
-    <h2>Teams</h2>
     {{range $index, $val := .Teams}}
     <div class="w3-button" hx-get="/team?teamid={{$val.ID}}" hx-target="body" hx-push-url="true">
       {{$val.Name}}
     </div><br>
     {{end}}
+  {{end}}
+  {{if .IsTeacher}}
+    <button class="w3-button w3-indigo" hx-get="/team/create" hx-target="body" hx-push-url="true">+</button>
   {{end}}
 {{end}}

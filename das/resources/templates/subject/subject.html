@@ -1,0 +1,27 @@
+{{define "title"}}Subject{{end}}
+
+{{define "body"}}
+<div class="w3-container w3-light-grey w3-cell-row">
+  <div class="w3-cell">
+      <b>Name</b>
+      <p>{{ .Subject.Name }}</p>
+  </div>
+  <div class="w3-cell">
+      <b>Short</b>
+      <p>{{ .Subject.ShortName }}</p>
+  </div>
+</div>
+<h2>Courses</h2>
+{{if gt (len .Courses) 0}}
+  {{range $index, $val := .Courses}}
+    <div class="w3-button" hx-get="/course?courseid={{$val.ID}}" hx-target="body" hx-push-url="true">
+      {{$val.Name}}
+    </div><br>
+  {{end}}
+{{end}}
+<button class="w3-button w3-indigo" hx-get="/course/create" hx-target="body" hx-push-url="true">+</button>
+<br>
+<h2>Topics</h2>
+<div hx-get="/topic/list?subjectid={{.Subject.ID}}" hx-trigger="load delay:100ms" hx-swap="outerHTML"></div>
+<button class="w3-button w3-indigo" hx-get="/topic/create" hx-target="body" hx-push-url="true">+</button>
+{{end}}

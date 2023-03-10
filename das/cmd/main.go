@@ -50,6 +50,7 @@ func router() {
 	http.HandleFunc("/topic", utils.TeacherRequired(handlers.TopicHandler))
 	http.HandleFunc("/topic/info", utils.TeacherRequired(handlers.TopicInfoHandler))
 	http.HandleFunc("/topic/edit", utils.TeacherRequired(handlers.TopicEditHandler))
+	http.HandleFunc("/topic/list", utils.TeacherRequired(handlers.TopicListHandler))
 
 	//team
 	http.HandleFunc("/team", utils.LoginRequired(handlers.TeamHandler))
@@ -65,6 +66,9 @@ func router() {
 	http.HandleFunc("/solve", utils.LoginRequired(handlers.SolveHandler))
 	http.HandleFunc("/solve/edit", utils.LoginRequired(handlers.EditProposalHandler))
 	http.HandleFunc("/solve/create", utils.LoginRequired(handlers.CreateProposalHandler))
+
+	//subject
+	http.HandleFunc("/subject", utils.TeacherRequired(handlers.SubjectHandler))
 
 	//resources
 	http.Handle("/resources/", http.StripPrefix("/resources/", http.FileServer(http.Dir("../resources"))))

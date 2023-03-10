@@ -193,3 +193,36 @@ func TopicEditHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 }
+
+type TopicList struct {
+	TopicTable []models.Topic
+}
+
+func TopicListHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodDelete {
+		subjectid := r.URL.Query().Get("subjectid")
+		fmt.Printf("%s Deleted", subjectid)
+
+	}
+	if r.Method == http.MethodGet || r.Method == http.MethodDelete {
+		subjectid := r.URL.Query().Get("subjectid")
+		topics := models.GetTopicsBySubject(subjectid)
+
+		p := TopicList{
+			TopicTable: topics,
+		}
+
+		t, err := template.ParseFiles(
+			"../resources/templates/htmx_wrapper.html",
+			"../resources/templates/topic/topic_list.html")
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		err = t.ExecuteTemplate(w, "htmx_wrapper", p)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}
+}

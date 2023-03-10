@@ -1,0 +1,22 @@
+{{define "htmx-response"}}
+<table id="topicList" class="w3-table w3-striped w3-bordered">
+  <tr>
+    <th style="width:10%">#</th>
+    <th>Title</th>
+    <th>Tags</th>
+    <th>Action</th>
+  </tr>
+  {{range $index, $val := .TopicTable}}
+    <tr>
+      <td>{{$index}}</td>
+      <td class="w3-button" hx-get="/topic?topicid={{$val.ID}}" hx-target="body" hx-push-url="true">
+        {{$val.Title}}
+      </td>
+      <td>{{$val.Tags}}</td>
+      <td class="w3-button w3-text-indigo" hx-delete="/topic/list?topicid={{$val.ID}}" hx-target="#topicList">
+      Delete
+      </td>
+    </tr>
+  {{end}}
+</table>
+{{end}}
