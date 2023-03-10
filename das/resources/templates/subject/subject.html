@@ -23,5 +23,5 @@
 <br>
 <h2>Topics</h2>
 <div hx-get="/topic/list?subjectid={{.Subject.ID}}" hx-trigger="load delay:100ms" hx-swap="outerHTML"></div>
-<button class="w3-button w3-indigo" hx-get="/topic/create" hx-target="body" hx-push-url="true">+</button>
+<button class="w3-button w3-indigo" hx-post="/topic/info?subjectid={{.Subject.ID}}">+</button>
 {{end}}

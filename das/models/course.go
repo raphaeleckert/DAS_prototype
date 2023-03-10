@@ -95,6 +95,20 @@ func GetCourse(id string) Course {
 }
 
 func GetTopic(id string) Topic {
+	if id == "blankid" {
+		return Topic{
+			ID:                 "blankid",
+			Subject:            GetSubject("subjectid"),
+			Title:              "-",
+			Detail:             "-",
+			Reference:          "-",
+			SolutionIdea:       "-",
+			Remark:             "-",
+			Tags:               []string{},
+			Importance:         IMP_SHOULD,
+			RequiredSupporters: SUP_HALF,
+		}
+	}
 	return Topic{
 		ID:                 id,
 		Subject:            GetSubject("subjectid"),

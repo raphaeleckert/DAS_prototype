@@ -1,5 +1,7 @@
-{{define "htmx-response"}}
-<form id=edit hx-put="/topic/info?topicid={{ .TopicId }}" hx-target="this" hx-swap="outerHTML">
+{{define "title"}}Create Topic{{end}}
+
+{{define "body"}}
+<form id=edit hx-post="/topic/info?topicid={{ .TopicId }}" hx-target="this" hx-swap="outerHTML">
   <div class="w3-cell-row">
     <div class="w3-cell w3-padding">
       <label><b>Title</b></label>

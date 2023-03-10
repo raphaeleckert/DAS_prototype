@@ -30,10 +30,9 @@ type TopicBasePage struct {
 }
 
 func TopicHandler(w http.ResponseWriter, r *http.Request) {
-	topicId := r.URL.Query().Get("topicid")
-
-	p := TopicBasePage{TopicId: topicId}
 	if r.Method == http.MethodGet {
+		topicId := r.URL.Query().Get("topicid")
+		p := TopicBasePage{TopicId: topicId}
 		t, err := template.ParseFiles(
 			"../resources/templates/base.html",
 			"../resources/templates/topic/topic.html")
@@ -61,6 +60,26 @@ type FormData struct {
 }
 
 func TopicInfoHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodPost {
+		subjectId := r.URL.Query().Get("subjectid")
+		blankTopic := models.Topic{
+			ID:                 "blankid",
+			Subject:            models.GetSubject(subjectId),
+			Title:              "-",
+			Detail:             "-",
+			Reference:          "-",
+			SolutionIdea:       "-",
+			Remark:             "-",
+			Tags:               []string{},
+			Importance:         models.IMP_SHOULD,
+			RequiredSupporters: models.SUP_HALF,
+		}
+
+		//TODO: Give blank Topic a unique id and save to db
+		fmt.Printf("%+v", blankTopic)
+		newAdress := "/topic?topicid=" + blankTopic.ID
+		w.Header().Set("HX-Redirect", newAdress)
+	}
 	if r.Method == http.MethodPut {
 		topicId := r.URL.Query().Get("topicid")
 		r.ParseForm()
@@ -90,7 +109,9 @@ func TopicInfoHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	if r.Method == http.MethodGet || r.Method == http.MethodPut {
 		topicId := r.URL.Query().Get("topicid")
-		topic := models.GetTopic(r.URL.Query().Get(topicId))
+		fmt.Printf("%+v", topicId)
+
+		topic := models.GetTopic(topicId)
 		coursesWithSubject := []models.Course{models.GetCourse("courseid")}
 		p := TopicInfoPage{
 			TopicId:           topic.ID,
@@ -150,10 +171,11 @@ type TopicEditPage struct {
 
 func TopicEditHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
+		topicId := r.URL.Query().Get("topicid")
 		tags := []string{"a tag", "another tag", "yet another tag"}
 		importanceOptions := []string{models.IMP_ESSENTIAL, models.IMP_MUST, models.IMP_SHOULD, models.IMP_COULD, models.IMP_VOLUNTARY}
 		supporterOptions := []string{models.SUP_NONE, models.SUP_ONE, models.SUP_TWO, models.SUP_HALF, models.SUP_BUT, models.SUP_ALL}
-		topic := models.GetTopic("topicid")
+		topic := models.GetTopic(topicId)
 		coursesWithSubject := []models.Course{models.GetCourse("courseid")}
 		p := TopicEditPage{
 			TopicId:           topic.ID,
