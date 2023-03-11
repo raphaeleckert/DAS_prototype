@@ -1,0 +1,38 @@
+{{define "title"}}Create Course{{end}}
+
+{{define "body"}}
+<div class="w3-container w3-light-grey w3-cell-row">
+  <div class="w3-cell">
+      <b>Subject</b>
+      <p>{{ .Subject.Name }}</p>
+  </div>
+</div>
+<br>
+<form hx-post="/course?subjectid={{.Subject.ID}}">
+  <label for="term"><b>Term:</b></label>
+  <select required class="w3-input w3-border" id="term" name="term">
+    {{range .Terms}}
+      <option value="{{.ID}}">{{.Name}}</option>
+    {{end}}
+  </select>
+
+  <br>
+
+  <label for="begin-date"><b>Begin Date:</b></label>
+  <input required class="w3-input w3-border" type="datetime-local" id="begin-date" name="begin-date">
+
+  <br>
+
+  <label for="final-date"><b>Final Date:</b></label>
+  <input required class="w3-input w3-border" type="datetime-local" id="final-date" name="final-date">
+
+  <br>
+
+  <label for="close-date"><b>Close Date:</b></label>
+  <input required class="w3-input w3-border" type="datetime-local" id="close-date" name="close-date">
+
+  <br>
+
+  <button class="w3-button w3-indigo">Create</button>
+</form>
+{{end}}

@@ -141,6 +141,13 @@ func GetTerm(id string) Term {
 	}
 }
 
+func GetTermBasic(id string) Clickable {
+	return Clickable{
+		ID:   id,
+		Name: "Example Term",
+	}
+}
+
 func GetCourseBasic(id string) Clickable {
 	return Clickable{
 		ID:   id,
