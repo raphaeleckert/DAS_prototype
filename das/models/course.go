@@ -123,6 +123,13 @@ func GetTopic(id string) Topic {
 	}
 }
 
+func GetTopicBasic(id string) Clickable {
+	return Clickable{
+		ID:   id,
+		Name: "BT-1: Ich sage das Alphabet rückwärts auf",
+	}
+}
+
 func GetTerm(id string) Term {
 	return Term{
 		ID:        id,
@@ -145,13 +152,6 @@ func GetSubjectBasic(id string) Clickable {
 	return Clickable{
 		ID:   id,
 		Name: "Bachelorthesis",
-	}
-}
-
-func GetTopicBasic(id string) Clickable {
-	return Clickable{
-		ID:   id,
-		Name: "Example Topic",
 	}
 }
 

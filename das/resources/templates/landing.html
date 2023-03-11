@@ -10,7 +10,7 @@
         </div><br>
       {{end}}
     {{end}}
-    <button class="w3-button w3-indigo" hx-get="/course/create" hx-target="body" hx-push-url="true">+</button>
+    <button class="w3-button w3-indigo" hx-post="/course" hx-target="body" hx-push-url="true">+</button>
     <br>
 
     <h2>Subjects</h2>
@@ -21,7 +21,7 @@
       </div><br>
       {{end}}
     {{end}}
-  <button class="w3-button w3-indigo" hx-get="/subject/create" hx-target="body" hx-push-url="true">+</button>
+  <button class="w3-button w3-indigo" hx-post="/subject" hx-target="body" hx-push-url="true">+</button>
   {{end}}
   <br>
 
@@ -34,6 +34,6 @@
     {{end}}
   {{end}}
   {{if .IsTeacher}}
-    <button class="w3-button w3-indigo" hx-get="/team/create" hx-target="body" hx-push-url="true">+</button>
+    <button class="w3-button w3-indigo" hx-post="/team" hx-target="body" hx-push-url="true">+</button>
   {{end}}
 {{end}}

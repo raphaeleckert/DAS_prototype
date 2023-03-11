@@ -7,10 +7,6 @@ import (
 	"dasagilestudieren/models"
 )
 
-type Clickable struct {
-	Name string
-	ID   string
-}
 
 type LandingPage struct {
 	Courses   []models.Clickable

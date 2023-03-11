@@ -137,6 +137,15 @@ func GetReview(id string) Review {
 	}
 }
 
+func GetReviewBasic(id string) Clickable {
+	review := GetReview(id)
+	date := review.ReviewDate.Format("2000-01-01 12:00")
+	return Clickable{
+		ID:   id,
+		Name: date,
+	}
+}
+
 func GetRatingByProposal(proposal string) Rating {
 	return Rating{
 		ID:       "ratingid",

@@ -1,0 +1,51 @@
+{{define "title"}}Course{{end}}
+
+{{define "body"}}
+<div class="w3-container w3-light-grey w3-cell-row">
+  <div class="w3-cell">
+      <b>Subject</b>
+      <p>{{ .CourseData.Subject.Name }}</p>
+      <b>Term</b>
+      <p>{{ .CourseData.Term.Name }}</p>
+  </div>
+  <div class="w3-cell">
+    <b>Begin Date</b>
+    <p>{{ .CourseData.BeginDate }}</p>
+    <b>Final Date</b>
+    <p>{{ .CourseData.FinalDate }}</p>
+  </div>
+  <div class="w3-cell">
+    <b>Close Date</b>
+    <p>{{ .CourseData.CloseDate }}</p>
+  </div>
+</div>
+    <h2>Reviews</h2>
+    {{if gt (len .Reviews) 0}}
+      {{range $index, $val := .Reviews}}
+        <div class="w3-button" hx-get="/review?reviewid={{$val.ID}}" hx-target="body" hx-push-url="true">
+          {{$val.Name}}
+        </div><br>
+      {{end}}
+    {{end}}
+    <button class="w3-button w3-indigo" hx-post="/review" hx-target="body" hx-push-url="true">+</button>
+    <br>
+    <h2>Teams</h2>
+    {{if gt (len .Teams) 0}}
+      {{range $index, $val := .Teams}}
+      <div class="w3-button" hx-get="/team?teamid={{$val.ID}}" hx-target="body" hx-push-url="true">
+        {{$val.Name}}
+      </div><br>
+    {{end}}
+  <button class="w3-button w3-indigo" hx-post="/team" hx-target="body" hx-push-url="true">+</button>
+  {{end}}
+  <br>
+  <h2>Topics</h2>
+  {{if gt (len .Topics) 0}}
+    {{range $index, $val := .Topics}}
+    <div class="w3-button" hx-get="/topic?topic={{$val.ID}}" hx-target="body" hx-push-url="true">
+      {{$val.Name}}
+    </div><br>
+    {{end}}
+  {{end}}
+    <button class="w3-button w3-indigo" hx-post="/topic" hx-target="body" hx-push-url="true">Assign Topic to Course</button>
+{{end}}
