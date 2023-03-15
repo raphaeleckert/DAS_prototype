@@ -1,13 +1,19 @@
-{{define "title"}}Tryout{{end}}
-
-{{define "body"}}
-
-<div class="w3-display-container">
-    <button hx-get="/team" hx-target="#body" hx-push-url="true">
-        Hi!
-    </button>
-    
-</div>
-
-
-{{end}}
+<form 
+  hx-patch="/resource?id={{ .Id }}" 
+  hx-target="this" 
+  hx-swap="outerHTML"
+>
+  <label><b>Some Information</b></label>
+  <input 
+    type="text" 
+    name="info" 
+    class="w3-input w3-border" 
+    value="{{ .SomeInformation }}"
+  ><br>
+  <button class="w3-button w3-indigo">Save</button>
+  <button 
+    hx-get="/resource?id={{ .Id }}" 
+    target="body" 
+    class="w3-button w3-light-grey"
+  >Cancel</button>
+</form>

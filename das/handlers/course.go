@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"dasagilestudieren/models"
+	"dasagilestudieren/utils"
 )
 
 type CoursePage struct {
@@ -30,9 +31,27 @@ func CourseHandler(w http.ResponseWriter, r *http.Request) {
 		finalDate := r.FormValue("final-date")
 		closeDate := r.FormValue("close-date")
 
-		beginDateTime, _ := time.Parse("2000-01-01T00:00", beginDate)
-		finalDateTime, _ := time.Parse("2000-01-01T00:00", finalDate)
-		closeDateTime, _ := time.Parse("2000-01-01T00:00", closeDate)
+		beginDateTime, _ := time.Parse("2006-01-02T15:04", beginDate)
+		finalDateTime, _ := time.Parse("2006-01-02T15:04", finalDate)
+		closeDateTime, _ := time.Parse("2006-01-02T15:04", closeDate)
+		currentTime := time.Now().UTC()
+
+		fmt.Printf("%+v", time.Now())
+		fmt.Printf("%+v", beginDateTime)
+		fmt.Printf("%+v", finalDateTime)
+		fmt.Printf("%+v", closeDateTime)
+		if beginDateTime.Before(currentTime) || finalDateTime.Before(currentTime) || closeDateTime.Before(currentTime) {
+			utils.ShowErrorMsg("All dates must be in the future.", w)
+			return
+		}
+		if beginDateTime.After(finalDateTime) {
+			utils.ShowErrorMsg("Begin Date should be before Final Date.", w)
+			return
+		}
+		if finalDateTime.After(closeDateTime) {
+			utils.ShowErrorMsg("Final Date should be before Close Date.", w)
+			return
+		}
 
 		newCourse := models.Course{
 			ID:        "newid",
@@ -115,4 +134,22 @@ func CreateCourseHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
+}
+
+func ValidateCourseDatesHandler(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		http.Error(w, "Error parsing form data", http.StatusBadRequest)
+		return
+	}
+
+	beginDate := r.FormValue("begin-date")
+	finalDate := r.FormValue("final-date")
+	closeDate := r.FormValue("close-date")
+
+	// Use the values as needed
+	fmt.Println("Begin Date:", beginDate)
+	fmt.Println("Final Date:", finalDate)
+	fmt.Println("Close Date:", closeDate)
+
 }

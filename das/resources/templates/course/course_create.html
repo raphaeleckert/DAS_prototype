@@ -8,7 +8,7 @@
   </div>
 </div>
 <br>
-<form hx-post="/course?subjectid={{.Subject.ID}}">
+<form hx-post="/course?subjectid={{.Subject.ID}}" hx-target="#error-panel" hx-wap="innerHTML">
   <label for="term"><b>Term:</b></label>
   <select required class="w3-input w3-border" id="term" name="term">
     {{range .Terms}}
@@ -32,6 +32,8 @@
   <input required class="w3-input w3-border" type="datetime-local" id="close-date" name="close-date">
 
   <br>
+
+  <div id="error-panel"></div>
 
   <button class="w3-button w3-indigo">Create</button>
 </form>
