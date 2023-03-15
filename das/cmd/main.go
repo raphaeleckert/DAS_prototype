@@ -73,7 +73,7 @@ func router() {
 	//course
 	http.HandleFunc("/course", utils.TeacherRequired(handlers.CourseHandler))
 	http.HandleFunc("/course/create", utils.TeacherRequired(handlers.CreateCourseHandler))
-	http.HandleFunc("/course/validate", utils.TeacherRequired(handlers.ValidateCourseDatesHandler))
+	http.HandleFunc("/course/topic", utils.TeacherRequired(handlers.CourseTopicHandler))
 
 	//resources
 	http.Handle("/resources/", http.StripPrefix("/resources/", http.FileServer(http.Dir("../resources"))))

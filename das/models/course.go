@@ -177,3 +177,28 @@ func GetTopicsBySubject(subject string) []Topic {
 	}
 	return []Topic{topic, topic, topic}
 }
+
+func GetTopicsByCourse(course string) struct {
+	Selected   []Topic
+	Unselected []Topic
+} {
+	topic := Topic{
+		ID:                 "topicId",
+		Subject:            GetSubject("subjectid"),
+		Title:              "Ich sage das Alphabet rückwärts auf",
+		Detail:             "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
+		Reference:          "BT-1",
+		SolutionIdea:       "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea",
+		Remark:             "Topic Remark",
+		Tags:               []string{"buchstaben", "reihenfolge"},
+		Importance:         IMP_ESSENTIAL,
+		RequiredSupporters: SUP_HALF,
+	}
+	return struct {
+		Selected   []Topic
+		Unselected []Topic
+	}{
+		Selected:   []Topic{topic, topic, topic},
+		Unselected: []Topic{topic, topic, topic},
+	}
+}

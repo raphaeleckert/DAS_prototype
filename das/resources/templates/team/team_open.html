@@ -9,18 +9,18 @@
 </div>
 
 <table class="w3-table w3-striped w3-bordered">
+  <tr>
+    <th style="width:10%">#</th>
+    <th>Title</th>
+  </tr>
+  {{range $index, $val := .TableData}}
     <tr>
-      <th style="width:10%">#</th>
-      <th>Title</th>
+      <td>{{$index}}</td>
+      <td class="w3-button" hx-get="/solve?topicid={{$val.ID}}&teamid={{$.Team.ID}}" hx-target="body" hx-push-url="true">
+        {{$val.Name}}
+      </td>
     </tr>
-    {{range $index, $val := .TableData}}
-      <tr>
-        <td>{{$index}}</td>
-        <td class="w3-button" hx-get="/solve?topicid={{$val.ID}}&teamid={{$.Team.ID}}" hx-target="body" hx-push-url="true">
-          {{$val.Name}}
-        </td>
-      </tr>
-    {{end}}
-  </table>
+  {{end}}
+</table>
 
 {{end}}

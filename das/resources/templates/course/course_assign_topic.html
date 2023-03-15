@@ -1,0 +1,66 @@
+{{define "title"}}Assign Topics to Course{{end}}
+
+{{define "body"}}
+<div class="w3-container w3-light-grey w3-cell-row">
+  <div class="w3-cell">
+      <b>Subject</b>
+      <p>{{ .CourseData.Subject.Name }}</p>
+      <b>Term</b>
+      <p>{{ .CourseData.Term.Name }}</p>
+  </div>
+  <div class="w3-cell">
+    <b>Begin Date</b>
+    <p>{{ .CourseData.BeginDate }}</p>
+    <b>Final Date</b>
+    <p>{{ .CourseData.FinalDate }}</p>
+  </div>
+  <div class="w3-cell">
+    <b>Close Date</b>
+    <p>{{ .CourseData.CloseDate }}</p>
+  </div>
+</div>
+
+<div class="w3-container w3-cell-row">
+  <div class="w3-cell w3-padding">
+    <h2>Selected</h2>
+    <table class="w3-table w3-striped w3-bordered">
+      <tr>
+        <th style="width:10%">#</th>
+        <th>Title</th>
+        <th>Action</th>
+      </tr>
+      {{range $index, $val := .CourseTopics.Selected}}
+        <tr>
+          <td>{{$index}}</td>
+          <td>
+            {{$val.Title}}
+          </td>
+          <td class="w3-button w3-text-indigo" hx-post="/course/topic?topicid={{$val.ID}}&courseid={{$.CourseData.ID}}&action=remove" hx-target="body" hx-push-url="true">
+            Remove
+          </td>
+        </tr>
+      {{end}}
+    </table>
+  </div>
+  <div class="w3-cell w3-padding">
+    <h2>Unselected</h2>
+    <table class="w3-table w3-striped w3-bordered">
+      <tr>
+        <th style="width:10%">#</th>
+        <th>Title</th>
+        <th>Action</th>
+      </tr>
+      {{range $index, $val := .CourseTopics.Unselected}}
+        <tr>
+          <td>{{$index}}</td>
+          <td>
+            {{$val.Title}}
+          </td>
+          <td class="w3-button w3-text-indigo" hx-post="/course/topic?topicid={{$val.ID}}&courseid={{$.CourseData.ID}}&action=add" hx-target="body" hx-push-url="true">
+            Add
+          </td>
+        </tr>
+      {{end}}
+    </table>
+  </div>
+{{end}}

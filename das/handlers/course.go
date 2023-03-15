@@ -136,20 +136,44 @@ func CreateCourseHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-func ValidateCourseDatesHandler(w http.ResponseWriter, r *http.Request) {
-	err := r.ParseForm()
-	if err != nil {
-		http.Error(w, "Error parsing form data", http.StatusBadRequest)
-		return
+type CourseTopicPage struct {
+	CourseData   models.Course
+	CourseTopics struct {
+		Selected   []models.Topic
+		Unselected []models.Topic
 	}
+}
 
-	beginDate := r.FormValue("begin-date")
-	finalDate := r.FormValue("final-date")
-	closeDate := r.FormValue("close-date")
+func CourseTopicHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodPost {
+		// courseId := r.URL.Query().Get("courseid")
+		// action := r.URL.Query().Get("action")
+		// topicId := r.URL.Query().Get("topicid")
 
-	// Use the values as needed
-	fmt.Println("Begin Date:", beginDate)
-	fmt.Println("Final Date:", finalDate)
-	fmt.Println("Close Date:", closeDate)
+		//TODO: add/remove topic from course
 
+	}
+	if r.Method == http.MethodGet || r.Method == http.MethodPost {
+		courseId := r.URL.Query().Get("courseid")
+		courseData := models.GetCourse(courseId)
+		courseTopics := models.GetTopicsByCourse(courseId)
+
+		p := CourseTopicPage{
+			CourseData:   courseData,
+			CourseTopics: courseTopics,
+		}
+
+		t, err := template.ParseFiles(
+			"../resources/templates/base.html",
+			"../resources/templates/course/course_assign_topic.html")
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		err = t.ExecuteTemplate(w, "base", p)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}
 }

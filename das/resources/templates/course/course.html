@@ -47,5 +47,5 @@
     </div><br>
     {{end}}
   {{end}}
-    <button class="w3-button w3-indigo" hx-post="/topic" hx-target="body" hx-push-url="true">Assign Topic to Course</button>
+    <button class="w3-button w3-indigo" hx-get="/course/topic?courseid={{.CourseData.ID}}" hx-target="body" hx-push-url="true">Assign Topic to Course</button>
 {{end}}
