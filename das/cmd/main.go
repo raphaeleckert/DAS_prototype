@@ -8,6 +8,8 @@ import (
 
 	"dasagilestudieren/handlers"
 	"dasagilestudieren/models"
+	"dasagilestudieren/prototype"
+	"dasagilestudieren/repo"
 	"dasagilestudieren/utils"
 
 	"github.com/gorilla/securecookie"
@@ -15,6 +17,7 @@ import (
 )
 
 func init() {
+	// session
 	authKeyOne := securecookie.GenerateRandomKey(64)
 	encryptionKeyOne := securecookie.GenerateRandomKey(32)
 
@@ -32,6 +35,9 @@ func init() {
 	gob.Register(models.User{})
 	fmt.Println("Start")
 
+	repo.Db = prototype.PopulatePrototypeDb()
+
+	fmt.Printf("%+v", repo.Db)
 }
 
 func router() {
