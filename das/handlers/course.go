@@ -35,11 +35,6 @@ func CourseHandler(w http.ResponseWriter, r *http.Request) {
 		finalDateTime, _ := time.Parse("2006-01-02T15:04", finalDate)
 		closeDateTime, _ := time.Parse("2006-01-02T15:04", closeDate)
 		currentTime := time.Now().UTC()
-
-		fmt.Printf("%+v", time.Now())
-		fmt.Printf("%+v", beginDateTime)
-		fmt.Printf("%+v", finalDateTime)
-		fmt.Printf("%+v", closeDateTime)
 		if beginDateTime.Before(currentTime) || finalDateTime.Before(currentTime) || closeDateTime.Before(currentTime) {
 			utils.ShowErrorMsg("All dates must be in the future.", w)
 			return

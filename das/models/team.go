@@ -69,33 +69,33 @@ type Rating struct {
 
 func GetTeam(id string) Team {
 	return Team{
-		ID:       id,
-		Course:   GetCourse("courseid"),
-		Number:   1,
-		Member:   []string{"student1", "student2"},
-		ReadOnly: false,
-		Note:     "Team Note",
-		Remark:   "Team Remark",
+		//ID:       id,
+		//Course:   GetCourse("courseid"),
+		//Number:   1,
+		//Member:   []string{"student1", "student2"},
+		//ReadOnly: false,
+		//Note:     "Team Note",
+		//Remark:   "Team Remark",
 	}
 }
 
 func GetSolution(id string) Solution {
 	return Solution{
-		ID:     id,
-		Team:   GetTeam("teamid"),
-		Topic:  GetTopic("topicid"),
-		State:  STATE_INWORK,
-		Remark: "Solution Remark",
+		//ID:     id,
+		//Team:   GetTeam("teamid"),
+		//Topic:  GetTopic("topicid"),
+		//State:  STATE_INWORK,
+		//Remark: "Solution Remark",
 	}
 }
 
 func GetSolutionByTeamAndTopic(team string, topic string) Solution {
 	return Solution{
-		ID:     "solutionid",
-		Team:   GetTeam(team),
-		Topic:  GetTopic(topic),
-		State:  STATE_INWORK,
-		Remark: "Solution Remark",
+		//ID:     "solutionid",
+		//Team:   GetTeam(team),
+		//Topic:  GetTopic(topic),
+		//State:  STATE_INWORK,
+		//Remark: "Solution Remark",
 	}
 }
 
@@ -126,14 +126,14 @@ func GetTeamBasic(id string) Clickable {
 
 func GetReview(id string) Review {
 	return Review{
-		ID:         id,
-		Course:     GetCourse("courseid"),
-		ReviewDate: time.Date(2024, time.January, 01, 00, 00, 00, 0, time.UTC),
-		MaxReviews: 5,
-		BeginDate:  time.Date(2024, time.January, 01, 00, 00, 00, 0, time.UTC),
-		EndDate:    time.Date(2022, time.January, 01, 00, 00, 00, 0, time.UTC),
-		Note:       "Review Note",
-		Remark:     "Review Remark",
+		//ID:         id,
+		//Course:     GetCourse("courseid"),
+		//ReviewDate: time.Date(2024, time.January, 01, 00, 00, 00, 0, time.UTC),
+		//MaxReviews: 5,
+		//BeginDate:  time.Date(2024, time.January, 01, 00, 00, 00, 0, time.UTC),
+		//EndDate:    time.Date(2022, time.January, 01, 00, 00, 00, 0, time.UTC),
+		//Note:       "Review Note",
+		//Remark:     "Review Remark",
 	}
 }
 

@@ -14,12 +14,12 @@ func NewSubjectRepository(db *prototype.PrototypeDb) *SubjectRepository {
 	return &SubjectRepository{db: db}
 }
 
-func NewTopicRepository(db *prototype.PrototypeDb) *CourseRepository {
-	return &CourseRepository{db: db}
+func NewTopicRepository(db *prototype.PrototypeDb) *TopicRepository {
+	return &TopicRepository{db: db}
 }
 
-func NewTermRepository(db *prototype.PrototypeDb) *CourseRepository {
-	return &CourseRepository{db: db}
+func NewTermRepository(db *prototype.PrototypeDb) *TermRepository {
+	return &TermRepository{db: db}
 }
 
 type SubjectInterface interface {

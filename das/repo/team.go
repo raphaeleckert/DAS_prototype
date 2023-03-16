@@ -5,6 +5,30 @@ import (
 	"fmt"
 )
 
+func NewTeamRepository(db *prototype.PrototypeDb) *TeamRepository {
+	return &TeamRepository{db: db}
+}
+
+func NewSolutionRepository(db *prototype.PrototypeDb) *SolutionRepository {
+	return &SolutionRepository{db: db}
+}
+
+func NewProposalRepository(db *prototype.PrototypeDb) *ProposalRepository {
+	return &ProposalRepository{db: db}
+}
+
+func NewSupporterRepository(db *prototype.PrototypeDb) *SupporterRepository {
+	return &SupporterRepository{db: db}
+}
+
+func NewReviewRepository(db *prototype.PrototypeDb) *ReviewRepository {
+	return &ReviewRepository{db: db}
+}
+
+func NewRatingRepository(db *prototype.PrototypeDb) *RatingRepository {
+	return &RatingRepository{db: db}
+}
+
 type TeamInterface interface {
 	Create(team *prototype.Team) error
 	Read(id string) (*prototype.Team, error)

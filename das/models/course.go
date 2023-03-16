@@ -71,6 +71,7 @@ type Term struct {
 	Remark    string
 }
 
+// Subject
 func GetSubject(id string) (Subject, error) {
 	repo := repo.SubjectRepo
 	data, err := repo.Read(id)
@@ -122,95 +123,34 @@ func GetSubjectBasic(id string) (Clickable, error) {
 	return subject, nil
 }
 
-func GetCourse(id string) Course {
-	return Course{
-		ID: id,
-		Subject: Subject{
-			ID:        id,
-			ShortName: "EXSB",
-			Name:      "Example Subject",
-			Owner:     "teacherid",
-			Note:      "Subejct Note",
-			Remark:    "Subejct Remark",
-		},
-		Term:      GetTerm("termid"),
-		Owner:     "teacherid",
-		BeginDate: time.Date(2022, time.January, 01, 00, 00, 00, 0, time.UTC),
-		FinalDate: time.Date(2024, time.January, 01, 00, 00, 00, 0, time.UTC),
-		CloseDate: time.Date(2025, time.January, 01, 00, 00, 00, 0, time.UTC),
-		Remark:    "Course Remark",
-		Note:      "Course Note",
-		Topics:    []string{"topicid"},
+// Course
+func GetCourse(id string) (Course, error) {
+	repo := repo.CourseRepo
+	data, err := repo.Read(id)
+	if err != nil {
+		return Course{}, fmt.Errorf("failed to get course with ID %s: %v", id, err)
 	}
-}
-
-func GetTopic(id string) Topic {
-
-	if id == "blankid" {
-		return Topic{
-			ID: "blankid",
-			Subject: Subject{
-				ID:        id,
-				ShortName: "EXSB",
-				Name:      "Example Subject",
-				Owner:     "teacherid",
-				Note:      "Subejct Note",
-				Remark:    "Subejct Remark",
-			},
-			Title:              "-",
-			Detail:             "-",
-			Reference:          "-",
-			SolutionIdea:       "-",
-			Remark:             "-",
-			Tags:               []string{},
-			Importance:         IMP_SHOULD,
-			RequiredSupporters: SUP_HALF,
-		}
+	subject, err := GetSubject(data.Subject)
+	if err != nil {
+		return Course{}, fmt.Errorf("failed to get subject for course with ID %s: %v", id, err)
 	}
-	return Topic{
-		ID: id,
-		Subject: Subject{
-			ID:        id,
-			ShortName: "EXSB",
-			Name:      "Example Subject",
-			Owner:     "teacherid",
-			Note:      "Subejct Note",
-			Remark:    "Subejct Remark",
-		},
-		Title:              "Ich sage das Alphabet rückwärts auf",
-		Detail:             "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
-		Reference:          "BT-1",
-		SolutionIdea:       "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea",
-		Remark:             "Topic Remark",
-		Tags:               []string{"buchstaben", "reihenfolge"},
-		Importance:         IMP_ESSENTIAL,
-		RequiredSupporters: SUP_HALF,
+	term, err := GetTerm(data.Term)
+	if err != nil {
+		return Course{}, fmt.Errorf("failed to get term for course with ID %s: %v", id, err)
 	}
-}
-
-func GetTopicBasic(id string) Clickable {
-	return Clickable{
-		ID:   id,
-		Name: "BT-1: Ich sage das Alphabet rückwärts auf",
+	course := Course{
+		ID:        data.ID,
+		Subject:   subject,
+		Term:      term,
+		Owner:     data.Owner,
+		BeginDate: data.BeginDate,
+		FinalDate: data.FinalDate,
+		CloseDate: data.CloseDate,
+		Remark:    data.Remark,
+		Note:      data.Note,
+		Topics:    data.Topics,
 	}
-}
-
-func GetTerm(id string) Term {
-	return Term{
-		ID:        id,
-		Name:      "Example Term",
-		StartDate: time.Date(2022, time.January, 01, 00, 00, 00, 0, time.UTC),
-		EndDate:   time.Date(2024, time.January, 01, 00, 00, 00, 0, time.UTC),
-		Note:      "Term Note",
-		Remark:    "Term Remark",
-	}
-}
-
-func GetTermBasic(id string) Clickable {
-	return Clickable{
-		ID:   id,
-		Name: "Example Term",
-	}
+	return course, nil
 }
 
 func GetCourseBasic(id string) Clickable {
@@ -220,27 +160,75 @@ func GetCourseBasic(id string) Clickable {
 	}
 }
 
-func GetTopicsBySubject(subject string) []Topic {
-	topic := Topic{
-		ID: "topicId",
-		Subject: Subject{
-			ID:        "id",
-			ShortName: "EXSB",
-			Name:      "Example Subject",
-			Owner:     "teacherid",
-			Note:      "Subejct Note",
-			Remark:    "Subejct Remark",
-		},
-		Title:              "Ich sage das Alphabet rückwärts auf",
-		Detail:             "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
-		Reference:          "BT-1",
-		SolutionIdea:       "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea",
-		Remark:             "Topic Remark",
-		Tags:               []string{"buchstaben", "reihenfolge"},
-		Importance:         IMP_ESSENTIAL,
-		RequiredSupporters: SUP_HALF,
+// Topic
+func GetTopic(id string) (Topic, error) {
+	repo := repo.TopicRepo
+	data, err := repo.Read(id)
+	if err != nil {
+		return Topic{}, fmt.Errorf("failed to get topic with ID %s: %v", id, err)
 	}
-	return []Topic{topic, topic, topic}
+	subject, err := GetSubject(data.Subject)
+	if err != nil {
+		return Topic{}, fmt.Errorf("failed to get subject for course with ID %s: %v", id, err)
+	}
+	topic := Topic{
+		ID:                 data.ID,
+		Title:              data.Title,
+		Subject:            subject,
+		Number:             data.Number,
+		Detail:             data.Detail,
+		Reference:          data.Reference,
+		SolutionIdea:       data.SolutionIdea,
+		Remark:             data.Remark,
+		Tags:               data.Tags,
+		Importance:         data.Importance,
+		RequiredSupporters: data.RequiredSupporters,
+	}
+	return topic, nil
+}
+
+func GetTopicBasic(id string) (Clickable, error) {
+	repo := repo.TopicRepo
+	data, err := repo.Read(id)
+	if err != nil {
+		return Clickable{}, fmt.Errorf("failed to get topic with ID %s: %v", id, err)
+	}
+	topic := Clickable{
+		ID:   data.ID,
+		Name: data.Title,
+	}
+	return topic, nil
+}
+
+// Term
+func GetTerm(id string) (Term, error) {
+	repo := repo.TermRepo
+	data, err := repo.Read(id)
+	if err != nil {
+		return Term{}, fmt.Errorf("failed to get term with ID %s: %v", id, err)
+	}
+	term := Term{
+		ID:        data.ID,
+		Name:      data.Name,
+		StartDate: data.StartDate,
+		EndDate:   data.EndDate,
+		Note:      data.Note,
+		Remark:    data.Remark,
+	}
+	return term, nil
+}
+
+func GetTermBasic(id string) (Clickable, error) {
+	repo := repo.TermRepo
+	data, err := repo.Read(id)
+	if err != nil {
+		return Clickable{}, fmt.Errorf("failed to get term with ID %s: %v", id, err)
+	}
+	term := Clickable{
+		ID:   data.ID,
+		Name: data.Name,
+	}
+	return term, nil
 }
 
 func GetTopicsByCourse(course string) struct {
