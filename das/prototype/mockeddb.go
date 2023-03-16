@@ -61,8 +61,8 @@ func PopulatePrototypeDb() PrototypeDb {
 		Ratings:    make(map[string]*Rating),
 	}
 	// Subject
-	sub1 := &Subject{ID: "subject1", ShortName: "sub1_short", Name: "Projektmanagement", Owner: "teacher", Note: "Note 1", Remark: "Remark 1"}
-	sub2 := &Subject{ID: "subject2", ShortName: "sub1_short", Name: "Einführung in die Programmierung", Owner: "teacher", Note: "Note 2", Remark: "Remark 2"}
+	sub1 := &Subject{ID: "subject1", ShortName: "PM", Name: "Projektmanagement", Owner: "teacher", Note: "Note 1", Remark: "Remark 1"}
+	sub2 := &Subject{ID: "subject2", ShortName: "EP", Name: "Einführung in die Programmierung", Owner: "teacher", Note: "Note 2", Remark: "Remark 2"}
 	mockedDb.Subjects[sub1.ID] = sub1
 	mockedDb.Subjects[sub2.ID] = sub2
 

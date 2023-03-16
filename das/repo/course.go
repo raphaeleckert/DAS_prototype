@@ -27,6 +27,7 @@ type SubjectInterface interface {
 	Read(id string) (*prototype.Subject, error)
 	Update(subject *prototype.Subject) error
 	Delete(id string) error
+	List() ([]*prototype.Subject, error)
 }
 
 type CourseInterface interface {
@@ -95,6 +96,14 @@ func (repo *SubjectRepository) Read(id string) (*prototype.Subject, error) {
 		return nil, fmt.Errorf("subject not found")
 	}
 	return subject, nil
+}
+
+func (repo *SubjectRepository) List() ([]*prototype.Subject, error) {
+	subjects := []*prototype.Subject{}
+	for _, s := range repo.db.Subjects {
+		subjects = append(subjects, s)
+	}
+	return subjects, nil
 }
 
 func (repo *SubjectRepository) Update(subject *prototype.Subject) error {

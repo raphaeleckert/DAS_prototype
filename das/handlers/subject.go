@@ -20,7 +20,7 @@ func SubjectHandler(w http.ResponseWriter, r *http.Request) {
 		courses := []models.Clickable{models.GetCourseBasic("course1"), models.GetCourseBasic("course2")}
 
 		p := SubjectPage{
-			Subject: *subject,
+			Subject: subject,
 			Courses: courses,
 		}
 

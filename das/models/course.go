@@ -37,7 +37,7 @@ type Subject struct {
 
 type Course struct {
 	ID        string
-	Subject   *Subject
+	Subject   Subject
 	Term      Term
 	Owner     string
 	BeginDate time.Time
@@ -71,14 +71,14 @@ type Term struct {
 	Remark    string
 }
 
-func GetSubject(id string) (*Subject, error) {
+func GetSubject(id string) (Subject, error) {
 	fmt.Println("1")
 	repo := repo.SubjectRepo
 	fmt.Printf("2")
 	fmt.Printf("%+v", repo)
 	data, err := repo.Read(id)
 	if err != nil {
-		return nil, fmt.Errorf("failed to get subject with ID %s: %v", id, err)
+		return Subject{}, fmt.Errorf("failed to get subject with ID %s: %v", id, err)
 	}
 	subject := Subject{
 		ID:        data.ID,
@@ -89,10 +89,31 @@ func GetSubject(id string) (*Subject, error) {
 		Remark:    data.Remark,
 	}
 
-	return &subject, nil
+	return subject, nil
 }
 
-func GetSubjectBasic(id string) (*Clickable, error) {
+func GetSubjectList() ([]Clickable, error) {
+	fmt.Println("1")
+	repo := repo.SubjectRepo
+	fmt.Printf("2")
+	fmt.Printf("%+v", repo)
+	fmt.Printf("2")
+	data, err := repo.List()
+	clickables := []Clickable{}
+	for _, s := range data {
+		clickables = append(clickables, Clickable{
+			ID:   s.ID,
+			Name: s.Name,
+		})
+	}
+
+	if err != nil {
+		return nil, fmt.Errorf("failed retrieve subjects %v", err)
+	}
+	return clickables, nil
+}
+
+func GetSubjectBasic(id string) (Clickable, error) {
 	fmt.Println("1")
 	repo := repo.SubjectRepo
 	fmt.Printf("2")
@@ -104,15 +125,15 @@ func GetSubjectBasic(id string) (*Clickable, error) {
 		Name: data.Name,
 	}
 	if err != nil {
-		return nil, fmt.Errorf("failed to get subject with ID %s: %v", id, err)
+		return Clickable{}, fmt.Errorf("failed to get subject with ID %s: %v", id, err)
 	}
-	return &subject, nil
+	return subject, nil
 }
 
 func GetCourse(id string) Course {
 	return Course{
 		ID: id,
-		Subject: &Subject{
+		Subject: Subject{
 			ID:        id,
 			ShortName: "EXSB",
 			Name:      "Example Subject",

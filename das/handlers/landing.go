@@ -27,8 +27,7 @@ func LandingHandler(w http.ResponseWriter, r *http.Request) {
 		p := LandingPage{}
 		if user.IsTeacher {
 			courses := []models.Clickable{models.GetCourseBasic("course1"), models.GetCourseBasic("course2")}
-			newSub, _ := models.GetSubjectBasic("subject1")
-			subjects := []models.Clickable{*newSub}
+			subjects, _ := models.GetSubjectList()
 			p = LandingPage{
 				Courses:   courses,
 				Subjects:  subjects,

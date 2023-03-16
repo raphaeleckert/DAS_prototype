@@ -123,7 +123,7 @@ func CreateCourseHandler(w http.ResponseWriter, r *http.Request) {
 
 		p := CreateCourseForm{
 			Terms:   terms,
-			Subject: *subject,
+			Subject: subject,
 		}
 
 		t, err := template.ParseFiles(
