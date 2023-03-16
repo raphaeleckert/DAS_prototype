@@ -1,7 +1,10 @@
 package models
 
 import (
+	"fmt"
 	"time"
+
+	"dasagilestudieren/repo"
 )
 
 // Topic Importances
@@ -34,7 +37,7 @@ type Subject struct {
 
 type Course struct {
 	ID        string
-	Subject   Subject
+	Subject   *Subject
 	Term      Term
 	Owner     string
 	BeginDate time.Time
@@ -68,21 +71,55 @@ type Term struct {
 	Remark    string
 }
 
-func GetSubject(id string) Subject {
-	return Subject{
-		ID:        id,
-		ShortName: "EXSB",
-		Name:      "Example Subject",
-		Owner:     "teacherid",
-		Note:      "Subejct Note",
-		Remark:    "Subejct Remark",
+func GetSubject(id string) (*Subject, error) {
+	fmt.Println("1")
+	repo := repo.SubjectRepo
+	fmt.Printf("2")
+	fmt.Printf("%+v", repo)
+	data, err := repo.Read(id)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get subject with ID %s: %v", id, err)
 	}
+	subject := Subject{
+		ID:        data.ID,
+		ShortName: data.ShortName,
+		Name:      data.Name,
+		Owner:     data.Owner,
+		Note:      data.Note,
+		Remark:    data.Remark,
+	}
+
+	return &subject, nil
+}
+
+func GetSubjectBasic(id string) (*Clickable, error) {
+	fmt.Println("1")
+	repo := repo.SubjectRepo
+	fmt.Printf("2")
+	fmt.Printf("%+v", repo)
+	fmt.Printf("2")
+	data, err := repo.Read(id)
+	subject := Clickable{
+		ID:   data.ID,
+		Name: data.Name,
+	}
+	if err != nil {
+		return nil, fmt.Errorf("failed to get subject with ID %s: %v", id, err)
+	}
+	return &subject, nil
 }
 
 func GetCourse(id string) Course {
 	return Course{
-		ID:        id,
-		Subject:   GetSubject("subjectid"),
+		ID: id,
+		Subject: &Subject{
+			ID:        id,
+			ShortName: "EXSB",
+			Name:      "Example Subject",
+			Owner:     "teacherid",
+			Note:      "Subejct Note",
+			Remark:    "Subejct Remark",
+		},
 		Term:      GetTerm("termid"),
 		Owner:     "teacherid",
 		BeginDate: time.Date(2022, time.January, 01, 00, 00, 00, 0, time.UTC),
@@ -97,8 +134,15 @@ func GetCourse(id string) Course {
 func GetTopic(id string) Topic {
 	if id == "blankid" {
 		return Topic{
-			ID:                 "blankid",
-			Subject:            GetSubject("subjectid"),
+			ID: "blankid",
+			Subject: Subject{
+				ID:        id,
+				ShortName: "EXSB",
+				Name:      "Example Subject",
+				Owner:     "teacherid",
+				Note:      "Subejct Note",
+				Remark:    "Subejct Remark",
+			},
 			Title:              "-",
 			Detail:             "-",
 			Reference:          "-",
@@ -110,8 +154,15 @@ func GetTopic(id string) Topic {
 		}
 	}
 	return Topic{
-		ID:                 id,
-		Subject:            GetSubject("subjectid"),
+		ID: id,
+		Subject: Subject{
+			ID:        id,
+			ShortName: "EXSB",
+			Name:      "Example Subject",
+			Owner:     "teacherid",
+			Note:      "Subejct Note",
+			Remark:    "Subejct Remark",
+		},
 		Title:              "Ich sage das Alphabet rückwärts auf",
 		Detail:             "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
 		Reference:          "BT-1",
@@ -155,17 +206,17 @@ func GetCourseBasic(id string) Clickable {
 	}
 }
 
-func GetSubjectBasic(id string) Clickable {
-	return Clickable{
-		ID:   id,
-		Name: "Bachelorthesis",
-	}
-}
-
 func GetTopicsBySubject(subject string) []Topic {
 	topic := Topic{
-		ID:                 "topicId",
-		Subject:            GetSubject(subject),
+		ID: "topicId",
+		Subject: Subject{
+			ID:        "id",
+			ShortName: "EXSB",
+			Name:      "Example Subject",
+			Owner:     "teacherid",
+			Note:      "Subejct Note",
+			Remark:    "Subejct Remark",
+		},
 		Title:              "Ich sage das Alphabet rückwärts auf",
 		Detail:             "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
 		Reference:          "BT-1",
@@ -183,8 +234,15 @@ func GetTopicsByCourse(course string) struct {
 	Unselected []Topic
 } {
 	topic := Topic{
-		ID:                 "topicId",
-		Subject:            GetSubject("subjectid"),
+		ID: "topicId",
+		Subject: Subject{
+			ID:        "id",
+			ShortName: "EXSB",
+			Name:      "Example Subject",
+			Owner:     "teacherid",
+			Note:      "Subejct Note",
+			Remark:    "Subejct Remark",
+		},
 		Title:              "Ich sage das Alphabet rückwärts auf",
 		Detail:             "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
 		Reference:          "BT-1",

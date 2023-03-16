@@ -16,11 +16,11 @@ func SubjectHandler(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == http.MethodGet {
 		subjectid := r.URL.Query().Get("subjectid")
-		subject := models.GetSubject(subjectid)
+		subject, err := models.GetSubject(subjectid)
 		courses := []models.Clickable{models.GetCourseBasic("course1"), models.GetCourseBasic("course2")}
 
 		p := SubjectPage{
-			Subject: subject,
+			Subject: *subject,
 			Courses: courses,
 		}
 

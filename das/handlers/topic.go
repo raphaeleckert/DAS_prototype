@@ -62,9 +62,10 @@ type FormData struct {
 func TopicInfoHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodPost {
 		subjectId := r.URL.Query().Get("subjectid")
+		newSub, _ := models.GetSubject(subjectId)
 		blankTopic := models.Topic{
 			ID:                 "blankid",
-			Subject:            models.GetSubject(subjectId),
+			Subject:            *newSub,
 			Title:              "-",
 			Detail:             "-",
 			Reference:          "-",

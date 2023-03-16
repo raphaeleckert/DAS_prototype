@@ -3,55 +3,70 @@ package repo
 import (
 	"fmt"
 
-	"dasagilestudieren/models"
 	"dasagilestudieren/prototype"
 )
 
-type SubjectRepository struct {
-	db prototype.PrototypeDb
+func NewCourseRepository(db *prototype.PrototypeDb) *CourseRepository {
+	return &CourseRepository{db: db}
 }
 
-type CourseRepository struct {
-	db prototype.PrototypeDb
+func NewSubjectRepository(db *prototype.PrototypeDb) *SubjectRepository {
+	return &SubjectRepository{db: db}
 }
 
-type TopicRepository struct {
-	db prototype.PrototypeDb
+func NewTopicRepository(db *prototype.PrototypeDb) *CourseRepository {
+	return &CourseRepository{db: db}
 }
 
-type TermRepository struct {
-	db prototype.PrototypeDb
+func NewTermRepository(db *prototype.PrototypeDb) *CourseRepository {
+	return &CourseRepository{db: db}
 }
 
 type SubjectInterface interface {
-	Create(subject *models.Subject) error
-	Read(id string) (*models.Subject, error)
-	Update(subject *models.Subject) error
+	Create(subject *prototype.Subject) error
+	Read(id string) (*prototype.Subject, error)
+	Update(subject *prototype.Subject) error
 	Delete(id string) error
 }
 
 type CourseInterface interface {
-	Create(course *models.Course) error
-	Read(id string) (*models.Course, error)
-	Update(course *models.Course) error
+	Create(course *prototype.Course) error
+	Read(id string) (*prototype.Course, error)
+	Update(course *prototype.Course) error
 	Delete(id string) error
-	ListBySubject(subjectID string) ([]*models.Course, error)
-	ListByTerm(termID string) ([]*models.Course, error)
+	ListBySubject(subjectID string) ([]*prototype.Course, error)
+	ListByTerm(termID string) ([]*prototype.Course, error)
 }
 
 type TopicInterface interface {
-	Create(topic *models.Topic) error
-	Read(id string) (*models.Topic, error)
-	Update(topic *models.Topic) error
+	Create(topic *prototype.Topic) error
+	Read(id string) (*prototype.Topic, error)
+	Update(topic *prototype.Topic) error
 	Delete(id string) error
-	ListBySubject(subjectID string) ([]*models.Topic, error)
+	ListBySubject(subjectID string) ([]*prototype.Topic, error)
 }
 
 type TermInterface interface {
-	Create(term *models.Term) error
-	Read(id string) (*models.Term, error)
-	Update(term *models.Term) error
+	Create(term *prototype.Term) error
+	Read(id string) (*prototype.Term, error)
+	Update(term *prototype.Term) error
 	Delete(id string) error
+}
+
+type SubjectRepository struct {
+	db *prototype.PrototypeDb
+}
+
+type CourseRepository struct {
+	db *prototype.PrototypeDb
+}
+
+type TopicRepository struct {
+	db *prototype.PrototypeDb
+}
+
+type TermRepository struct {
+	db *prototype.PrototypeDb
 }
 
 // Course

@@ -53,9 +53,14 @@ func CourseHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+		newSub, err := models.GetSubject(subjectId)
+		if err != nil {
+
+		}
+
 		newCourse := models.Course{
 			ID:        "newid",
-			Subject:   models.GetSubject(subjectId),
+			Subject:   newSub,
 			Term:      models.GetTerm(termId),
 			Owner:     user.Username,
 			BeginDate: beginDateTime,
@@ -114,11 +119,11 @@ func CreateCourseHandler(w http.ResponseWriter, r *http.Request) {
 		subjectId := r.URL.Query().Get("subjectid")
 
 		terms := []models.Clickable{models.GetTermBasic("term1"), models.GetTermBasic("term2")}
-		subject := models.GetSubjectBasic(subjectId)
+		subject, _ := models.GetSubjectBasic(subjectId)
 
 		p := CreateCourseForm{
 			Terms:   terms,
-			Subject: subject,
+			Subject: *subject,
 		}
 
 		t, err := template.ParseFiles(

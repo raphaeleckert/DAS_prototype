@@ -7,7 +7,6 @@ import (
 	"dasagilestudieren/models"
 )
 
-
 type LandingPage struct {
 	Courses   []models.Clickable
 	Subjects  []models.Clickable
@@ -28,7 +27,8 @@ func LandingHandler(w http.ResponseWriter, r *http.Request) {
 		p := LandingPage{}
 		if user.IsTeacher {
 			courses := []models.Clickable{models.GetCourseBasic("course1"), models.GetCourseBasic("course2")}
-			subjects := []models.Clickable{models.GetSubjectBasic("sub1"), models.GetSubjectBasic("sub2")}
+			newSub, _ := models.GetSubjectBasic("subject1")
+			subjects := []models.Clickable{*newSub}
 			p = LandingPage{
 				Courses:   courses,
 				Subjects:  subjects,

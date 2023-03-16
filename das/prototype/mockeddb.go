@@ -1,8 +1,37 @@
 package prototype
 
 import (
-	"dasagilestudieren/models"
 	"time"
+)
+
+// Topic Importances
+const (
+	IMP_ESSENTIAL = "Prerequisite for other topics"
+	IMP_MUST      = "Basic knowledge"
+	IMP_SHOULD    = "Average knowledge"
+	IMP_COULD     = "Special knowledge"
+	IMP_VOLUNTARY = "Voluntary topic"
+)
+
+// Topic Required Supporters
+const (
+	SUP_NONE = "No Supporters"
+	SUP_ONE  = "One Supporter"
+	SUP_TWO  = "Two Supporters"
+	SUP_HALF = "Half of the Team"
+	SUP_BUT  = "All but One"
+	SUP_ALL  = "All Team Members"
+)
+
+// Solution States
+const (
+	STATE_UNKNOWN  = "Unknown"
+	STATE_INWORK   = "In Work"
+	STATE_READY    = "Ready to Review"
+	STATE_INREVIEW = "In Review"
+	STATE_REJECTED = "Rejected"
+	STATE_DONE     = "Done"
+	STATE_FINAL    = "Final"
 )
 
 type PrototypeDb struct {
@@ -38,12 +67,12 @@ func PopulatePrototypeDb() PrototypeDb {
 	mockedDb.Subjects[sub2.ID] = sub2
 
 	// Topic
-	topic1 := &Topic{ID: "topic1", Title: "Topic 1", Subject: sub1.ID, Number: "1", Detail: "Details for Topic 1", Reference: "BTXT-1", SolutionIdea: "Solution idea for Topic 1", Remark: "Remark 1", Tags: []string{"tag1", "tag2"}, Importance: models.IMP_ESSENTIAL, RequiredSupporters: models.SUP_BUT}
-	topic2 := &Topic{ID: "topic2", Title: "Topic 2", Subject: sub1.ID, Number: "2", Detail: "Details for Topic 2", Reference: "BTXT-2", SolutionIdea: "Solution idea for Topic 2", Remark: "Remark 2", Tags: []string{"tag2", "tag3"}, Importance: models.IMP_SHOULD, RequiredSupporters: models.SUP_HALF}
-	topic3 := &Topic{ID: "topic3", Title: "Topic 3", Subject: sub1.ID, Number: "3", Detail: "Details for Topic 3", Reference: "BTXT-3", SolutionIdea: "Solution idea for Topic 3", Remark: "Remark 3", Tags: []string{"tag2", "tag3"}, Importance: models.IMP_SHOULD, RequiredSupporters: models.SUP_HALF}
-	topic4 := &Topic{ID: "topic4", Title: "Topic 4", Subject: sub1.ID, Number: "4", Detail: "Details for Topic 4", Reference: "BTXT-4", SolutionIdea: "Solution idea for Topic 4", Remark: "Remark 4", Tags: []string{"tag2", "tag3"}, Importance: models.IMP_SHOULD, RequiredSupporters: models.SUP_HALF}
-	topic5 := &Topic{ID: "topic5", Title: "Topic 5", Subject: sub1.ID, Number: "5", Detail: "Details for Topic 5", Reference: "BTXT-5", SolutionIdea: "Solution idea for Topic 5", Remark: "Remark 5", Tags: []string{"tag2", "tag3"}, Importance: models.IMP_SHOULD, RequiredSupporters: models.SUP_HALF}
-	topic6 := &Topic{ID: "topic6", Title: "Topic 6", Subject: sub1.ID, Number: "6", Detail: "Details for Topic 6", Reference: "BTXT-6", SolutionIdea: "Solution idea for Topic 6", Remark: "Remark 6", Tags: []string{"tag2", "tag3"}, Importance: models.IMP_SHOULD, RequiredSupporters: models.SUP_HALF}
+	topic1 := &Topic{ID: "topic1", Title: "Topic 1", Subject: sub1.ID, Number: "1", Detail: "Details for Topic 1", Reference: "BTXT-1", SolutionIdea: "Solution idea for Topic 1", Remark: "Remark 1", Tags: []string{"tag1", "tag2"}, Importance: IMP_ESSENTIAL, RequiredSupporters: SUP_BUT}
+	topic2 := &Topic{ID: "topic2", Title: "Topic 2", Subject: sub1.ID, Number: "2", Detail: "Details for Topic 2", Reference: "BTXT-2", SolutionIdea: "Solution idea for Topic 2", Remark: "Remark 2", Tags: []string{"tag2", "tag3"}, Importance: IMP_SHOULD, RequiredSupporters: SUP_HALF}
+	topic3 := &Topic{ID: "topic3", Title: "Topic 3", Subject: sub1.ID, Number: "3", Detail: "Details for Topic 3", Reference: "BTXT-3", SolutionIdea: "Solution idea for Topic 3", Remark: "Remark 3", Tags: []string{"tag2", "tag3"}, Importance: IMP_SHOULD, RequiredSupporters: SUP_HALF}
+	topic4 := &Topic{ID: "topic4", Title: "Topic 4", Subject: sub1.ID, Number: "4", Detail: "Details for Topic 4", Reference: "BTXT-4", SolutionIdea: "Solution idea for Topic 4", Remark: "Remark 4", Tags: []string{"tag2", "tag3"}, Importance: IMP_SHOULD, RequiredSupporters: SUP_HALF}
+	topic5 := &Topic{ID: "topic5", Title: "Topic 5", Subject: sub1.ID, Number: "5", Detail: "Details for Topic 5", Reference: "BTXT-5", SolutionIdea: "Solution idea for Topic 5", Remark: "Remark 5", Tags: []string{"tag2", "tag3"}, Importance: IMP_SHOULD, RequiredSupporters: SUP_HALF}
+	topic6 := &Topic{ID: "topic6", Title: "Topic 6", Subject: sub1.ID, Number: "6", Detail: "Details for Topic 6", Reference: "BTXT-6", SolutionIdea: "Solution idea for Topic 6", Remark: "Remark 6", Tags: []string{"tag2", "tag3"}, Importance: IMP_SHOULD, RequiredSupporters: SUP_HALF}
 	mockedDb.Topics[topic1.ID] = topic1
 	mockedDb.Topics[topic2.ID] = topic2
 	mockedDb.Topics[topic3.ID] = topic3
@@ -70,12 +99,12 @@ func PopulatePrototypeDb() PrototypeDb {
 	mockedDb.Teams[team2.ID] = team2
 
 	// Solution
-	solution1 := &Solution{ID: "solution1", Team: team1.ID, Topic: topic1.ID, State: models.STATE_INWORK, Remark: "Remark 1"}
-	solution2 := &Solution{ID: "solution2", Team: team1.ID, Topic: topic2.ID, State: models.STATE_INREVIEW, Remark: "Remark 2"}
-	solution3 := &Solution{ID: "solution3", Team: team1.ID, Topic: topic3.ID, State: models.STATE_READY, Remark: "Remark 2"}
-	solution4 := &Solution{ID: "solution4", Team: team1.ID, Topic: topic4.ID, State: models.STATE_READY, Remark: "Remark 2"}
-	solution5 := &Solution{ID: "solution5", Team: team1.ID, Topic: topic5.ID, State: models.STATE_INREVIEW, Remark: "Remark 2"}
-	solution6 := &Solution{ID: "solution6", Team: team1.ID, Topic: topic6.ID, State: models.STATE_FINAL, Remark: "Remark 2"}
+	solution1 := &Solution{ID: "solution1", Team: team1.ID, Topic: topic1.ID, State: STATE_INWORK, Remark: "Remark 1"}
+	solution2 := &Solution{ID: "solution2", Team: team1.ID, Topic: topic2.ID, State: STATE_INREVIEW, Remark: "Remark 2"}
+	solution3 := &Solution{ID: "solution3", Team: team1.ID, Topic: topic3.ID, State: STATE_READY, Remark: "Remark 2"}
+	solution4 := &Solution{ID: "solution4", Team: team1.ID, Topic: topic4.ID, State: STATE_READY, Remark: "Remark 2"}
+	solution5 := &Solution{ID: "solution5", Team: team1.ID, Topic: topic5.ID, State: STATE_INREVIEW, Remark: "Remark 2"}
+	solution6 := &Solution{ID: "solution6", Team: team1.ID, Topic: topic6.ID, State: STATE_FINAL, Remark: "Remark 2"}
 	mockedDb.Solutions[solution1.ID] = solution1
 	mockedDb.Solutions[solution2.ID] = solution2
 	mockedDb.Solutions[solution3.ID] = solution3

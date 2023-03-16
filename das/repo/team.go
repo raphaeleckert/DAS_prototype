@@ -1,54 +1,54 @@
 package repo
 
 import (
-	"dasagilestudieren/models"
+	"dasagilestudieren/prototype"
 )
 
 type TeamRepository interface {
-	Create(team *models.Team) error
-	Read(id string) (*models.Team, error)
-	Update(team *models.Team) error
+	Create(team *prototype.Team) error
+	Read(id string) (*prototype.Team, error)
+	Update(team *prototype.Team) error
 	Delete(id string) error
-	ListByCourse(courseID string) ([]*models.Team, error)
+	ListByCourse(courseID string) ([]*prototype.Team, error)
 }
 
 type SolutionRepository interface {
-	Create(solution *models.Solution) error
-	Read(id string) (*models.Solution, error)
-	Update(solution *models.Solution) error
+	Create(solution *prototype.Solution) error
+	Read(id string) (*prototype.Solution, error)
+	Update(solution *prototype.Solution) error
 	Delete(id string) error
-	ListByTopic(topicID string) ([]*models.Solution, error)
-	ListByTeam(teamID string) ([]*models.Solution, error)
+	ListByTopic(topicID string) ([]*prototype.Solution, error)
+	ListByTeam(teamID string) ([]*prototype.Solution, error)
 }
 
 type ProposalRepository interface {
-	Create(proposal *models.Proposal) error
-	Read(id string) (*models.Proposal, error)
-	Update(proposal *models.Proposal) error
+	Create(proposal *prototype.Proposal) error
+	Read(id string) (*prototype.Proposal, error)
+	Update(proposal *prototype.Proposal) error
 	Delete(id string) error
 }
 
 type SupporterRepository interface {
-	Create(supporter *models.Supporter) error
-	Read(id string) (*models.Supporter, error)
-	Update(supporter *models.Supporter) error
+	Create(supporter *prototype.Supporter) error
+	Read(id string) (*prototype.Supporter, error)
+	Update(supporter *prototype.Supporter) error
 	Delete(id string) error
-	ListByProposal(proposalID string) ([]*models.Supporter, error)
+	ListByProposal(proposalID string) ([]*prototype.Supporter, error)
 }
 
 type ReviewRepository interface {
-	Create(review *models.Review) error
-	Read(id string) (*models.Review, error)
-	Update(review *models.Review) error
+	Create(review *prototype.Review) error
+	Read(id string) (*prototype.Review, error)
+	Update(review *prototype.Review) error
 	Delete(id string) error
-	ListByCourse(courseID string) ([]*models.Review, error)
+	ListByCourse(courseID string) ([]*prototype.Review, error)
 }
 
 type RatingRepository interface {
-	Create(rating *models.Rating) error
-	Read(id string) (*models.Rating, error)
-	Update(rating *models.Rating) error
+	Create(rating *prototype.Rating) error
+	Read(id string) (*prototype.Rating, error)
+	Update(rating *prototype.Rating) error
 	Delete(id string) error
-	ListByProposal(proposalID string) ([]*models.Rating, error)
-	ListByReview(reviewID string) ([]*models.Rating, error)
+	ListByProposal(proposalID string) ([]*prototype.Rating, error)
+	ListByReview(reviewID string) ([]*prototype.Rating, error)
 }
