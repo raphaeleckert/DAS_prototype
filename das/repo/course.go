@@ -27,7 +27,7 @@ type SubjectInterface interface {
 	Read(id string) (*prototype.Subject, error)
 	Update(subject *prototype.Subject) error
 	Delete(id string) error
-	List() ([]*prototype.Subject, error)
+	ListByOwner(ownerID string) ([]*prototype.Subject, error)
 }
 
 type CourseInterface interface {
@@ -79,9 +79,27 @@ func (repo *CourseRepository) Create(course *prototype.Course) error {
 func (repo *CourseRepository) Read(id string) (*prototype.Course, error) {
 	course, ok := repo.db.Courses[id]
 	if !ok {
-		return nil, fmt.Errorf("course not found")
+			return nil, fmt.Errorf("course not found")
 	}
 	return course, nil
+}
+
+func (repo *CourseRepository) Update(course *prototype.Course) error {
+	_, ok := repo.db.Courses[course.ID]
+	if !ok {
+			return fmt.Errorf("course not found")
+	}
+	repo.db.Courses[course.ID] = course
+	return nil
+}
+
+func (repo *CourseRepository) Delete(id string) error {
+	_, ok := repo.db.Courses[id]
+	if !ok {
+			return fmt.Errorf("course not found")
+	}
+	delete(repo.db.Courses, id)
+	return nil
 }
 
 // Subject
@@ -98,10 +116,12 @@ func (repo *SubjectRepository) Read(id string) (*prototype.Subject, error) {
 	return subject, nil
 }
 
-func (repo *SubjectRepository) List() ([]*prototype.Subject, error) {
+func (repo *SubjectRepository) List(owner string) ([]*prototype.Subject, error) {
 	subjects := []*prototype.Subject{}
 	for _, s := range repo.db.Subjects {
-		subjects = append(subjects, s)
+		if s.Owner == owner {
+			subjects = append(subjects, s)
+		}
 	}
 	return subjects, nil
 }

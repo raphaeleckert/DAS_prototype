@@ -72,10 +72,7 @@ type Term struct {
 }
 
 func GetSubject(id string) (Subject, error) {
-	fmt.Println("1")
 	repo := repo.SubjectRepo
-	fmt.Printf("2")
-	fmt.Printf("%+v", repo)
 	data, err := repo.Read(id)
 	if err != nil {
 		return Subject{}, fmt.Errorf("failed to get subject with ID %s: %v", id, err)
@@ -88,17 +85,12 @@ func GetSubject(id string) (Subject, error) {
 		Note:      data.Note,
 		Remark:    data.Remark,
 	}
-
 	return subject, nil
 }
 
-func GetSubjectList() ([]Clickable, error) {
-	fmt.Println("1")
+func GetSubjectListBasic(owner string) ([]Clickable, error) {
 	repo := repo.SubjectRepo
-	fmt.Printf("2")
-	fmt.Printf("%+v", repo)
-	fmt.Printf("2")
-	data, err := repo.List()
+	data, err := repo.List(owner)
 	clickables := []Clickable{}
 	for _, s := range data {
 		clickables = append(clickables, Clickable{
@@ -153,6 +145,7 @@ func GetCourse(id string) Course {
 }
 
 func GetTopic(id string) Topic {
+
 	if id == "blankid" {
 		return Topic{
 			ID: "blankid",
