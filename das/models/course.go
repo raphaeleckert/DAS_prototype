@@ -107,11 +107,7 @@ func GetSubjectListBasic(owner string) ([]Clickable, error) {
 }
 
 func GetSubjectBasic(id string) (Clickable, error) {
-	fmt.Println("1")
 	repo := repo.SubjectRepo
-	fmt.Printf("2")
-	fmt.Printf("%+v", repo)
-	fmt.Printf("2")
 	data, err := repo.Read(id)
 	subject := Clickable{
 		ID:   data.ID,
@@ -127,13 +123,7 @@ func GetSubjectBasic(id string) (Clickable, error) {
 func GetCourse(id string) (Course, error) {
 	repo := repo.CourseRepo
 	data, err := repo.Read(id)
-	if err != nil {
-		return Course{}, fmt.Errorf("failed to get course with ID %s: %v", id, err)
-	}
 	subject, err := GetSubject(data.Subject)
-	if err != nil {
-		return Course{}, fmt.Errorf("failed to get subject for course with ID %s: %v", id, err)
-	}
 	term, err := GetTerm(data.Term)
 	if err != nil {
 		return Course{}, fmt.Errorf("failed to get term for course with ID %s: %v", id, err)
@@ -153,11 +143,40 @@ func GetCourse(id string) (Course, error) {
 	return course, nil
 }
 
-func GetCourseBasic(id string) Clickable {
-	return Clickable{
-		ID:   id,
-		Name: "Bachelorthesis Wintersemester 2023",
+func GetCourseBasic(id string) (Clickable, error) {
+	repo := repo.CourseRepo
+	data, err := repo.Read(id)
+	subject, err := GetSubject(data.Subject)
+	term, err := GetTerm(data.Term)
+	if err != nil {
+		return Clickable{}, fmt.Errorf("failed to get course with ID %s: %v", id, err)
 	}
+	course := Clickable{
+		ID:   data.ID,
+		Name: fmt.Sprintf("%s | %s", subject.Name, term.Name),
+	}
+	return course, nil
+}
+
+func GetCourseBasicListBySubject(subjectID string) ([]Clickable, error) {
+	repo := repo.CourseRepo
+	data, err := repo.ListBySubject(subjectID)
+	clickables := []Clickable{}
+	for _, s := range data {
+		subject, err := GetSubjectBasic(s.Subject)
+		term, err := GetTermBasic(s.Subject)
+		if err != nil {
+			return []Clickable{}, fmt.Errorf("failed to get courses from subject %s: %v", subjectID, err)
+		}
+		clickables = append(clickables, Clickable{
+			ID:   s.ID,
+			Name: fmt.Sprintf("%s | %s", subject.Name, term.Name),
+		})
+	}
+	if err != nil {
+		return []Clickable{}, fmt.Errorf("failed to get courses from subject %s: %v", subjectID, err)
+	}
+	return clickables, nil
 }
 
 // Topic
@@ -200,6 +219,65 @@ func GetTopicBasic(id string) (Clickable, error) {
 	return topic, nil
 }
 
+func GetTopicsByCourse(courseID string) (struct {
+	Selected   []Topic
+	Unselected []Topic
+}, error) {
+	topicRepo := repo.TopicRepo
+	course, err := GetCourse(courseID)
+	subject, err := GetSubject(course.Subject.ID)
+	if err != nil {
+		return struct {
+			Selected   []Topic
+			Unselected []Topic
+		}{}, fmt.Errorf("failed to get topics for course %s: %v", course, err)
+	}
+
+	allTopics, err := topicRepo.ListBySubject(subject.ID)
+	populatedTopics := []Topic{}
+
+	var selected = []Topic{}
+	var unselected = []Topic{}
+
+	for _, topic := range allTopics {
+		populatedTopics = append(populatedTopics, Topic{
+			ID:                 topic.ID,
+			Title:              topic.Title,
+			Subject:            subject,
+			Number:             topic.Number,
+			Detail:             topic.Detail,
+			Reference:          topic.Reference,
+			SolutionIdea:       topic.SolutionIdea,
+			Remark:             topic.Remark,
+			Tags:               topic.Tags,
+			Importance:         topic.Importance,
+			RequiredSupporters: topic.RequiredSupporters,
+		})
+	}
+
+	for _, subjectTopic := range populatedTopics {
+		found := false
+		for _, courseTopic := range course.Topics {
+			if subjectTopic.ID == courseTopic {
+				selected = append(selected, subjectTopic)
+				found = true
+				break
+			}
+		}
+		if !found {
+			unselected = append(unselected, subjectTopic)
+		}
+	}
+
+	return struct {
+		Selected   []Topic
+		Unselected []Topic
+	}{
+		Selected:   selected,
+		Unselected: unselected,
+	}, nil
+}
+
 // Term
 func GetTerm(id string) (Term, error) {
 	repo := repo.TermRepo
@@ -229,36 +307,4 @@ func GetTermBasic(id string) (Clickable, error) {
 		Name: data.Name,
 	}
 	return term, nil
-}
-
-func GetTopicsByCourse(course string) struct {
-	Selected   []Topic
-	Unselected []Topic
-} {
-	topic := Topic{
-		ID: "topicId",
-		Subject: Subject{
-			ID:        "id",
-			ShortName: "EXSB",
-			Name:      "Example Subject",
-			Owner:     "teacherid",
-			Note:      "Subejct Note",
-			Remark:    "Subejct Remark",
-		},
-		Title:              "Ich sage das Alphabet rückwärts auf",
-		Detail:             "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
-		Reference:          "BT-1",
-		SolutionIdea:       "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea",
-		Remark:             "Topic Remark",
-		Tags:               []string{"buchstaben", "reihenfolge"},
-		Importance:         IMP_ESSENTIAL,
-		RequiredSupporters: SUP_HALF,
-	}
-	return struct {
-		Selected   []Topic
-		Unselected []Topic
-	}{
-		Selected:   []Topic{topic, topic, topic},
-		Unselected: []Topic{topic, topic, topic},
-	}
 }

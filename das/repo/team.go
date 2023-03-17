@@ -51,6 +51,7 @@ type ProposalInterface interface {
 	Read(id string) (*prototype.Proposal, error)
 	Update(proposal *prototype.Proposal) error
 	Delete(id string) error
+	ListBySolution(solution string) ([]*prototype.Proposal, error)
 }
 
 type SupporterInterface interface {
@@ -226,6 +227,19 @@ func (repo *ProposalRepository) Delete(id string) error {
 	}
 	delete(repo.db.Proposals, id)
 	return nil
+}
+
+func (repo *ProposalRepository) ListBySolution(solution string) ([]*prototype.Proposal, error) {
+	var result []*prototype.Proposal
+	for _, proposal := range repo.db.Proposals {
+		if proposal.Solution == solution {
+			result = append(result, proposal)
+		}
+	}
+	if len(result) == 0 {
+		return nil, fmt.Errorf("no proposals with solution %s found", solution)
+	}
+	return result, nil
 }
 
 // Supporter

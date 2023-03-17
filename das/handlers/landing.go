@@ -23,22 +23,26 @@ func LandingHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		//TODO: Get real list of courses
-		teams := []models.Clickable{models.GetTeamBasic("team1"), models.GetTeamBasic("team2")}
+		team, _ := models.GetTeamBasic("team1")
 		p := LandingPage{}
 		if user.IsTeacher {
-			courses := []models.Clickable{models.GetCourseBasic("course1"), models.GetCourseBasic("course2")}
+			course, err := models.GetCourseBasic("course1")
+			if err != nil {
+				http.Error(w, err.Error(), http.StatusInternalServerError)
+				return
+			}
 			subjects, _ := models.GetSubjectListBasic(user.Username)
 			p = LandingPage{
-				Courses:   courses,
+				Courses:   []models.Clickable{course, course},
 				Subjects:  subjects,
-				Teams:     teams,
+				Teams:     []models.Clickable{team, team},
 				IsTeacher: true,
 			}
 		} else {
 			p = LandingPage{
 				Courses:   []models.Clickable{},
 				Subjects:  []models.Clickable{},
-				Teams:     teams,
+				Teams:     []models.Clickable{team, team},
 				IsTeacher: false,
 			}
 		}

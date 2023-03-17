@@ -48,15 +48,16 @@ func CourseHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		newSub, err := models.GetSubject(subjectId)
+		subject, err := models.GetSubject(subjectId)
+		term, err := models.GetTerm(termId)
 		if err != nil {
 
 		}
 
 		newCourse := models.Course{
 			ID:        "newid",
-			Subject:   newSub,
-			Term:      models.GetTerm(termId),
+			Subject:   subject,
+			Term:      term,
 			Owner:     user.Username,
 			BeginDate: beginDateTime,
 			FinalDate: finalDateTime,
@@ -75,17 +76,17 @@ func CourseHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
 		courseId := r.URL.Query().Get("courseid")
 
-		course := models.GetCourse(courseId)
+		course, _ := models.GetCourse(courseId)
 
 		//TODO: Get real list of courses
-		reviews := []models.Clickable{models.GetReviewBasic("review1"), models.GetReviewBasic("review2")}
-		teams := []models.Clickable{models.GetTeamBasic("team1"), models.GetTeamBasic("team2")}
-		topics := []models.Clickable{models.GetTopicBasic("topic1"), models.GetTopicBasic("topic2")}
+		review, _ := models.GetReviewBasic("review1")
+		team, _ := models.GetTeamBasic("team1")
+		topic, _ := models.GetTopicBasic("topic1")
 
 		p := CoursePage{
-			Reviews:    reviews,
-			Teams:      teams,
-			Topics:     topics,
+			Reviews:    []models.Clickable{review, review, review},
+			Teams:      []models.Clickable{team, team, team},
+			Topics:     []models.Clickable{topic, topic, topic},
 			CourseData: course,
 		}
 
@@ -113,11 +114,11 @@ func CreateCourseHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
 		subjectId := r.URL.Query().Get("subjectid")
 
-		terms := []models.Clickable{models.GetTermBasic("term1"), models.GetTermBasic("term2")}
+		term, _ := models.GetTermBasic("term1")
 		subject, _ := models.GetSubjectBasic(subjectId)
 
 		p := CreateCourseForm{
-			Terms:   terms,
+			Terms:   []models.Clickable{term, term, term},
 			Subject: subject,
 		}
 
@@ -155,9 +156,12 @@ func CourseTopicHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	if r.Method == http.MethodGet || r.Method == http.MethodPost {
 		courseId := r.URL.Query().Get("courseid")
-		courseData := models.GetCourse(courseId)
-		courseTopics := models.GetTopicsByCourse(courseId)
-
+		courseData, err := models.GetCourse(courseId)
+		courseTopics, err := models.GetTopicsByCourse(courseId)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 		p := CourseTopicPage{
 			CourseData:   courseData,
 			CourseTopics: courseTopics,

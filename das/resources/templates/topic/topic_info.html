@@ -30,7 +30,7 @@
       <label><b>Courses</b></label>
       {{range $index, $val := .TopicCourses}}
       <p>
-        <div class="w3-button" hx-get="/course?={{$val.CourseId}}" hx-target="body" hx-push-url="true">{{ $val.CourseName }}</div>
+        <div class="w3-button" hx-get="/course?={{$val.ID}}" hx-target="body" hx-push-url="true">{{ $val.Name }}</div>
       </p>
       {{end}}
       <br>

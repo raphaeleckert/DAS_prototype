@@ -125,14 +125,14 @@ func PopulatePrototypeDb() PrototypeDb {
 	mockedDb.Supporters[supporter2.ID] = supporter2
 
 	// Review
-	review1 := &Review{ID: "r1", Course: "course1", ReviewDate: time.Now(), MaxReviews: 10, BeginDate: time.Now(), EndDate: time.Now().Add(time.Hour * 24), Note: "Note 1", Remark: "Remark 1"}
-	review2 := &Review{ID: "r2", Course: "course2", ReviewDate: time.Now(), MaxReviews: 5, BeginDate: time.Now(), EndDate: time.Now().Add(time.Hour * 24), Note: "Note 2", Remark: "Remark 2"}
+	review1 := &Review{ID: "review1", Course: "course1", ReviewDate: time.Now(), MaxReviews: 10, BeginDate: time.Now(), EndDate: time.Now().Add(time.Hour * 24), Note: "Note 1", Remark: "Remark 1"}
+	review2 := &Review{ID: "review2", Course: "course2", ReviewDate: time.Now(), MaxReviews: 5, BeginDate: time.Now(), EndDate: time.Now().Add(time.Hour * 24), Note: "Note 2", Remark: "Remark 2"}
 	mockedDb.Reviews[review1.ID] = review1
 	mockedDb.Reviews[review2.ID] = review2
 
 	// Rating
-	rating1 := &Rating{ID: "ra1", Proposal: proposal1.ID, Review: "r1", Rating: 2, Remark: "Remark 1"}
-	rating2 := &Rating{ID: "ra2", Proposal: proposal2.ID, Review: "r2", Rating: 3, Remark: "Remark 2"}
+	rating1 := &Rating{ID: "rating1", Proposal: proposal1.ID, Review: "r1", Rating: 2, Remark: "Remark 1"}
+	rating2 := &Rating{ID: "rating2", Proposal: proposal2.ID, Review: "r2", Rating: 3, Remark: "Remark 2"}
 	mockedDb.Ratings[rating1.ID] = rating1
 	mockedDb.Ratings[rating2.ID] = rating2
 
