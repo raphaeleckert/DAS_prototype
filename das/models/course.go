@@ -123,6 +123,10 @@ func GetSubjectBasic(id string) (Clickable, error) {
 func GetCourse(id string) (Course, error) {
 	repo := repo.CourseRepo
 	data, err := repo.Read(id)
+	if err != nil {
+		return Course{}, fmt.Errorf("failed to get term for course with ID %s: %v", id, err)
+	}
+	fmt.Printf(" subject %v ", data.Subject)
 	subject, err := GetSubject(data.Subject)
 	term, err := GetTerm(data.Term)
 	if err != nil {

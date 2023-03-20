@@ -1,10 +1,10 @@
 {{define "htmx-response"}}
-<form hx-post="/solve?teamid={{ .TeamId }}&topicId={{ .TopicId }}" hx-target="body">
+<form hx-post="/solve?teamid={{ .TeamId }}&topicid={{ .TopicId }}" hx-target="body">
   <label><b>Proposal</b></label>
   <textarea class="w3-input w3-border" name="detail" rows="8">
 
   </textarea>
   <button class="w3-button w3-indigo">Save</button>
-  <button hx-get="/solve?teamid={{ .TeamId }}&topicId={{ .TopicId }}" hx-target="body" class="w3-button w3-light-grey">Cancel</button>
+  <button hx-get="/solve?teamid={{ .TeamId }}&topicid={{ .TopicId }}" hx-target="body" class="w3-button w3-light-grey">Cancel</button>
 </form>
 {{end}}

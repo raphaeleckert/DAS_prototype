@@ -195,6 +195,45 @@ func TopicEditHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+func TopicCreateHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodGet {
+		topicId := r.URL.Query().Get("topicid")
+		tags := []string{"a tag", "another tag", "yet another tag"}
+		importanceOptions := []string{models.IMP_ESSENTIAL, models.IMP_MUST, models.IMP_SHOULD, models.IMP_COULD, models.IMP_VOLUNTARY}
+		supporterOptions := []string{models.SUP_NONE, models.SUP_ONE, models.SUP_TWO, models.SUP_HALF, models.SUP_BUT, models.SUP_ALL}
+		topic, err := models.GetTopic(topicId)
+		coursesWithSubject, err := models.GetCourseBasicListBySubject("course1")
+		p := TopicEditPage{
+			TopicId:           topic.ID,
+			TopicTitle:        topic.Title,
+			TopicRef:          topic.Reference,
+			TopicDetail:       topic.Detail,
+			TopicSolutionIdea: topic.SolutionIdea,
+			TopicTags:         topic.Tags,
+			TopicSupporters:   topic.RequiredSupporters,
+			TopicRemark:       topic.Remark,
+			TopicImportance:   topic.Importance,
+			TopicSubject:      topic.Subject.Name,
+			TopicCourses:      coursesWithSubject,
+			SupporterOptions:  supporterOptions,
+			TagOptions:        tags,
+			ImportanceOptions: importanceOptions,
+		}
+		t, err := template.ParseFiles(
+			"../resources/templates/htmx_wrapper.html",
+			"../resources/templates/topic/topic_edit.html")
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		err = t.ExecuteTemplate(w, "htmx_wrapper", p)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}
+}
+
 type TopicList struct {
 	TopicTable []models.Topic
 }

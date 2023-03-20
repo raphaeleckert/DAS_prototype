@@ -131,8 +131,8 @@ func PopulatePrototypeDb() PrototypeDb {
 	mockedDb.Reviews[review2.ID] = review2
 
 	// Rating
-	rating1 := &Rating{ID: "rating1", Proposal: proposal1.ID, Review: "r1", Rating: 2, Remark: "Remark 1"}
-	rating2 := &Rating{ID: "rating2", Proposal: proposal2.ID, Review: "r2", Rating: 3, Remark: "Remark 2"}
+	rating1 := &Rating{ID: "rating1", Proposal: proposal1.ID, Review: "review1", Rating: 2, Remark: "Remark 1"}
+	rating2 := &Rating{ID: "rating2", Proposal: proposal2.ID, Review: "review2", Rating: 3, Remark: "Remark 2"}
 	mockedDb.Ratings[rating1.ID] = rating1
 	mockedDb.Ratings[rating2.ID] = rating2
 

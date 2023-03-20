@@ -164,9 +164,12 @@ func GetProposal(id string) (Proposal, error) {
 func GetProposalBySolution(solutionID string) (Proposal, error) {
 	repo := repo.ProposalRepo
 	proposal, err := repo.ListBySolution(solutionID)
+	if err != nil || len(proposal) == 0 {
+		return Proposal{}, fmt.Errorf("failed to get proposal for solution %s: %v", solutionID, err)
+	}
 	solution, err := GetSolution(proposal[0].Solution)
 	if err != nil {
-		return Proposal{}, fmt.Errorf("failed to get proposal for ID %s: %v", solutionID, err)
+		return Proposal{}, fmt.Errorf("failed to get proposal for solution %s: %v", solutionID, err)
 	}
 	return Proposal{
 		ID:         proposal[0].ID,
@@ -180,8 +183,6 @@ func GetProposalBySolution(solutionID string) (Proposal, error) {
 func GetReview(id string) (Review, error) {
 	repo := repo.ReviewRepo
 	review, err := repo.Read(id)
-	fmt.Printf(" course %v ", review.Course)
-
 	course, err := GetCourse(review.Course)
 	if err != nil {
 		return Review{}, fmt.Errorf("failed to get review for ID %s: %v", id, err)
@@ -214,7 +215,12 @@ func GetReviewBasic(id string) (Clickable, error) {
 // Rating
 func GetRatingByProposal(proposalID string) (Rating, error) {
 	repo := repo.RatingRepo
+	fmt.Printf(" proposalid %v ", proposalID)
+
 	rating, err := repo.ListByProposal(proposalID)
+	if len(rating) == 0 {
+		return Rating{}, fmt.Errorf("failed to get rating for proposal %s: %v", proposalID, err)
+	}
 	proposal, err := GetProposal(rating[0].Proposal)
 
 	review, err := GetReview(rating[0].Review)

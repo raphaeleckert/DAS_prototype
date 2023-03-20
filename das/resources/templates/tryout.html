@@ -17,3 +17,72 @@
     class="w3-button w3-light-grey"
   >Cancel</button>
 </form>
+
+
+<div class="w3-panel w3-red w3-animate-bottom">
+  <h3>Error!</h3>
+  <p>{{ .ErrorText }}</p>
+</div> 
+
+<h2>Subjects</h2>
+  {{range $index, $val := .Subjects}}
+    <div 
+      class="w3-button" 
+      hx-get="/subject?subjectid={{$val.ID}}" 
+      hx-target="body" 
+      hx-push-url="true"
+    >
+      {{$val.Name}}
+    </div><br>
+  {{end}}
+<button 
+  class="w3-button w3-indigo" 
+  hx-get="/subject/create" 
+  hx-target="body" 
+  hx-push-url="true"
+>+</button>
+
+<table class="w3-table w3-striped w3-bordered">
+  <tr>
+    <th>Title</th>
+    <th>Action</th>
+  </tr>
+  {{range $index, $val := .TableData}}
+    <tr>
+      <td 
+        class="w3-button" 
+        hx-get="/resource" 
+        hx-target="body" 
+        hx-push-url="true">
+        {{$val.Name}}
+      </td>
+      <td 
+        class="w3-button w3-text-indigo" 
+        hx-post="/resource/remove" 
+        hx-target="body" 
+        hx-push-url="true">
+        Remove
+      </td>
+    </tr>
+  {{end}}
+</table>
+
+<table class="w3-table w3-striped w3-bordered">
+  <tr>
+    <th style="width:10%">#</th>
+    <th>Title</th>
+    <th>Action</th>
+  </tr>
+  {{range $index, $val := .CourseTopics.Selected}}
+    <tr>
+      <td>{{$index}}</td>
+      <td>
+        {{$val.Title}}
+      </td>
+      <td class="w3-button w3-text-indigo" hx-post="/course/topic?topicid={{$val.ID}}&courseid={{$.CourseData.ID}}&action=remove" hx-target="body" hx-push-url="true">
+        Remove
+      </td>
+    </tr>
+  {{end}}
+</table>
+
