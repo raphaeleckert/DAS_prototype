@@ -31,10 +31,14 @@ func SolveHandler(w http.ResponseWriter, r *http.Request) {
 		user := r.Context().Value("user").(models.User)
 		teamid := r.URL.Query().Get("teamid")
 		topicid := r.URL.Query().Get("topicid")
-		topic := models.GetTopic(topicid)
-		solution := models.GetSolutionByTeamAndTopic(teamid, topicid)
-		proposal := models.GetProposalBySolution(solution.ID)
-		rating := models.GetRatingByProposal(proposal.ID)
+		topic, err := models.GetTopic(topicid)
+		solution, err := models.GetSolutionByTeamAndTopic(teamid, topicid)
+		proposal, err := models.GetProposalBySolution(solution.ID)
+		rating, err := models.GetRatingByProposal(proposal.ID)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 		canAccept := true
 		canEdit := true
 
@@ -105,9 +109,12 @@ func EditProposalHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
 		teamid := r.URL.Query().Get("teamid")
 		topicid := r.URL.Query().Get("topicid")
-		solution := models.GetSolutionByTeamAndTopic(teamid, topicid)
-		proposal := models.GetProposalBySolution(solution.ID)
-
+		solution, err := models.GetSolutionByTeamAndTopic(teamid, topicid)
+		proposal, err := models.GetProposalBySolution(solution.ID)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 		p := EditProposalForm{
 			TeamId:          teamid,
 			TopicId:         topicid,

@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+
+	"github.com/google/uuid"
 )
 
 type TeamTabPage struct {
@@ -19,10 +21,37 @@ type TeamBasePage struct {
 }
 
 func TeamHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodPost {
+		courseId := r.URL.Query().Get("courseid")
+		fmt.Printf("courseId %s", courseId)
+
+		course, err := models.GetCourse(courseId)
+		newTeam := models.Team{
+			ID:       uuid.New().String(),
+			Course:   course,
+			Number:   99,
+			Member:   []string{},
+			ReadOnly: false,
+			Note:     "",
+			Remark:   "",
+		}
+		//TODO Add User
+		fmt.Printf("created Team %s", newTeam.ID)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		w.Header().Set("HX-Redirect", "/team?teamid=team1")
+
+	}
 	if r.Method == http.MethodPatch {
 		teamid := r.URL.Query().Get("teamid")
 		action := r.URL.Query().Get("action")
-		team := models.GetTeam(teamid)
+		team, err := models.GetTeam(teamid)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 		r.ParseForm()
 		user := r.FormValue("user")
 		if action == "add" {
@@ -35,9 +64,15 @@ func TeamHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	if r.Method == http.MethodGet || r.Method == http.MethodPatch {
+		http.Error(w, "test", http.StatusInternalServerError)
+		return
 		user := r.Context().Value("user").(models.User)
 		teamid := r.URL.Query().Get("teamid")
-		team := models.GetTeam(teamid)
+		team, err := models.GetTeam(teamid)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 
 		p := TeamBasePage{
 			Name:      fmt.Sprintf("Team #%d", team.Number),
@@ -71,20 +106,31 @@ func TeamHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
-//type TeamOpenTableRow struct {
-//	Text      string
-//	Reference string
-//}
-
 func TeamOpenHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
 		teamid := r.URL.Query().Get("teamid")
+
+		//TODO: Add Real Topics
 		topics := []models.Clickable{
-			models.GetTopicBasic("topic1"),
-			models.GetTopicBasic("topic2"),
-			models.GetTopicBasic("topic3"),
+			func() models.Clickable {
+				t, _ := models.GetTopicBasic("topic1")
+				return t
+			}(),
+			func() models.Clickable {
+				t, _ := models.GetTopicBasic("topic2")
+				return t
+			}(),
+			func() models.Clickable {
+				t, _ := models.GetTopicBasic("topic3")
+				return t
+			}(),
 		}
-		p := TeamTabPage{TableData: topics, Team: models.GetTeamBasic(teamid)}
+		team, err := models.GetTeamBasic(teamid)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		p := TeamTabPage{TableData: topics, Team: team}
 
 		t, err := template.ParseFiles(
 			"../resources/templates/htmx_wrapper.html",
@@ -209,7 +255,7 @@ type RemoveUserForm struct {
 func RemoveUserFormHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
 		teamid := r.URL.Query().Get("teamid")
-		team := models.GetTeam(teamid)
+		team, err := models.GetTeam(teamid)
 
 		p := RemoveUserForm{
 			TeamId: teamid,

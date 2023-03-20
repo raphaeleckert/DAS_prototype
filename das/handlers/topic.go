@@ -19,10 +19,7 @@ type TopicInfoPage struct {
 	TopicRemark       string
 	TopicImportance   string
 	TopicSubject      string
-	TopicCourses      []struct {
-		CourseName string
-		CourseId   string
-	}
+	TopicCourses      []models.Clickable
 }
 
 type TopicBasePage struct {
@@ -62,9 +59,10 @@ type FormData struct {
 func TopicInfoHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodPost {
 		subjectId := r.URL.Query().Get("subjectid")
+		subject, _ := models.GetSubject(subjectId)
 		blankTopic := models.Topic{
 			ID:                 "blankid",
-			Subject:            models.GetSubject(subjectId),
+			Subject:            subject,
 			Title:              "-",
 			Detail:             "-",
 			Reference:          "-",
@@ -109,10 +107,10 @@ func TopicInfoHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	if r.Method == http.MethodGet || r.Method == http.MethodPut {
 		topicId := r.URL.Query().Get("topicid")
-		fmt.Printf("%+v", topicId)
 
-		topic := models.GetTopic(topicId)
-		coursesWithSubject := []models.Course{models.GetCourse("courseid")}
+		topic, err := models.GetTopic(topicId)
+		course, err := models.GetCourse("courseid")
+		coursesWithSubject, err := models.GetCourseBasicListBySubject(course.Subject.ID)
 		p := TopicInfoPage{
 			TopicId:           topic.ID,
 			TopicTitle:        topic.Title,
@@ -124,15 +122,7 @@ func TopicInfoHandler(w http.ResponseWriter, r *http.Request) {
 			TopicRemark:       topic.Remark,
 			TopicImportance:   topic.Importance,
 			TopicSubject:      topic.Subject.Name,
-			TopicCourses: []struct {
-				CourseName string
-				CourseId   string
-			}{
-				{
-					CourseName: "Some Course",
-					CourseId:   coursesWithSubject[0].ID,
-				},
-			},
+			TopicCourses:      coursesWithSubject,
 		}
 		t, err := template.ParseFiles(
 			"../resources/templates/htmx_wrapper.html",
@@ -160,10 +150,7 @@ type TopicEditPage struct {
 	TopicRemark       string
 	TopicImportance   string
 	TopicSubject      string
-	TopicCourses      []struct {
-		CourseName string
-		CourseId   string
-	}
+	TopicCourses      []models.Clickable
 	SupporterOptions  []string
 	TagOptions        []string
 	ImportanceOptions []string
@@ -175,8 +162,8 @@ func TopicEditHandler(w http.ResponseWriter, r *http.Request) {
 		tags := []string{"a tag", "another tag", "yet another tag"}
 		importanceOptions := []string{models.IMP_ESSENTIAL, models.IMP_MUST, models.IMP_SHOULD, models.IMP_COULD, models.IMP_VOLUNTARY}
 		supporterOptions := []string{models.SUP_NONE, models.SUP_ONE, models.SUP_TWO, models.SUP_HALF, models.SUP_BUT, models.SUP_ALL}
-		topic := models.GetTopic(topicId)
-		coursesWithSubject := []models.Course{models.GetCourse("courseid")}
+		topic, err := models.GetTopic(topicId)
+		coursesWithSubject, err := models.GetCourseBasicListBySubject("course1")
 		p := TopicEditPage{
 			TopicId:           topic.ID,
 			TopicTitle:        topic.Title,
@@ -188,15 +175,46 @@ func TopicEditHandler(w http.ResponseWriter, r *http.Request) {
 			TopicRemark:       topic.Remark,
 			TopicImportance:   topic.Importance,
 			TopicSubject:      topic.Subject.Name,
-			TopicCourses: []struct {
-				CourseName string
-				CourseId   string
-			}{
-				{
-					CourseName: "Some Course",
-					CourseId:   coursesWithSubject[0].ID,
-				},
-			},
+			TopicCourses:      coursesWithSubject,
+			SupporterOptions:  supporterOptions,
+			TagOptions:        tags,
+			ImportanceOptions: importanceOptions,
+		}
+		t, err := template.ParseFiles(
+			"../resources/templates/htmx_wrapper.html",
+			"../resources/templates/topic/topic_edit.html")
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		err = t.ExecuteTemplate(w, "htmx_wrapper", p)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}
+}
+
+func TopicCreateHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodGet {
+		topicId := r.URL.Query().Get("topicid")
+		tags := []string{"a tag", "another tag", "yet another tag"}
+		importanceOptions := []string{models.IMP_ESSENTIAL, models.IMP_MUST, models.IMP_SHOULD, models.IMP_COULD, models.IMP_VOLUNTARY}
+		supporterOptions := []string{models.SUP_NONE, models.SUP_ONE, models.SUP_TWO, models.SUP_HALF, models.SUP_BUT, models.SUP_ALL}
+		topic, err := models.GetTopic(topicId)
+		coursesWithSubject, err := models.GetCourseBasicListBySubject("course1")
+		p := TopicEditPage{
+			TopicId:           topic.ID,
+			TopicTitle:        topic.Title,
+			TopicRef:          topic.Reference,
+			TopicDetail:       topic.Detail,
+			TopicSolutionIdea: topic.SolutionIdea,
+			TopicTags:         topic.Tags,
+			TopicSupporters:   topic.RequiredSupporters,
+			TopicRemark:       topic.Remark,
+			TopicImportance:   topic.Importance,
+			TopicSubject:      topic.Subject.Name,
+			TopicCourses:      coursesWithSubject,
 			SupporterOptions:  supporterOptions,
 			TagOptions:        tags,
 			ImportanceOptions: importanceOptions,
@@ -227,11 +245,11 @@ func TopicListHandler(w http.ResponseWriter, r *http.Request) {
 
 	}
 	if r.Method == http.MethodGet || r.Method == http.MethodDelete {
-		subjectid := r.URL.Query().Get("subjectid")
-		topics := models.GetTopicsBySubject(subjectid)
+		//subjectid := r.URL.Query().Get("subjectid")
+		topic, err := models.GetTopic("topic1")
 
 		p := TopicList{
-			TopicTable: topics,
+			TopicTable: []models.Topic{topic, topic},
 		}
 
 		t, err := template.ParseFiles(

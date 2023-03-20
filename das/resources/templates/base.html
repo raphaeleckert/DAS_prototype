@@ -30,6 +30,7 @@
             </div>
         </nav>
         <br><br>
+        <div id="error-popup"></div>
 
         <div class="w3-row">
             <div class="w3-col w3-container s1 m2 l2"></div>
@@ -54,5 +55,14 @@
         </div>
 
     </body>
+    <script>
+        document.addEventListener("htmx:responseError", function(event) {
+          if (event.detail.xhr.status === 500) {
+            var errorMessage = event.detail.xhr.responseText;
+            var errorPanel = doctument.GetElementById("error-panel")
+            hx.request(errorPanel, "get", errorMessage)
+          }
+        });
+      </script>
 </html>
 {{end}}

@@ -1,7 +1,10 @@
 package models
 
 import (
+	"fmt"
 	"time"
+
+	"dasagilestudieren/repo"
 )
 
 // Solution States
@@ -67,91 +70,168 @@ type Rating struct {
 	Remark   string
 }
 
-func GetTeam(id string) Team {
+// Team
+func GetTeam(id string) (Team, error) {
+	teamRepo := repo.TeamRepo
+	team, err := teamRepo.Read(id)
+
+	course, err := GetCourse(team.Course)
+	if err != nil {
+		return Team{}, fmt.Errorf("failed to get team with ID %s: %v", id, err)
+	}
 	return Team{
-		ID:       id,
-		Course:   GetCourse("courseid"),
-		Number:   1,
-		Member:   []string{"student1", "student2"},
-		ReadOnly: false,
-		Note:     "Team Note",
-		Remark:   "Team Remark",
-	}
+		ID:       team.ID,
+		Course:   course,
+		Number:   team.Number,
+		Member:   team.Member,
+		ReadOnly: team.ReadOnly,
+		Note:     team.Note,
+		Remark:   team.Remark,
+	}, nil
 }
 
-func GetSolution(id string) Solution {
-	return Solution{
-		ID:     id,
-		Team:   GetTeam("teamid"),
-		Topic:  GetTopic("topicid"),
-		State:  STATE_INWORK,
-		Remark: "Solution Remark",
+func GetTeamBasic(id string) (Clickable, error) {
+	team, err := GetTeam(id)
+	if err != nil {
+		return Clickable{}, fmt.Errorf("failed to get team for ID %s: %v", id, err)
 	}
-}
-
-func GetSolutionByTeamAndTopic(team string, topic string) Solution {
-	return Solution{
-		ID:     "solutionid",
-		Team:   GetTeam(team),
-		Topic:  GetTopic(topic),
-		State:  STATE_INWORK,
-		Remark: "Solution Remark",
-	}
-}
-
-func GetProposal(id string) Proposal {
-	return Proposal{
-		ID:         id,
-		Solution:   GetSolution("solutionid"),
-		ModifiedBy: "student1",
-		Detail:     "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
-	}
-}
-
-func GetProposalBySolution(solution string) Proposal {
-	return Proposal{
-		ID:         "solutionid",
-		Solution:   GetSolution(solution),
-		ModifiedBy: "student1",
-		Detail:     "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
-	}
-}
-
-func GetTeamBasic(id string) Clickable {
 	return Clickable{
-		ID:   id,
-		Name: "Bachelorthesis @ Wintersemester 2023, #1, reckert",
-	}
+		ID:   team.ID,
+		Name: fmt.Sprintf("%s | Team %d", team.Course.Subject.Name, team.Number),
+	}, nil
 }
 
-func GetReview(id string) Review {
+// Solution
+func GetSolution(id string) (Solution, error) {
+	repo := repo.SolutionRepo
+	solution, err := repo.Read(id)
+	team, err := GetTeam(solution.Team)
+	topic, err := GetTopic(solution.Topic)
+	if err != nil {
+		return Solution{}, fmt.Errorf("failed to get solution for ID %s: %v", id, err)
+	}
+	return Solution{
+		ID:     solution.ID,
+		Team:   team,
+		Topic:  topic,
+		State:  solution.State,
+		Remark: solution.Remark,
+	}, nil
+}
+
+func GetSolutionByTeamAndTopic(teamID string, topicID string) (Solution, error) {
+	repo := repo.SolutionRepo
+	solutionsForTeam, err := repo.ListByTeam(teamID)
+	team, err := GetTeam(teamID)
+	if err != nil {
+		return Solution{}, fmt.Errorf("failed to get solution for team %s: %v", teamID, err)
+	}
+
+	for _, sol := range solutionsForTeam {
+		if sol.Topic == topicID {
+			topic, err := GetTopic(sol.Topic)
+			if err != nil {
+				return Solution{}, fmt.Errorf("failed to get solution for team %s: %v", teamID, err)
+			}
+			return Solution{
+				ID:     sol.ID,
+				Team:   team,
+				Topic:  topic,
+				State:  sol.State,
+				Remark: sol.Remark,
+			}, nil
+		}
+	}
+	return Solution{}, fmt.Errorf("failed to get solution for team %s: %v", teamID, err)
+}
+
+// Proposal
+func GetProposal(id string) (Proposal, error) {
+	repo := repo.ProposalRepo
+	proposal, err := repo.Read(id)
+	solution, err := GetSolution(proposal.Solution)
+	if err != nil {
+		return Proposal{}, fmt.Errorf("failed to get proposal for ID %s: %v", id, err)
+	}
+	return Proposal{
+		ID:         proposal.ID,
+		Solution:   solution,
+		ModifiedBy: proposal.ModifiedBy,
+		Detail:     proposal.Detail,
+	}, nil
+}
+
+func GetProposalBySolution(solutionID string) (Proposal, error) {
+	repo := repo.ProposalRepo
+	proposal, err := repo.ListBySolution(solutionID)
+	if err != nil || len(proposal) == 0 {
+		return Proposal{}, fmt.Errorf("failed to get proposal for solution %s: %v", solutionID, err)
+	}
+	solution, err := GetSolution(proposal[0].Solution)
+	if err != nil {
+		return Proposal{}, fmt.Errorf("failed to get proposal for solution %s: %v", solutionID, err)
+	}
+	return Proposal{
+		ID:         proposal[0].ID,
+		Solution:   solution,
+		ModifiedBy: proposal[0].ModifiedBy,
+		Detail:     proposal[0].Detail,
+	}, nil
+}
+
+// Review
+func GetReview(id string) (Review, error) {
+	repo := repo.ReviewRepo
+	review, err := repo.Read(id)
+	course, err := GetCourse(review.Course)
+	if err != nil {
+		return Review{}, fmt.Errorf("failed to get review for ID %s: %v", id, err)
+	}
 	return Review{
-		ID:         id,
-		Course:     GetCourse("courseid"),
-		ReviewDate: time.Date(2024, time.January, 01, 00, 00, 00, 0, time.UTC),
-		MaxReviews: 5,
-		BeginDate:  time.Date(2024, time.January, 01, 00, 00, 00, 0, time.UTC),
-		EndDate:    time.Date(2022, time.January, 01, 00, 00, 00, 0, time.UTC),
-		Note:       "Review Note",
-		Remark:     "Review Remark",
-	}
+		ID:         review.ID,
+		Course:     course,
+		ReviewDate: review.ReviewDate,
+		MaxReviews: review.MaxReviews,
+		BeginDate:  review.BeginDate,
+		EndDate:    review.EndDate,
+		Note:       review.Note,
+		Remark:     review.Remark,
+	}, nil
 }
 
-func GetReviewBasic(id string) Clickable {
-	review := GetReview(id)
-	date := review.ReviewDate.Format("2000-01-01 12:00")
+func GetReviewBasic(id string) (Clickable, error) {
+	repo := repo.ReviewRepo
+	review, err := repo.Read(id)
+	course, err := GetCourse(review.Course)
+	if err != nil {
+		return Clickable{}, fmt.Errorf("failed to get review for ID %s: %v", id, err)
+	}
 	return Clickable{
-		ID:   id,
-		Name: date,
-	}
+		ID:   review.ID,
+		Name: fmt.Sprintf("%s | %s", course.Subject.Name, review.ReviewDate),
+	}, nil
 }
 
-func GetRatingByProposal(proposal string) Rating {
-	return Rating{
-		ID:       "ratingid",
-		Proposal: GetProposal(proposal),
-		Review:   GetReview("reviewid"),
-		Rating:   3,
-		Remark:   "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut",
+// Rating
+func GetRatingByProposal(proposalID string) (Rating, error) {
+	repo := repo.RatingRepo
+	fmt.Printf(" proposalid %v ", proposalID)
+
+	rating, err := repo.ListByProposal(proposalID)
+	if len(rating) == 0 {
+		return Rating{}, fmt.Errorf("failed to get rating for proposal %s: %v", proposalID, err)
 	}
+	proposal, err := GetProposal(rating[0].Proposal)
+
+	review, err := GetReview(rating[0].Review)
+	if err != nil {
+		return Rating{}, fmt.Errorf("failed to get rating for proposal %s: %v", proposalID, err)
+	}
+	return Rating{
+		ID:       rating[0].ID,
+		Proposal: proposal,
+		Review:   review,
+		Rating:   rating[0].Rating,
+		Remark:   rating[0].Remark,
+	}, nil
 }
