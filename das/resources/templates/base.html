@@ -30,7 +30,6 @@
             </div>
         </nav>
         <br><br>
-        <div id="error-popup"></div>
 
         <div class="w3-row">
             <div class="w3-col w3-container s1 m2 l2"></div>
@@ -54,15 +53,35 @@
             <div class="w3-col w3-container s1 m2 l2"></div>
         </div>
 
+        <div class=" w3-hide" id="server-error" style="position: fixed; bottom: 0; width: 50%; margin: auto; left:25%">
+            <div class="w3-red w3-animate-bottom">
+                <span onclick="closeError()"
+                class="w3-button w3-display-topright">&times;</span>
+                <h3>Error!</h3>
+                <p id="error-text"></p>
+            </div>
+
+        </div> 
+
     </body>
     <script>
         document.addEventListener("htmx:responseError", function(event) {
           if (event.detail.xhr.status === 500) {
+            closeError()
             var errorMessage = event.detail.xhr.responseText;
-            var errorPanel = doctument.GetElementById("error-panel")
-            hx.request(errorPanel, "get", errorMessage)
+            var errorPanel = document.getElementById("server-error")
+            var errorTextField = document.getElementById("error-text")
+            errorTextField.innerHTML = errorMessage;
+            errorPanel.className += " w3-show";
+            setTimeout(closeError, 3000);
           }
         });
+
+        function closeError() {
+            var panel = document.getElementById("server-error");
+            panel.className = panel.className.replace(" w3-show", "")
+        }
+
       </script>
 </html>
 {{end}}

@@ -86,3 +86,13 @@
   {{end}}
 </table>
 
+{{if .IsTeacher}}
+  <button 
+    class="w3-button w3-indigo" 
+    hx-get="/teacher-action" 
+    hx-target="body" 
+    hx-push-url="true"
+  >This Button is only visible for Teachers</button>
+{{end}}
+<br>
+

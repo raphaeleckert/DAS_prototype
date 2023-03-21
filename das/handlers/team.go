@@ -23,7 +23,6 @@ type TeamBasePage struct {
 func TeamHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodPost {
 		courseId := r.URL.Query().Get("courseid")
-		fmt.Printf("courseId %s", courseId)
 
 		course, err := models.GetCourse(courseId)
 		newTeam := models.Team{
@@ -64,8 +63,6 @@ func TeamHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	if r.Method == http.MethodGet || r.Method == http.MethodPatch {
-		http.Error(w, "test", http.StatusInternalServerError)
-		return
 		user := r.Context().Value("user").(models.User)
 		teamid := r.URL.Query().Get("teamid")
 		team, err := models.GetTeam(teamid)
