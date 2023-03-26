@@ -147,12 +147,14 @@ type CourseTopicPage struct {
 
 func CourseTopicHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodPost {
-		// courseId := r.URL.Query().Get("courseid")
-		// action := r.URL.Query().Get("action")
-		// topicId := r.URL.Query().Get("topicid")
+		courseId := r.URL.Query().Get("courseid")
+		topicId := r.URL.Query().Get("topicid")
 
-		//TODO: add/remove topic from course
-
+		err := models.AssignTopicToCourse(courseId, topicId)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 	}
 	if r.Method == http.MethodGet || r.Method == http.MethodPost {
 		courseId := r.URL.Query().Get("courseid")

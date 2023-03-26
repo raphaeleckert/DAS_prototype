@@ -10,13 +10,13 @@
   </div>
   <div class="w3-cell">
     <b>Begin Date</b>
-    <p>{{ .CourseData.BeginDate }}</p>
+    <p>{{ .CourseData.BeginDate.Format "Jan 2, 2006 at 3:04pm (MST)" }}</p>
     <b>Final Date</b>
-    <p>{{ .CourseData.FinalDate }}</p>
+    <p>{{ .CourseData.FinalDate.Format "Jan 2, 2006 at 3:04pm (MST)" }}</p>
   </div>
   <div class="w3-cell">
     <b>Close Date</b>
-    <p>{{ .CourseData.CloseDate }}</p>
+    <p>{{ .CourseData.CloseDate.Format "Jan 2, 2006 at 3:04pm (MST)" }}</p>
   </div>
 </div>
 
@@ -35,7 +35,7 @@
           <td>
             {{$val.Title}}
           </td>
-          <td class="w3-button w3-text-indigo" hx-post="/course/topic?topicid={{$val.ID}}&courseid={{$.CourseData.ID}}&action=remove" hx-target="body" hx-push-url="true">
+          <td class="w3-button w3-text-indigo" hx-post="/course/topic?topicid={{$val.ID}}&courseid={{$.CourseData.ID}}" hx-target="body">
             Remove
           </td>
         </tr>
@@ -56,7 +56,7 @@
           <td>
             {{$val.Title}}
           </td>
-          <td class="w3-button w3-text-indigo" hx-post="/course/topic?topicid={{$val.ID}}&courseid={{$.CourseData.ID}}&action=add" hx-target="body" hx-push-url="true">
+          <td class="w3-button w3-text-indigo" hx-post="/course/topic?topicid={{$val.ID}}&courseid={{$.CourseData.ID}}" hx-target="body">
             Add
           </td>
         </tr>

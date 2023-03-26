@@ -82,3 +82,28 @@ func UpdateTopicListForCourse(courseId string, topicList []string) error {
 	}
 	return nil
 }
+
+func AssignTopicToCourse(courseId string, topicId string) error {
+	repo := repo.CourseRepo
+	course, err := repo.Read(courseId)
+	if err != nil {
+		return fmt.Errorf("failed to assign/unassign topic %s to course %s: %v", topicId, courseId, err)
+	}
+	alreadyAssigned := false
+
+	for i, v := range course.Topics {
+		if v == topicId {
+			course.Topics[i] = course.Topics[len(course.Topics)-1]
+			course.Topics = course.Topics[:len(course.Topics)-1]
+			alreadyAssigned = true
+			continue
+		}
+	}
+	if !alreadyAssigned {
+		course.Topics = append(course.Topics, topicId)
+	}
+	if err != nil {
+		return fmt.Errorf("failed to assign/unassign topic %s to course %s: %v", topicId, courseId, err)
+	}
+	return nil
+}
