@@ -1,3 +1,10 @@
+/*
+This file is part of the DAS_prototype and can be used under the GNU Affero General License
+
+https://www.gnu.org/licenses/agpl-3.0.html
+
+*/
+
 package main
 
 import (
@@ -39,12 +46,11 @@ func router() {
 
 	server := http.Server{
 		Addr:    ":8080",
-		Handler: nil, // set to nil to use the default ServeMux
+		Handler: nil,
 	}
 
 	http.HandleFunc("/", handlers.Start)
 	http.HandleFunc("/login", handlers.Login)
-	http.HandleFunc("/tryout", handlers.Tryout)
 	http.HandleFunc("/landing", utils.LoginRequired(handlers.LandingHandler))
 
 	//topic
