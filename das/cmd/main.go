@@ -52,6 +52,7 @@ func router() {
 	http.HandleFunc("/topic/info", utils.TeacherRequired(handlers.TopicInfoHandler))
 	http.HandleFunc("/topic/edit", utils.TeacherRequired(handlers.TopicEditHandler))
 	http.HandleFunc("/topic/list", utils.TeacherRequired(handlers.TopicListHandler))
+	http.HandleFunc("/topic/create", utils.TeacherRequired(handlers.TopicCreateHandler))
 
 	//team
 	http.HandleFunc("/team", utils.LoginRequired(handlers.TeamHandler))

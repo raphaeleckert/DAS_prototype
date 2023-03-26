@@ -6,6 +6,8 @@ import (
 	"net/http"
 
 	"dasagilestudieren/models"
+
+	"github.com/google/uuid"
 )
 
 type TopicInfoPage struct {
@@ -59,24 +61,42 @@ type FormData struct {
 func TopicInfoHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodPost {
 		subjectId := r.URL.Query().Get("subjectid")
-		subject, _ := models.GetSubject(subjectId)
-		blankTopic := models.Topic{
-			ID:                 "blankid",
+		subject, err := models.GetSubject(subjectId)
+		r.ParseForm()
+		title := r.Form.Get("title")
+		ref := r.Form.Get("ref")
+		tags := r.Form["tags"]
+		supporters := r.Form.Get("supporters")
+		remark := r.Form.Get("remark")
+		importance := r.Form.Get("importance")
+		detail := r.Form.Get("detail")
+		solutionIdea := r.Form.Get("solutionIdea")
+
+		topicNew := models.Topic{
+			ID:                 uuid.New().String(),
+			Title:              title,
+			Reference:          ref,
+			Tags:               tags,
+			RequiredSupporters: supporters,
+			Remark:             remark,
+			Importance:         importance,
+			Detail:             detail,
+			SolutionIdea:       solutionIdea,
 			Subject:            subject,
-			Title:              "-",
-			Detail:             "-",
-			Reference:          "-",
-			SolutionIdea:       "-",
-			Remark:             "-",
-			Tags:               []string{},
-			Importance:         models.IMP_SHOULD,
-			RequiredSupporters: models.SUP_HALF,
 		}
 
+		err = models.CreateTopic(topicNew)
 		//TODO: Give blank Topic a unique id and save to db
-		fmt.Printf("%+v", blankTopic)
-		newAdress := "/topic?topicid=" + blankTopic.ID
+		fmt.Printf("%+v", topicNew)
+		newAdress := "/topic?topicid=" + topicNew.ID
+
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		fmt.Print("hi")
 		w.Header().Set("HX-Redirect", newAdress)
+		return
 	}
 	if r.Method == http.MethodPut {
 		topicId := r.URL.Query().Get("topicid")
@@ -124,6 +144,8 @@ func TopicInfoHandler(w http.ResponseWriter, r *http.Request) {
 			TopicSubject:      topic.Subject.Name,
 			TopicCourses:      coursesWithSubject,
 		}
+		fmt.Printf("%+v", topic)
+		fmt.Printf("topicid %v", topicId)
 		t, err := template.ParseFiles(
 			"../resources/templates/htmx_wrapper.html",
 			"../resources/templates/topic/topic_info.html")
@@ -195,38 +217,35 @@ func TopicEditHandler(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+type TopicCreatePage struct {
+	TopicSubject      models.Clickable
+	TopicCourses      []models.Clickable
+	SupporterOptions  []string
+	TagOptions        []string
+	ImportanceOptions []string
+}
+
 func TopicCreateHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodGet {
-		topicId := r.URL.Query().Get("topicid")
+		subjectId := r.URL.Query().Get("subjectid")
+		subject, err := models.GetSubjectBasic(subjectId)
 		tags := []string{"a tag", "another tag", "yet another tag"}
 		importanceOptions := []string{models.IMP_ESSENTIAL, models.IMP_MUST, models.IMP_SHOULD, models.IMP_COULD, models.IMP_VOLUNTARY}
 		supporterOptions := []string{models.SUP_NONE, models.SUP_ONE, models.SUP_TWO, models.SUP_HALF, models.SUP_BUT, models.SUP_ALL}
-		topic, err := models.GetTopic(topicId)
-		coursesWithSubject, err := models.GetCourseBasicListBySubject("course1")
-		p := TopicEditPage{
-			TopicId:           topic.ID,
-			TopicTitle:        topic.Title,
-			TopicRef:          topic.Reference,
-			TopicDetail:       topic.Detail,
-			TopicSolutionIdea: topic.SolutionIdea,
-			TopicTags:         topic.Tags,
-			TopicSupporters:   topic.RequiredSupporters,
-			TopicRemark:       topic.Remark,
-			TopicImportance:   topic.Importance,
-			TopicSubject:      topic.Subject.Name,
-			TopicCourses:      coursesWithSubject,
+		p := TopicCreatePage{
+			TopicSubject:      subject,
 			SupporterOptions:  supporterOptions,
 			TagOptions:        tags,
 			ImportanceOptions: importanceOptions,
 		}
 		t, err := template.ParseFiles(
-			"../resources/templates/htmx_wrapper.html",
-			"../resources/templates/topic/topic_edit.html")
+			"../resources/templates/base.html",
+			"../resources/templates/topic/topic_create.html")
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		err = t.ExecuteTemplate(w, "htmx_wrapper", p)
+		err = t.ExecuteTemplate(w, "base", p)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return

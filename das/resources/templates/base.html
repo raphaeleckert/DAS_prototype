@@ -60,7 +60,6 @@
                 <h3>Error!</h3>
                 <p id="error-text"></p>
             </div>
-
         </div> 
 
     </body>
@@ -76,12 +75,10 @@
             setTimeout(closeError, 3000);
           }
         });
-
         function closeError() {
             var panel = document.getElementById("server-error");
             panel.className = panel.className.replace(" w3-show", "")
         }
-
-      </script>
+    </script>
 </html>
 {{end}}

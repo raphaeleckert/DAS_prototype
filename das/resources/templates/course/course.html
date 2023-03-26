@@ -42,7 +42,7 @@
   <h2>Topics</h2>
   {{if gt (len .Topics) 0}}
     {{range $index, $val := .Topics}}
-    <div class="w3-button" hx-get="/topic?topic={{$val.ID}}" hx-target="body" hx-push-url="true">
+    <div class="w3-button" hx-get="/topic?topicid={{$val.ID}}" hx-target="body" hx-push-url="true">
       {{$val.Name}}
     </div><br>
     {{end}}

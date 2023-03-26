@@ -19,12 +19,3 @@ func Tryout(w http.ResponseWriter, r *http.Request) {
 		t.ExecuteTemplate(w, "base", p)
 	}
 }
-
-func RessourceHandler(w http.ResponseWriter, r *http.Request) {
-	if r.Method == http.MethodPatch {
-		// Update Data
-	}
-	if r.Method == http.MethodGet || r.Method == http.MethodPatch {
-		// Return Page
-	}
-}
