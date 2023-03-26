@@ -38,7 +38,7 @@ func init() {
 	}
 
 	gob.Register(models.User{})
-	fmt.Println("Start")
+	fmt.Println("Server running on localhost:8080")
 
 }
 

@@ -11,8 +11,7 @@ Note: The database in its current form is only mocked and barely implemented. To
 # Installation
 
 Step 1: Download Go from https://go.dev/dl/. This prototype was created and tested on Go v1.19
-Step 2: Enter the "das" directory and run "go mod download" to install dependencies
-Step 3: Enter the "das/cmd" directory and run "go run ."
+Step 2: Enter the "das/cmd" directory and run "go run ."
 
 # Usage
 
