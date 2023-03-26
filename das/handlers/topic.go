@@ -259,16 +259,16 @@ type TopicList struct {
 
 func TopicListHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodDelete {
-		subjectid := r.URL.Query().Get("subjectid")
-		fmt.Printf("%s Deleted", subjectid)
+		subjectId := r.URL.Query().Get("subjectid")
+		fmt.Printf("%s Deleted", subjectId)
 
 	}
 	if r.Method == http.MethodGet || r.Method == http.MethodDelete {
-		//subjectid := r.URL.Query().Get("subjectid")
-		topic, err := models.GetTopic("topic1")
+		subjectId := r.URL.Query().Get("subjectid")
+		topics, err := models.GetTopicsBySubject(subjectId)
 
 		p := TopicList{
-			TopicTable: []models.Topic{topic, topic},
+			TopicTable: topics,
 		}
 
 		t, err := template.ParseFiles(

@@ -106,6 +106,70 @@ func GetTopicsByCourse(courseID string) (struct {
 	}, nil
 }
 
+func GetTopicsByCourseBasic(courseID string) ([]Clickable, error) {
+	course, err := GetCourse(courseID)
+	clickableTopics := []Clickable{}
+	for _, topic := range course.Topics {
+		clickableTopic, _ := GetTopicBasic(topic)
+		clickableTopics = append(clickableTopics, clickableTopic)
+	}
+	if err != nil {
+		return []Clickable{}, fmt.Errorf("failed to get topics for course %s: %v", course, err)
+	}
+	return clickableTopics, nil
+}
+
+func GetTopicsBySubject(subjectID string) ([]Topic, error) {
+	topicRepo := repo.TopicRepo
+	subject, err := GetSubject(subjectID)
+	if err != nil {
+		return []Topic{}, fmt.Errorf("failed to get topics for subject %s: %v", subjectID, err)
+	}
+
+	allTopics, err := topicRepo.ListBySubject(subject.ID)
+	populatedTopics := []Topic{}
+	for _, topic := range allTopics {
+		populatedTopics = append(populatedTopics, Topic{
+			ID:                 topic.ID,
+			Title:              topic.Title,
+			Subject:            subject,
+			Number:             topic.Number,
+			Detail:             topic.Detail,
+			Reference:          topic.Reference,
+			SolutionIdea:       topic.SolutionIdea,
+			Remark:             topic.Remark,
+			Tags:               topic.Tags,
+			Importance:         topic.Importance,
+			RequiredSupporters: topic.RequiredSupporters,
+		})
+	}
+	if err != nil {
+		return []Topic{}, fmt.Errorf("failed to get topics for subject %s: %v", subjectID, err)
+	}
+	return populatedTopics, nil
+}
+
+func GetTopicsBySubjectBasic(subjectID string) ([]Clickable, error) {
+	topicRepo := repo.TopicRepo
+	subject, err := GetSubject(subjectID)
+	if err != nil {
+		return []Clickable{}, fmt.Errorf("failed to get topics for subject %s: %v", subjectID, err)
+	}
+
+	allTopics, err := topicRepo.ListBySubject(subject.ID)
+	clickableTopics := []Clickable{}
+	for _, topic := range allTopics {
+		clickableTopics = append(clickableTopics, Clickable{
+			ID:   topic.ID,
+			Name: topic.Title,
+		})
+	}
+	if err != nil {
+		return []Clickable{}, fmt.Errorf("failed to get topics for subject %s: %v", subjectID, err)
+	}
+	return clickableTopics, nil
+}
+
 func CreateTopic(topic Topic) error {
 	repo := repo.TopicRepo
 	newTopic := prototype.Topic{

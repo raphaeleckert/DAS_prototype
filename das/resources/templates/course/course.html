@@ -10,13 +10,13 @@
   </div>
   <div class="w3-cell">
     <b>Begin Date</b>
-    <p>{{ .CourseData.BeginDate }}</p>
+    <p>{{ .CourseData.BeginDate.Format "Jan 2, 2006 at 3:04pm (MST)" }}</p>
     <b>Final Date</b>
-    <p>{{ .CourseData.FinalDate }}</p>
+    <p>{{ .CourseData.FinalDate.Format "Jan 2, 2006 at 3:04pm (MST)" }}</p>
   </div>
   <div class="w3-cell">
     <b>Close Date</b>
-    <p>{{ .CourseData.CloseDate }}</p>
+    <p>{{ .CourseData.CloseDate.Format "Jan 2, 2006 at 3:04pm (MST)" }}</p>
   </div>
 </div>
     <h2>Reviews</h2>

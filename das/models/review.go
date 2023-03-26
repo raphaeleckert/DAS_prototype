@@ -35,6 +35,6 @@ func GetReviewBasic(id string) (Clickable, error) {
 	}
 	return Clickable{
 		ID:   review.ID,
-		Name: fmt.Sprintf("%s | %s", course.Subject.Name, review.ReviewDate),
+		Name: fmt.Sprintf("%s | %s", course.Subject.Name, review.ReviewDate.Format("Jan 2, 2006 at 3:04pm (MST)")),
 	}, nil
 }

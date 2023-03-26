@@ -6,16 +6,16 @@ import (
 	"dasagilestudieren/repo"
 )
 
-
-
 // Team
 func GetTeam(id string) (Team, error) {
 	teamRepo := repo.TeamRepo
 	team, err := teamRepo.Read(id)
-
-	course, err := GetCourse(team.Course)
 	if err != nil {
 		return Team{}, fmt.Errorf("failed to get team with ID %s: %v", id, err)
+	}
+	course, err := GetCourse(team.Course)
+	if err != nil {
+		return Team{}, fmt.Errorf("failed to get course for team with ID %s: %v", id, err)
 	}
 	return Team{
 		ID:       team.ID,
@@ -38,11 +38,3 @@ func GetTeamBasic(id string) (Clickable, error) {
 		Name: fmt.Sprintf("%s | Team %d", team.Course.Subject.Name, team.Number),
 	}, nil
 }
-
-
-
-
-
-
-
-

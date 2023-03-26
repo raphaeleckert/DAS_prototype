@@ -81,12 +81,12 @@ func CourseHandler(w http.ResponseWriter, r *http.Request) {
 		//TODO: Get real list of courses
 		review, _ := models.GetReviewBasic("review1")
 		team, _ := models.GetTeamBasic("team1")
-		topic, _ := models.GetTopicBasic("topic1")
+		topics, err := models.GetTopicsByCourseBasic(courseId)
 
 		p := CoursePage{
 			Reviews:    []models.Clickable{review, review, review},
 			Teams:      []models.Clickable{team, team, team},
-			Topics:     []models.Clickable{topic, topic, topic},
+			Topics:     topics,
 			CourseData: course,
 		}
 
