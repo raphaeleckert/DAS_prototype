@@ -1,9 +1,9 @@
-/*
+{{/*
 This file is part of the DAS_prototype and can be used under the GNU Affero General License
 
 https://www.gnu.org/licenses/agpl-3.0.html
 
-*/
+*/}}
 
 {{define "htmx-response"}}
 <form id=edit hx-put="/topic/info?topicid={{ .TopicId }}" hx-target="this" hx-swap="outerHTML">
