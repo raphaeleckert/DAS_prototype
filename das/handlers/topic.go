@@ -29,6 +29,10 @@ type TopicBasePage struct {
 }
 
 func TopicHandler(w http.ResponseWriter, r *http.Request) {
+	//if r.Method == http.MethodDelete {
+	//	topicId := r.URL.Query().Get("topicid")
+	//
+	//}
 	if r.Method == http.MethodGet {
 		topicId := r.URL.Query().Get("topicid")
 		p := TopicBasePage{TopicId: topicId}
@@ -259,11 +263,10 @@ type TopicList struct {
 
 func TopicListHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodDelete {
-		subjectId := r.URL.Query().Get("subjectid")
-		fmt.Printf("%s Deleted", subjectId)
-
+		topicId := r.URL.Query().Get("topicid")
+		fmt.Printf("%s Deleted", topicId)
 	}
-	if r.Method == http.MethodGet || r.Method == http.MethodDelete {
+	if r.Method == http.MethodGet {
 		subjectId := r.URL.Query().Get("subjectid")
 		topics, err := models.GetTopicsBySubject(subjectId)
 

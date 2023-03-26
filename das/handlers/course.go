@@ -8,6 +8,8 @@ import (
 
 	"dasagilestudieren/models"
 	"dasagilestudieren/utils"
+
+	"github.com/google/uuid"
 )
 
 type CoursePage struct {
@@ -55,7 +57,7 @@ func CourseHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		newCourse := models.Course{
-			ID:        "newid",
+			ID:        uuid.New().String(),
 			Subject:   subject,
 			Term:      term,
 			Owner:     user.Username,

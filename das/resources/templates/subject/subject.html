@@ -19,7 +19,7 @@
     </div><br>
   {{end}}
 {{end}}
-<button class="w3-button w3-indigo" hx-get="/course/create" hx-target="body" hx-push-url="true">+</button>
+<button class="w3-button w3-indigo" hx-get="/course/create?subjectid={{.Subject.ID}}" hx-target="body" hx-push-url="true">+</button>
 <br>
 <h2>Topics</h2>
 <div hx-get="/topic/list?subjectid={{.Subject.ID}}" hx-trigger="load delay:100ms" hx-swap="outerHTML"></div>

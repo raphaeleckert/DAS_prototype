@@ -43,6 +43,9 @@ func GetSubjectListBasic(owner string) ([]Clickable, error) {
 func GetSubjectBasic(id string) (Clickable, error) {
 	repo := repo.SubjectRepo
 	data, err := repo.Read(id)
+	if err != nil {
+		return Clickable{}, fmt.Errorf("failed to get subject with ID %s: %v", id, err)
+	}
 	subject := Clickable{
 		ID:   data.ID,
 		Name: data.Name,
@@ -52,5 +55,3 @@ func GetSubjectBasic(id string) (Clickable, error) {
 	}
 	return subject, nil
 }
-
-
