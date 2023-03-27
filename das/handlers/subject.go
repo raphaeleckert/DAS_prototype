@@ -14,13 +14,15 @@ import (
 	"dasagilestudieren/models"
 )
 
+// This file contains all the handlers for the subject resource
+
 type SubjectPage struct {
 	Subject models.Subject
 	Courses []models.Clickable
 }
 
 func SubjectHandler(w http.ResponseWriter, r *http.Request) {
-
+	// GET: Retruns the subject page
 	if r.Method == http.MethodGet {
 		subjectid := r.URL.Query().Get("subjectid")
 		subject, err := models.GetSubject(subjectid)

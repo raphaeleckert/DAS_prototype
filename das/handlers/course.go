@@ -19,6 +19,8 @@ import (
 	"github.com/google/uuid"
 )
 
+// This file contains all the handlers regarding the Course resource
+
 type CoursePage struct {
 	Reviews    []models.Clickable
 	Teams      []models.Clickable
@@ -27,6 +29,7 @@ type CoursePage struct {
 }
 
 func CourseHandler(w http.ResponseWriter, r *http.Request) {
+	// POST: Creates a new Course
 	if r.Method == http.MethodPost {
 		user, ok := r.Context().Value("user").(models.User)
 		if !ok {
@@ -82,6 +85,7 @@ func CourseHandler(w http.ResponseWriter, r *http.Request) {
 		newAdress := "/course?courseid=" + newCourse.ID
 		w.Header().Set("HX-Redirect", newAdress)
 	}
+	// GET: Returns the Course Page
 	if r.Method == http.MethodGet {
 		courseId := r.URL.Query().Get("courseid")
 
@@ -120,6 +124,7 @@ type CreateCourseForm struct {
 }
 
 func CreateCourseHandler(w http.ResponseWriter, r *http.Request) {
+	// GET: Returns the Page for creating a course
 	if r.Method == http.MethodGet {
 		subjectId := r.URL.Query().Get("subjectid")
 
@@ -155,6 +160,7 @@ type CourseTopicPage struct {
 }
 
 func CourseTopicHandler(w http.ResponseWriter, r *http.Request) {
+	// POST: Assign/Unassign topic to the course
 	if r.Method == http.MethodPost {
 		courseId := r.URL.Query().Get("courseid")
 		topicId := r.URL.Query().Get("topicid")
@@ -165,6 +171,7 @@ func CourseTopicHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 	}
+	// GET: Returns the Page to assign/unassign topics to course
 	if r.Method == http.MethodGet || r.Method == http.MethodPost {
 		courseId := r.URL.Query().Get("courseid")
 		courseData, err := models.GetCourse(courseId)

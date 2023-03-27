@@ -11,6 +11,8 @@ import (
 	"time"
 )
 
+// This file contains a function to create a mocked database implemented through a struct containing maps for each table
+
 // Topic Importances
 const (
 	IMP_ESSENTIAL = "Prerequisite for other topics"

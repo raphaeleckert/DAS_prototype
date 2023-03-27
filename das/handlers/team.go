@@ -16,6 +16,8 @@ import (
 	"github.com/google/uuid"
 )
 
+// This file contains all the handlers for the team resource
+
 type TeamTabPage struct {
 	Team      struct{ Name, ID string }
 	TableData []models.Clickable
@@ -28,6 +30,7 @@ type TeamBasePage struct {
 }
 
 func TeamHandler(w http.ResponseWriter, r *http.Request) {
+	// POST: Creates a new Team
 	if r.Method == http.MethodPost {
 		courseId := r.URL.Query().Get("courseid")
 
@@ -50,6 +53,7 @@ func TeamHandler(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("HX-Redirect", "/team?teamid=team1")
 
 	}
+	// PATCH: Adds or removes users from the team
 	if r.Method == http.MethodPatch {
 		teamid := r.URL.Query().Get("teamid")
 		action := r.URL.Query().Get("action")
@@ -69,6 +73,7 @@ func TeamHandler(w http.ResponseWriter, r *http.Request) {
 			fmt.Printf("%s removed from Team %d", user, team.Number)
 		}
 	}
+	// GET: Returns the base page for a team
 	if r.Method == http.MethodGet || r.Method == http.MethodPatch {
 		user := r.Context().Value("user").(models.User)
 		teamid := r.URL.Query().Get("teamid")
@@ -99,6 +104,7 @@ func TeamHandler(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
+		// DELETE: Deletes a team
 	} else if r.Method == http.MethodDelete {
 		teamid := r.URL.Query().Get("teamid")
 		//TODO Delete Team
@@ -111,6 +117,7 @@ func TeamHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func TeamOpenHandler(w http.ResponseWriter, r *http.Request) {
+	// Returns open topics for a team
 	if r.Method == http.MethodGet {
 		teamid := r.URL.Query().Get("teamid")
 
@@ -154,6 +161,7 @@ func TeamOpenHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func TeamWorkHandler(w http.ResponseWriter, r *http.Request) {
+	// Returns in work topics for a team
 	if r.Method == http.MethodGet {
 		t, err := template.ParseFiles(
 			"../resources/templates/htmx_wrapper.html",
@@ -171,6 +179,7 @@ func TeamWorkHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func TeamReadyHandler(w http.ResponseWriter, r *http.Request) {
+	// returns ready topics for a team
 	if r.Method == http.MethodGet {
 		t, err := template.ParseFiles(
 			"../resources/templates/htmx_wrapper.html",
@@ -189,6 +198,7 @@ func TeamReadyHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func TeamDoneHandler(w http.ResponseWriter, r *http.Request) {
+	// returns done topics for a team
 	if r.Method == http.MethodGet {
 		t, err := template.ParseFiles(
 			"../resources/templates/htmx_wrapper.html",
@@ -207,6 +217,7 @@ func TeamDoneHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func TeamReviewHandler(w http.ResponseWriter, r *http.Request) {
+	// returns reviews for a team
 	if r.Method == http.MethodGet {
 		t, err := template.ParseFiles(
 			"../resources/templates/htmx_wrapper.html",
@@ -229,6 +240,7 @@ type AddUserForm struct {
 }
 
 func AddUserFormHandler(w http.ResponseWriter, r *http.Request) {
+	// GET: Returns the form to add a user
 	if r.Method == http.MethodGet {
 		teamid := r.URL.Query().Get("teamid")
 
@@ -257,6 +269,7 @@ type RemoveUserForm struct {
 }
 
 func RemoveUserFormHandler(w http.ResponseWriter, r *http.Request) {
+	// GET: Returns the form do delete a user
 	if r.Method == http.MethodGet {
 		teamid := r.URL.Query().Get("teamid")
 		team, err := models.GetTeam(teamid)

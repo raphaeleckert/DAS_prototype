@@ -12,6 +12,8 @@ import (
 	"net/http"
 )
 
+// Helper function for returning a html block representing an error message
+
 type errorMsg struct {
 	ErrorText string
 }

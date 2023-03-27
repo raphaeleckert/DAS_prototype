@@ -14,6 +14,8 @@ import (
 	"dasagilestudieren/models"
 )
 
+// This file contains handlers for the landing page (main page)
+
 type LandingPage struct {
 	Courses   []models.Clickable
 	Subjects  []models.Clickable
@@ -22,6 +24,7 @@ type LandingPage struct {
 }
 
 func LandingHandler(w http.ResponseWriter, r *http.Request) {
+	// GET: Returns the landing page
 	if r.Method == http.MethodGet {
 		user, ok := r.Context().Value("user").(models.User)
 		if !ok {

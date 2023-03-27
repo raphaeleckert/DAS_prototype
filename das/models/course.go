@@ -13,7 +13,6 @@ import (
 	"dasagilestudieren/repo"
 )
 
-// Course
 func GetCourse(id string) (Course, error) {
 	repo := repo.CourseRepo
 	data, err := repo.Read(id)

@@ -13,6 +13,8 @@ import (
 	"dasagilestudieren/prototype"
 )
 
+// mocks database operations on all course related tables
+
 func NewCourseRepository(db *prototype.PrototypeDb) *CourseRepository {
 	return &CourseRepository{db: db}
 }

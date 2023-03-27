@@ -15,8 +15,10 @@ import (
 	"dasagilestudieren/utils"
 )
 
+// This file contains the handlers for logging in
+
 func Start(w http.ResponseWriter, r *http.Request) {
-	//GET
+	//GET: Returns the Login Page
 	if r.Method == http.MethodGet {
 		t, err := template.ParseFiles(
 			"../resources/templates/registration/login.html")
@@ -33,12 +35,14 @@ func Start(w http.ResponseWriter, r *http.Request) {
 }
 
 func Login(w http.ResponseWriter, r *http.Request) {
+	// POST: Checks credentials and puts user in session + redirect on success OR returns error message
 	if r.Method == http.MethodPost {
 		session, err := utils.Store.Get(r, "das-session")
 
 		r.ParseForm()
 		username := r.FormValue("username")
 		password := r.FormValue("password")
+
 		// TODO: implement real user checking
 		authenticated := username != "" && password != "" && password != "wrong"
 		isTeacher := username == "teacher"

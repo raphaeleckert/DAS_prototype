@@ -17,6 +17,8 @@ import (
 	"dasagilestudieren/models"
 )
 
+// Helper functions for passing the user to the handlers and redirect if required
+
 var Store *sessions.CookieStore
 
 // GetUser returns a user from session s

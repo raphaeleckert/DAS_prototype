@@ -12,6 +12,8 @@ import (
 	"fmt"
 )
 
+// mocks database operations on all team related tables
+
 func NewTeamRepository(db *prototype.PrototypeDb) *TeamRepository {
 	return &TeamRepository{db: db}
 }

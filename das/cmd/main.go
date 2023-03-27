@@ -22,7 +22,8 @@ import (
 )
 
 func init() {
-	// session
+	// runs on server start
+	// creates session
 	authKeyOne := securecookie.GenerateRandomKey(64)
 	encryptionKeyOne := securecookie.GenerateRandomKey(32)
 

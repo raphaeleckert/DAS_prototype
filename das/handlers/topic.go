@@ -17,6 +17,8 @@ import (
 	"github.com/google/uuid"
 )
 
+// This file contains handlers for the topic resource
+
 type TopicInfoPage struct {
 	TopicId           string
 	TopicTitle        string
@@ -36,10 +38,7 @@ type TopicBasePage struct {
 }
 
 func TopicHandler(w http.ResponseWriter, r *http.Request) {
-	//if r.Method == http.MethodDelete {
-	//	topicId := r.URL.Query().Get("topicid")
-	//
-	//}
+	// GET: Returns the Topic base page
 	if r.Method == http.MethodGet {
 		topicId := r.URL.Query().Get("topicid")
 		p := TopicBasePage{TopicId: topicId}
@@ -70,6 +69,7 @@ type FormData struct {
 }
 
 func TopicInfoHandler(w http.ResponseWriter, r *http.Request) {
+	// POST: Creates a topic
 	if r.Method == http.MethodPost {
 		subjectId := r.URL.Query().Get("subjectid")
 		subject, err := models.GetSubject(subjectId)
@@ -109,6 +109,7 @@ func TopicInfoHandler(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("HX-Redirect", newAdress)
 		return
 	}
+	// PUT: Updates a topic
 	if r.Method == http.MethodPut {
 		topicId := r.URL.Query().Get("topicid")
 		r.ParseForm()
@@ -136,6 +137,7 @@ func TopicInfoHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Printf("%+v", topicUpdate)
 		fmt.Printf("%+v", topicId)
 	}
+	// GET: Returns topic information
 	if r.Method == http.MethodGet || r.Method == http.MethodPut {
 		topicId := r.URL.Query().Get("topicid")
 
@@ -190,6 +192,7 @@ type TopicEditPage struct {
 }
 
 func TopicEditHandler(w http.ResponseWriter, r *http.Request) {
+	// Returns the form to edit a topic
 	if r.Method == http.MethodGet {
 		topicId := r.URL.Query().Get("topicid")
 		tags := []string{"a tag", "another tag", "yet another tag"}
@@ -237,6 +240,7 @@ type TopicCreatePage struct {
 }
 
 func TopicCreateHandler(w http.ResponseWriter, r *http.Request) {
+	// GET: Returns the form to create a topic
 	if r.Method == http.MethodGet {
 		subjectId := r.URL.Query().Get("subjectid")
 		subject, err := models.GetSubjectBasic(subjectId)
@@ -269,10 +273,12 @@ type TopicList struct {
 }
 
 func TopicListHandler(w http.ResponseWriter, r *http.Request) {
+	// DELETE: Deletes a topic
 	if r.Method == http.MethodDelete {
 		topicId := r.URL.Query().Get("topicid")
 		fmt.Printf("%s Deleted", topicId)
 	}
+	// GET: Returns a list of topics
 	if r.Method == http.MethodGet {
 		subjectId := r.URL.Query().Get("subjectid")
 		topics, err := models.GetTopicsBySubject(subjectId)

@@ -11,6 +11,8 @@ import (
 	"dasagilestudieren/prototype"
 )
 
+// initializes mocked database on application start
+
 var (
 	CourseRepo    *CourseRepository
 	SubjectRepo   *SubjectRepository

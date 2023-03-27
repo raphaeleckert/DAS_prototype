@@ -14,6 +14,8 @@ import (
 	"dasagilestudieren/models"
 )
 
+// This file contains handlers regarding the solving of topics by students
+
 type SolvePage struct {
 	CurrentUser   string
 	TopicData     models.Topic
@@ -34,6 +36,7 @@ func SolveHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodPatch {
 		//Update Proposal
 	}
+	// GET: Returns the topic and corresponding proposal / Review
 	if r.Method == http.MethodGet || r.Method == http.MethodPost || r.Method == http.MethodPatch {
 		user := r.Context().Value("user").(models.User)
 		teamid := r.URL.Query().Get("teamid")
@@ -82,6 +85,7 @@ type CreateProposalForm struct {
 }
 
 func CreateProposalHandler(w http.ResponseWriter, r *http.Request) {
+	// GET: Returns the form for creating proposal
 	if r.Method == http.MethodGet {
 
 		teamid := r.URL.Query().Get("teamid")
@@ -112,7 +116,7 @@ type EditProposalForm struct {
 }
 
 func EditProposalHandler(w http.ResponseWriter, r *http.Request) {
-
+	// GET: Returns the form for creating a proposal
 	if r.Method == http.MethodGet {
 		teamid := r.URL.Query().Get("teamid")
 		topicid := r.URL.Query().Get("topicid")
